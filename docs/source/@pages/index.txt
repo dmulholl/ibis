@@ -1,0 +1,56 @@
+
+Flock
+=====
+
+A lightweight template engine for Python 3. Can be used as a drop-in component in any text-processing application.
+
+Sample syntax:
+
+::: django 
+
+    <ul>
+        {% for post in posts %}
+            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+Features:
+
+* Django/Jinja-style syntax.
+* Supports looping, conditionals, filters, template inheritance.
+* Extensible. Easily add custom template tags and filters.
+* Self-contained, no dependencies. Use as a drop-in component in any project.
+* Public domain code. No license compatibility issues.
+
+
+Documentation
+-------------
+
+* [Quickstart](@root/tutorial//)
+* [Template Markup](@root/markup//)
+    * [Print Statements](@root/markup//#print-statements)
+    * [Expressions](@root/markup//#expressions)
+    * [Syntax Tags](@root/markup//#syntax-tags)
+* [Tag Reference](@root/tags//)
+* [Filter Reference](@root/filters//)
+* [Template Inheritance](@root/inheritance//)
+* [Template API](@root/api//)
+    * [Template Objects](@root/api//#template-objects)
+    * [Template Loaders](@root/api//#template-loaders)
+    * [Exceptions](@root/api//#exceptions)
+    * [Builtins](@root/api//#builtins)
+    * [The Undefined Type](@root/api//#the-undefined-type)
+    * [Custom Filters](@root/api//#custom-filters)
+    * [Custom Tags](@root/api//#custom-tags)
+
+
+Requirements
+------------
+
+Requires Python 3.
+
+
+License
+-------
+
+This work has been placed in the public domain.

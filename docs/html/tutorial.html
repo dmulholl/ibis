@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+    Quickstart
+</title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/magpie.css">
+        <link rel="stylesheet" href="css/pygments.css">
+    </head>
+    <body class="pages single">
+
+        <div class="header meta">
+            <ul>
+<li><a href="index.html">Flock</a></li>
+<li><a href="tutorial.html">Quickstart</a></li>
+<li><a href="markup.html">Markup</a></li>
+<li><a href="tags.html">Tags</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="inheritance.html">Inheritance</a></li>
+<li><a href="api.html">API</a></li>
+</ul>
+        </div>
+        
+        <div class="content">
+            
+
+    
+    
+    <h1 id="quickstart">Quickstart</h1>
+<p>A template starts life as a simple string containing <a href="markup.html">template markup</a>. We use this string to initialize a <code>Template</code> object:</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">flock</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">template</span> <span class="o">=</span> <span class="n">flock</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s">&#39;{{foo}} and {{bar}}&#39;</span><span class="p">)</span>
+</pre>
+<p>The <code>Template</code> class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its <code>render()</code> method with a dictionary of key-value pairs or a set of keyword arguments:</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">foo</span><span class="o">=</span><span class="s">&#39;ham&#39;</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="s">&#39;eggs&#39;</span><span class="p">)</span>
+<span class="s">&#39;ham and eggs&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s">&#39;foo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="s">&#39;1 and 2&#39;</span>
+</pre>
+<h2 id="loading-template-files">Loading Template Files</h2>
+<p>In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting <code>Template</code> objects yourself, or you can take advantage of the built-in <code>FileLoader</code> class to take care of the details for you.</p>
+<p>A <code>FileLoader</code> object is initialized with a path to a base template directory:</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="kn">import</span> <span class="nn">flock</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">flock</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
+</pre>
+<p>Calling the loader with a template name (a string interpreted as a path to a text file stored in the base directory) will return the corresponding template object:</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="s">&#39;template.txt&#39;</span><span class="p">)</span>
+</pre>
+<p>Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes.</p>
+<p>You can learn more about using template loaders <a href="api.html#template-loaders">here</a>.</p>
+
+    
+
+
+        </div>
+
+        <div class="footer meta">
+            <ul>
+<li><a href="index.html">Flock</a></li>
+<li><a href="tutorial.html">Quickstart</a></li>
+<li><a href="markup.html">Markup</a></li>
+<li><a href="tags.html">Tags</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="inheritance.html">Inheritance</a></li>
+<li><a href="api.html">API</a></li>
+</ul>
+        </div>
+
+    </body>
+</html>
+
+
+
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+    Template Inheritance
+</title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/magpie.css">
+        <link rel="stylesheet" href="css/pygments.css">
+    </head>
+    <body class="pages single">
+
+        <div class="header meta">
+            <ul>
+<li><a href="index.html">Flock</a></li>
+<li><a href="tutorial.html">Quickstart</a></li>
+<li><a href="markup.html">Markup</a></li>
+<li><a href="tags.html">Tags</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="inheritance.html">Inheritance</a></li>
+<li><a href="api.html">API</a></li>
+</ul>
+        </div>
+        
+        <div class="content">
+            
+
+    
+    
+    <h1 id="template-inheritance">Template Inheritance</h1>
+<p>Flock supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.</p>
+<p>Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call <code>base.html</code>:</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">    &lt;head&gt;</span>
+<span class="x">        &lt;title&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Site Title</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/title&gt;</span>
+<span class="x">    &lt;/head&gt;</span>
+<span class="x">    &lt;body&gt;</span>
+<span class="x">        &lt;div id=&quot;sidebar&quot;&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">                &lt;ul&gt;</span>
+<span class="x">                    &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">                    &lt;li&gt;&lt;a href=&quot;/blog/&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">                &lt;/ul&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">        &lt;div id=&quot;content&quot;&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre>
+<p>This template uses <code>block</code> tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the <code>extends</code> tag to declare that they inherit from a particular base template:</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Homepage</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h1&gt;My Homepage&lt;/h1&gt;</span>
+<span class="x">    &lt;p&gt;Here&#39;s some waffle about my wonderful site...&lt;/p&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<p>In this case we didn't override the <code>sidebar</code> block so the default content from the parent template will be used as a fallback.</p>
+<p>Some points to note:</p>
+<ul>
+<li><p>The <code>extends</code> tag should be the first tag in a child template.</p>
+</li>
+<li><p>The <code>extends</code> tag requires a string literal argument specifying the name of the parent template.</p>
+</li>
+<li><p>You need to configure a <a href="api.html#template-loaders">template loader</a> so Flock can locate the appropriate parent template.</p>
+</li>
+<li><p>You can use as many levels of inheritance as you like.</p>
+</li>
+<li><p>The built-in <code>{{ super }}</code> variable gives you access to the content of the parent block.</p>
+</li>
+</ul>
+
+    
+
+
+        </div>
+
+        <div class="footer meta">
+            <ul>
+<li><a href="index.html">Flock</a></li>
+<li><a href="tutorial.html">Quickstart</a></li>
+<li><a href="markup.html">Markup</a></li>
+<li><a href="tags.html">Tags</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="inheritance.html">Inheritance</a></li>
+<li><a href="api.html">API</a></li>
+</ul>
+        </div>
+
+    </body>
+</html>
+
+
+
+

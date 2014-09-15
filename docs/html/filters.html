@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+    Filter Reference
+</title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/magpie.css">
+        <link rel="stylesheet" href="css/pygments.css">
+    </head>
+    <body class="pages single">
+
+        <div class="header meta">
+            <ul>
+<li><a href="index.html">Flock</a></li>
+<li><a href="tutorial.html">Quickstart</a></li>
+<li><a href="markup.html">Markup</a></li>
+<li><a href="tags.html">Tags</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="inheritance.html">Inheritance</a></li>
+<li><a href="api.html">API</a></li>
+</ul>
+        </div>
+        
+        <div class="content">
+            
+
+    
+    
+    <h1 id="filter-reference">Filter Reference</h1>
+<ul class="toc">
+<li><a href="#default">default</a></li>
+<li><a href="#dtformat">dtformat</a></li>
+<li><a href="#endswith">endswith</a></li>
+<li><a href="#escape">escape</a></li>
+<li><a href="#even">even</a></li>
+<li><a href="#first">first</a></li>
+<li><a href="#firsth">firsth</a></li>
+<li><a href="#firstp">firstp</a></li>
+<li><a href="#index">index</a></li>
+<li><a href="#join">join</a></li>
+<li><a href="#last">last</a></li>
+<li><a href="#len">len</a></li>
+<li><a href="#lower">lower</a></li>
+<li><a href="#odd">odd</a></li>
+<li><a href="#pprint">pprint</a></li>
+<li><a href="#random">random</a></li>
+<li><a href="#repr">repr</a></li>
+<li><a href="#reversed">reversed</a></li>
+<li><a href="#slice">slice</a></li>
+<li><a href="#spaceless">spaceless</a></li>
+<li><a href="#startswith">startswith</a></li>
+<li><a href="#striptags">striptags</a></li>
+<li><a href="#title">title</a></li>
+<li><a href="#truncatechars">truncatechars</a></li>
+<li><a href="#truncatewords">truncatewords</a></li>
+<li><a href="#undefined">undefined</a></li>
+<li><a href="#upper">upper</a></li>
+<li><a href="#wrap">wrap</a></li>
+</ul>
+<h3 id="default">default</h3>
+<pre>
+default(obj, fallback)
+</pre>
+<p>Returns <code>obj</code> if <code>obj</code> is truthy, otherwise returns the specified fallback.</p>
+<h3 id="dtformat">dtformat</h3>
+<pre>
+dtformat(datetime, format='%Y-%m-%d %H:%M')
+</pre>
+<p>Formats a datetime object using the specified format string.</p>
+<h3 id="endswith">endswith</h3>
+<pre>
+endswith(s, suffix)
+</pre>
+<p>Returns true if the string <code>s</code> ends with the specified suffix.</p>
+<h3 id="escape">escape</h3>
+<pre>
+escape(s)
+</pre>
+<p>Replaces the following HTML syntax characters with their corresponding character entities: <code>&lt;&gt;&amp;'"</code>. Also available under the alias <code>esc</code>.</p>
+<h3 id="even">even</h3>
+<pre>
+even(i)
+</pre>
+<p>Returns true if the integer <code>i</code> is even.</p>
+<h3 id="first">first</h3>
+<pre>
+first(seq)
+</pre>
+<p>Returns the first element in a sequence.</p>
+<h3 id="firsth">firsth</h3>
+<pre>
+firsth(s)
+</pre>
+<p>Returns the content of the first heading element in a string of HTML.</p>
+<h3 id="firstp">firstp</h3>
+<pre>
+firstp(s)
+</pre>
+<p>Returns the content of the first <code>&lt;p&gt;</code> element in a string of HTML.</p>
+<h3 id="index">index</h3>
+<pre>
+index(seq, i)
+</pre>
+<p>Returns the ith element in a sequence.</p>
+<h3 id="join">join</h3>
+<pre>
+join(seq, sep='')
+</pre>
+<p>Joins elements of a sequence with the specified separator string.</p>
+<h3 id="last">last</h3>
+<pre>
+last(seq)
+</pre>
+<p>Returns the last element in a sequence.</p>
+<h3 id="len">len</h3>
+<pre>
+len(seq)
+</pre>
+<p>Returns the length of a sequence.</p>
+<h3 id="lower">lower</h3>
+<pre>
+lower(s)
+</pre>
+<p>Converts the string <code>s</code> to lowercase.</p>
+<h3 id="odd">odd</h3>
+<pre>
+odd(i)
+</pre>
+<p>Returns true if the integer <code>i</code> is odd.</p>
+<h3 id="pprint">pprint</h3>
+<pre>
+pprint(obj)
+</pre>
+<p>Pretty prints an object.</p>
+<h3 id="random">random</h3>
+<pre>
+random(seq)
+</pre>
+<p>Returns a random element from a sequence.</p>
+<h3 id="repr">repr</h3>
+<pre>
+repr(obj)
+</pre>
+<p>Returns the string representation of an object.</p>
+<h3 id="reversed">reversed</h3>
+<pre>
+reversed(seq)
+</pre>
+<p>Returns a reverse iterator over a sequence.</p>
+<h3 id="slice">slice</h3>
+<pre>
+slice(seq, start, stop=None, step=None)
+</pre>
+<p>Returns the <code>[start:stop:step]</code> slice of a sequence.</p>
+<h3 id="spaceless">spaceless</h3>
+<pre>
+spaceless(s)
+</pre>
+<p>Strips all whitespace between HTML/XML tags in a string.</p>
+<h3 id="startswith">startswith</h3>
+<pre>
+startswith(s, prefix)
+</pre>
+<p>Returns true if the string <code>s</code> starts with the specified prefix.</p>
+<h3 id="striptags">striptags</h3>
+<pre>
+striptags(s)
+</pre>
+<p>Strips all HTML/XML tags from a string.</p>
+<h3 id="title">title</h3>
+<pre>
+title(s)
+</pre>
+<p>Converts the string <code>s</code> to titlecase.</p>
+<h3 id="truncatechars">truncatechars</h3>
+<pre>
+truncatechars(s, n, ellipsis='...')
+</pre>
+<p>Truncates the string <code>s</code> to at most <code>n</code> chars.</p>
+<h3 id="truncatewords">truncatewords</h3>
+<pre>
+truncatewords(s, n, ellipsis=' [...]')
+</pre>
+<p>Truncates the string <code>s</code> to at most <code>n</code> words.</p>
+<h3 id="undefined">undefined</h3>
+<pre>
+undefined(obj, fallback)
+</pre>
+<p>Returns <code>obj</code> if <code>obj</code> is not an instance of the <code>Undefined</code> class, otherwise returns the specified fallback.</p>
+<h3 id="upper">upper</h3>
+<pre>
+upper(s)
+</pre>
+<p>Converts the string <code>s</code> to uppercase.</p>
+<h3 id="wrap">wrap</h3>
+<pre>
+wrap(s, tag)
+</pre>
+<p>Wraps the string <code>s</code> in opening and closing tags.</p>
+
+    
+
+
+        </div>
+
+        <div class="footer meta">
+            <ul>
+<li><a href="index.html">Flock</a></li>
+<li><a href="tutorial.html">Quickstart</a></li>
+<li><a href="markup.html">Markup</a></li>
+<li><a href="tags.html">Tags</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="inheritance.html">Inheritance</a></li>
+<li><a href="api.html">API</a></li>
+</ul>
+        </div>
+
+    </body>
+</html>
+
+
+
+

@@ -1,0 +1,95 @@
+
+Template Markup
+===============
+
+There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
+
+::: django
+
+    {# This is a comment. #}
+
+Comments can span multiple lines and can be used to comment-out sections of template code.
+
+
+Print Statements
+----------------
+
+Print statements evaluate and print [expressions](#expressions). They look like this:
+
+::: django
+
+    {{ post.title }}
+
+Print statements can contain multiple expressions separated by the `or` keyword. The first expression to evaluate as 'truthy' will be printed.
+
+::: django
+
+    {{ post.title or "Untitled Post" }}
+
+Print statements come in both regular and escaped flavours. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:
+
+    {{{ post.title }}}
+
+Escaped print statements are simply a shortcut for applying the built-in `escape` filter. The example above is equivalent to:
+
+::: django
+
+    {{ post.title|escape }}
+
+
+Expressions
+-----------
+
+An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters. 
+
+Variables use `.` syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:
+
+::: django
+
+    {{ some.callable:42:"foo" }}
+
+    {{ some.callable(42, "foo") }}
+
+Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
+
+::: django
+
+    {{ post.title|escape }}
+
+Like callables, filters accept arguments using colon or bracket syntax:
+
+::: django
+
+    {{ post.content|striptags|truncatewords:50 }}
+
+You can find a list of built-in filters [here](@root/filters//).
+
+Note that expressions can use simple Python literals in place of variables:
+
+::: django
+
+    {% if day|lower in ("saturday", "sunday") %}
+        It's the weekend!
+    {% endif %}
+
+The following literal structures can be used in expressions as arguments to callables or in place of variables: strings, bytes, numbers, tuples, lists, dicts, sets, booleans, and `None`.
+
+
+Syntax Tags
+-----------
+
+Syntax tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
+
+::: django
+
+    {% tag %}
+
+Some syntax tags have block scope and require a closing tag. They look like this:
+
+::: django
+
+    {% tag %} ... {% endtag %}
+
+Tags with block scope can contain further template markup and can be nested to any depth.
+
+You can find a list of built-in syntax tags [here](@root/tags//).

@@ -1,0 +1,58 @@
+
+Template Inheritance
+====================
+
+Flock supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.
+
+Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call `base.html`:
+
+::: django
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>
+                {% block title %}My Site Title{% endblock %}
+            </title>
+        </head>
+        <body>
+            <div id="sidebar">
+                {% block sidebar %}
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                    </ul>
+                {% endblock %}
+            </div>
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </body>
+    </html>
+
+This template uses `block` tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the `extends` tag to declare that they inherit from a particular base template:
+
+::: django
+
+    {% extends "base.html" %}
+
+    {% block title %}My Homepage{% endblock %}
+
+    {% block content %}
+        <h1>My Homepage</h1>
+        <p>Here's some waffle about my wonderful site...</p>
+    {% endblock %}
+
+In this case we didn't override the `sidebar` block so the default content from the parent template will be used as a fallback.
+
+Some points to note:
+
+* The `extends` tag should be the first tag in a child template.
+
+* The `extends` tag requires a string literal argument specifying the name of the parent template. 
+
+* You need to configure a [template loader](@root/api//#template-loaders) so Flock can locate the appropriate parent template.
+
+* You can use as many levels of inheritance as you like. 
+
+* The built-in `{{ super }}` variable gives you access to the content of the parent block.

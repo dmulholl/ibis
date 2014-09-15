@@ -1,0 +1,202 @@
+
+Filter Reference
+================
+
+:insert toc
+
+
+=== default ===
+
+    default(obj, fallback)
+
+Returns `obj` if `obj` is truthy, otherwise returns the specified fallback.
+
+
+=== dtformat ===
+
+    dtformat(datetime, format='%Y-%m-%d %H:%M')
+
+Formats a datetime object using the specified format string.
+
+
+=== endswith ===
+
+    endswith(s, suffix)
+
+Returns true if the string `s` ends with the specified suffix.
+
+
+=== escape ===
+
+    escape(s)
+
+Replaces the following HTML syntax characters with their corresponding character entities: `<>&'"`. Also available under the alias `esc`.
+
+
+=== even ===
+
+    even(i)
+
+Returns true if the integer `i` is even.
+
+
+=== first ===
+
+    first(seq)
+
+Returns the first element in a sequence.
+
+
+=== firsth ===
+
+    firsth(s)
+
+Returns the content of the first heading element in a string of HTML.
+
+
+=== firstp ===
+
+    firstp(s)
+
+Returns the content of the first `<p>` element in a string of HTML.
+
+
+=== index ===
+
+    index(seq, i)
+
+Returns the ith element in a sequence.
+
+
+=== join ===
+
+    join(seq, sep='')
+
+Joins elements of a sequence with the specified separator string.
+
+
+=== last ===
+
+    last(seq)
+
+Returns the last element in a sequence.
+
+
+=== len ===
+
+    len(seq)
+
+Returns the length of a sequence.
+
+
+=== lower ===
+
+    lower(s)
+
+Converts the string `s` to lowercase.
+
+
+=== odd ===
+
+    odd(i)
+
+Returns true if the integer `i` is odd.
+
+
+=== pprint ===
+
+    pprint(obj)
+
+Pretty prints an object.
+
+
+=== random ===
+
+    random(seq)
+
+Returns a random element from a sequence.
+
+
+=== repr ===
+
+    repr(obj)
+
+Returns the string representation of an object.
+
+
+=== reversed ===
+
+    reversed(seq)
+
+Returns a reverse iterator over a sequence.
+
+
+=== slice ===
+
+    slice(seq, start, stop=None, step=None)
+
+Returns the `[start:stop:step]` slice of a sequence.
+
+
+=== spaceless ===
+
+    spaceless(s)
+
+Strips all whitespace between HTML/XML tags in a string.
+    
+
+=== startswith ===
+
+   
+    startswith(s, prefix)
+
+Returns true if the string `s` starts with the specified prefix.
+
+
+=== striptags ===
+
+    striptags(s)
+
+Strips all HTML/XML tags from a string.
+
+
+=== title ===
+
+    title(s)
+
+Converts the string `s` to titlecase.
+
+
+=== truncatechars ===
+
+    truncatechars(s, n, ellipsis='...')
+
+Truncates the string `s` to at most `n` chars.
+
+
+=== truncatewords ===
+
+    truncatewords(s, n, ellipsis=' [...]')
+
+Truncates the string `s` to at most `n` words.
+
+
+=== undefined ===
+
+    undefined(obj, fallback)
+
+Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise returns the specified fallback.
+
+
+=== upper ===
+
+    upper(s)
+
+Converts the string `s` to uppercase.
+
+
+=== wrap ===
+
+    wrap(s, tag)
+
+Wraps the string `s` in opening and closing tags.

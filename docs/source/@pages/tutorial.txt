@@ -1,0 +1,43 @@
+
+Quickstart
+==========
+
+A template starts life as a simple string containing [template markup](@root/markup//). We use this string to initialize a `Template` object:
+
+::: python
+
+    >>> import flock
+    >>> template = flock.Template('{{foo}} and {{bar}}')
+
+The `Template` class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs or a set of keyword arguments:
+
+::: python
+
+    >>> template.render(foo='ham', bar='eggs')
+    'ham and eggs'
+
+    >>> template.render({'foo': 1, 'bar': 2})
+    '1 and 2'
+
+
+Loading Template Files
+----------------------
+
+In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting `Template` objects yourself, or you can take advantage of the built-in `FileLoader` class to take care of the details for you.
+
+A `FileLoader` object is initialized with a path to a base template directory:
+
+::: python
+
+    import flock
+    loader = flock.loaders.FileLoader('/path/to/template/directory')
+
+Calling the loader with a template name (a string interpreted as a path to a text file stored in the base directory) will return the corresponding template object:
+
+::: python
+
+    template = loader('template.txt')
+
+Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. 
+
+You can learn more about using template loaders [here](@root/api//#template-loaders).

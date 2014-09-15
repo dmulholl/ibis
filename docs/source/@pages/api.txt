@@ -1,0 +1,200 @@
+
+Template API
+============
+
+:insert toc
+
+
+Template Objects
+----------------
+
+A template starts life as a simple string containing [template markup](@root/markup//), usually stored in the form of a text file. This string is used to initialize a `Template` object:
+
+::: python
+
+    >>> import flock
+    >>> template = flock.Template('{{foo}} and {{bar}}')
+
+Internally, a lexer transforms the string into a sequence of tokens. A parser then takes this sequence and compiles it into a tree of nodes. Each node has a `render()` method which takes a context object and returns a string. The entire compiled node tree can be rendered by calling `render()` on the root node.
+
+Compiling and rendering the node tree are two distinct processes. The template only needs to be compiled once; it can then be cached and rendered multiple times with different context objects.
+
+The `Template` class acts as the public interface to the template engine. This is the only class the end-user needs to interact with directly.
+
+A `Template` object is initialized with a template string. It compiles the string and stores the resulting node tree for future rendering. Calling the template object's `render()` method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
+
+::: python
+
+    >>> template.render(foo='ham', bar='eggs')
+    'ham and eggs'
+
+    >>> template.render({'foo': 1, 'bar': 2})
+    '1 and 2'
+
+
+Template Loaders
+----------------
+
+If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Flock can locate the appropriate templates to include or extend. A template loader is a callable that accepts a single string argument - the template name - and returns the corresponding template object.
+
+You can define your own custom template loader, but in most cases an instance of the built-in `FileLoader` class will be suitable. `FileLoader` objects are initialized with a path to a base template directory; template names are then interpreted as paths to UTF-8 encoded text files stored in this directory. Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. (If you don't need this automatic reload functionality you can use a `FastFileLoader` object instead for a small speed boost.) 
+
+To specify a template loader set the `flock.config.loader` variable to an instance of your callable:
+
+::: python
+
+    import flock
+    flock.config.loader = flock.loaders.FileLoader('/path/to/template/directory')
+
+Note that you can use slashes in tempate names to load templates from subdirectories of the base directory:
+
+::: django
+
+    {% include "subdir/template.html" %}
+
+You may find it useful to use the same `FileLoader` object to load templates throughout your application to take advantage of its built-in caching.
+
+
+Exceptions
+----------
+
+The following exception types may be raised by the template engine:
+
+
+*   `flock.errors.TemplateError`
+
+    Base class for all exceptions raised by the template engine.
+
+
+    *   `flock.errors.CallError`
+
+        Raised if a callable variable throws an exception.
+
+
+    *   `flock.errors.FilterError`
+
+        Raised if a filter function throws an exception.
+
+
+    *   `flock.errors.InvalidFilterError`
+
+        Unrecognised filter name.
+
+
+    *   `flock.errors.InvalidTagError`
+
+        Unrecognised syntax tag.
+
+
+    *   `flock.errors.LoadError`
+
+        Error attempting to load a template file.
+
+
+    *   `flock.errors.NestingError`
+
+        Improperly nested template tags.
+
+
+    *   `flock.errors.TemplateSyntaxError`
+
+        Invalid template syntax.
+
+
+    *   `flock.errors.UnpackingError`
+
+        Raised if an attempt to unpack a for-loop variable fails.
+
+
+Builtins
+--------
+
+The following built-in variables and functions are available in all contexts:
+
+
+*   `defined(varstring)`
+
+    Returns `True` if the supplied string literal is a resolvable variable name.
+
+
+*   `now()`
+
+    Returns a datetime object representing the current instant.
+
+
+*   `range()`
+
+    Provides access to Python's builtin `range` function.
+
+
+*   `context`
+
+    References the current context object.
+
+
+The Undefined Type
+------------------
+
+An instance of the `flock.errors.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
+
+You can specify a fallback for undefined variables in template markup using the `undefined` filter:
+
+::: django
+
+    {{ foo.bar|undefined:"baz" }}
+
+In this case if the variable `foo.bar` is not defined in the current context, the fallback string `"baz"` will be used in its place.
+
+
+Custom Filters
+--------------
+
+A filter is a function that accepts at least one argument - the value to be filtered - and returns the filtered result. It can optionally accept any number of additional arguments.
+
+Filters are registered using the `@register` decorator:
+
+::: python
+
+    @flock.filters.register('name')
+
+If no `name` argument is supplied, the function name will be used.
+
+As an example, we can register a filter to convert datetime objects into formatted strings:
+
+::: python
+
+    import flock
+
+    @flock.filters.register('dtformat')
+    def datetime_formatter(dt, format='%Y-%m-%d'):
+        return dt.strftime(format)
+
+This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in `now` function which returns a datetime object representing the current time:
+
+::: django
+
+    {{ now|dtformat }}
+
+    {{ now|dtformat:'%Y' }}
+
+As it happens, `dtformat` already exists as a built-in filter. Re-registering the `dtformat` name would simply override the built-in filter with our own custom version.
+
+
+Custom Tags
+-----------
+
+You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Flock compiles template strings into trees of `Node` objects.
+
+Every syntax tag corresponds to a subclass of the `flock.nodes.Node` type. To create a new syntax tag you register a subclass using the `@register` decorator:
+
+::: python
+
+    @flock.nodes.register('tag')
+
+You can give your new tag block scope by specifying the required end tag:
+
+::: python
+
+    @flock.nodes.register('tag', 'endtag')
+
+You'll need to turn to the source code itself for further details - see the `nodes.py` file for lots of examples to work from.
