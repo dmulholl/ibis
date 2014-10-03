@@ -165,7 +165,7 @@ class FilterFunctionTests(unittest.TestCase):
         rendered = Template(template).render(var='''<p>"foo" & 'bar'</p>''')
         self.assertEqual(
             rendered, 
-            '&lt;p&gt;&quot;foo&quot; &amp; &#39;bar&#39;&lt;/p&gt;'
+            '&lt;p&gt;&quot;foo&quot; &amp; &#x27;bar&#x27;&lt;/p&gt;'
         )
 
     def test_first(self):

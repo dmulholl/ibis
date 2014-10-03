@@ -28,9 +28,9 @@ Returns true if the string `s` ends with the specified suffix.
 
 === escape ===
 
-    escape(s)
+    escape(s, quotes=True)
 
-Replaces the following HTML syntax characters with their corresponding character entities: `<>&'"`. Also available under the alias `esc`.
+Replaces the following HTML syntax characters with their corresponding character entities: `<>&'"`. Also available under the aliases `esc` and `e`. 
 
 
 === even ===

@@ -15,26 +15,11 @@ number of additional arguments.
 import random
 import re
 import pprint
+import html
 
 from . import config
 from . import errors
 
-
-# HTML syntax characters.
-html_escapes = {
-    ord('&'): '&amp;',
-    ord('<'): '&lt;', 
-    ord('>'): '&gt;',
-}
-
-# HTML syntax characters including quotes.
-attr_escapes = {
-    ord('&'): '&amp;',
-    ord('<'): '&lt;', 
-    ord('>'): '&gt;',
-    ord('"'): '&quot;',
-    ord("'"): '&#39;',
-}
 
 # Dictionary of registered filter functions.
 filtermap = {}
@@ -90,13 +75,11 @@ def endswith(s, suffix):
 
 
 @register
+@register('e')
 @register('esc')
 def escape(s, quotes=True):
     """ Converts html syntax characters to character entities. """
-    if quotes:
-        return s.translate(attr_escapes)
-    else:
-        return s.translate(html_escapes)
+    return html.escape(s, quotes)
 
 
 @register
