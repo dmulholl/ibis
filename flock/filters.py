@@ -204,7 +204,7 @@ def striptags(html):
     """ Returns the string `html` with all html tags stripped. """
     return re.sub(r'<[^>]*>', '', html)
 
-    
+
 @register
 def teaser(s, delimiter='<!-- more -->'):
     """ Returns the portion of the string `s` before `delimiter`,
@@ -217,7 +217,8 @@ def teaser(s, delimiter='<!-- more -->'):
 
 
 @register
-def title(s):
+@register('title')
+def titlecase(s):
     """ Returns the string `s` converted to titlecase. """
     return re.sub(
         r"[A-Za-z]+('[A-Za-z]+)?", 

@@ -160,9 +160,9 @@ Returns true if the string `s` starts with the specified prefix.
 Strips all HTML/XML tags from a string.
 
 
-=== title ===
+=== titlecase ===
 
-    title(s)
+    titlecase(s)
 
 Converts the string `s` to titlecase.
 
