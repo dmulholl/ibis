@@ -108,14 +108,20 @@ class Context:
 
         # Context data is stored on a stack of dictionaries.
         self.stack = []
+
+        # We begin with a standard dictionary of builtins.
         self.stack.append({'context': self, 'defined': self.defined})
+
+        # We add a user-configurable dictionary of builtins to the stack.
         self.stack.append(config.builtins)
+
+        # We add the user's context-specific data dictionary to the stack.
         self.stack.append(data)
 
         # Nodes can store state information here to avoid threading issues.
         self.stash = {}
 
-        # Stores a reference to the template object.
+        # This reference gives nodes access to their parent template object.
         self.template = template
         
     def __setitem__(self, key, value):
