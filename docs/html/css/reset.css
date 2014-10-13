@@ -1,5 +1,7 @@
+/* 
+    HTML5 For Slow Learners 
+*/
 
-/* HTML5 For Slow Learners */
 article, aside, details, figcaption, 
 figure, footer, header, hgroup, 
 menu, nav, section, summary  {
@@ -12,7 +14,10 @@ audio, canvas, video {
     display: none;
 }
 
-/* Block Elements */
+/*
+    Block Elements 
+*/
+
 html, body {
     margin: 0;
     padding: 0;
@@ -28,12 +33,18 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
 
-/* Inline Elements */
+/*
+    Inline Elements
+*/
+
 abbr[title] {
     border-bottom: 1px dotted;
 }
 
-/* Form Elements */
+/* 
+    Form Elements 
+*/
+
 form, fieldset, legend {
     margin: 0;
     padding: 0;
@@ -47,19 +58,28 @@ button, input, select, textarea {
     font-size: inherit;
 }
 
-/* Tables */
+/* 
+    Tables
+*/
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-/* Images */
+/* 
+    Images
+*/
+
 img {
     border: 0;
     max-width: 100%;
 }
 
-/* Typography */
+/*
+    Typography
+*/
+
 code, pre {
     font-family: monospace;
 }
@@ -79,7 +99,10 @@ sub {
     bottom: -0.25em;
 }
 
-/* Horizontal Rules */
+/*
+    Horizontal Rules
+*/
+
 hr {
     display: block;
     height: 1px;

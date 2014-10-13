@@ -1,8 +1,0 @@
-#!python
-
-# Site title.
-title = 'Flock Documentation'
-
-# Remap the shortcode delimiters to avoid having to escape
-# all the template syntax examples.
-shortcodes = dict(start='{~', end='~}')

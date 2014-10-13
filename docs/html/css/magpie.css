@@ -10,9 +10,9 @@ body {
     padding: 0 40px;
 }
 .content {
-    max-width: 660px;
+    max-width: 650px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 40px 45px;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px #ddd;
 }
@@ -77,14 +77,14 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.25;
 }
 h1 {
-    margin: 40px 0 20px;
+    margin: 40px 0 25px;
     border-bottom: 1px solid #ccc;
     color: black;
     padding-bottom: 5px;
     font-size: 32px;
 }
 h2 {
-    margin: 40px 0 20px;
+    margin: 40px 0 25px;
     border-bottom: 1px solid #ccc;
     color: black;
     padding-bottom: 5px;
@@ -215,4 +215,35 @@ table .align-right {
 
 h1 + ul {
     margin-top: 30px;
+}
+
+/*
+    Alert Boxes
+*/
+
+.stx-alert {
+    margin: 30px;
+    border: 1px solid;
+    padding: 10px 20px;
+    border-radius: 3px;
+}
+
+.stx-info {
+    color: #31708f;
+    border-color: #bce8f1;
+    background-color: #d9edf7;
+}
+
+.stx-warning {
+    color: #8a6d3b;
+    border-color: #faebcc;
+    background-color: #fcf8e3;
+
+}
+
+.stx-error {
+    color: #a94442;
+    border-color: #ebccd1;
+    background-color: #f2dede;
+
 }

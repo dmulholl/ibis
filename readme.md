@@ -2,7 +2,7 @@
 Flock
 =====
 
-A lightweight template engine in Python. Can be used as a drop-in component in any text-processing application.
+A lightweight template engine in Python. Can be used as a drop-in component in text-processing applications.
 
 Sample syntax:
 

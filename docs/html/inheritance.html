@@ -31,7 +31,7 @@
     <h1 id="template-inheritance">Template Inheritance</h1>
 <p>Flock supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.</p>
 <p>Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call <code>base.html</code>:</p>
-<pre class="lang-django pygments" data-lang="django">
+<pre class="lang-django stx-pygments" data-lang="django">
 <span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
 <span class="x">    &lt;head&gt;</span>
@@ -55,7 +55,7 @@
 <span class="x">&lt;/html&gt;</span>
 </pre>
 <p>This template uses <code>block</code> tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the <code>extends</code> tag to declare that they inherit from a particular base template:</p>
-<pre class="lang-django pygments" data-lang="django">
+<pre class="lang-django stx-pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Homepage</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>

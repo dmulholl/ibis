@@ -29,7 +29,7 @@
     
     
     <h1 id="template-api">Template API</h1>
-<ul class="toc">
+<ul class="stx-toc">
 <li><a href="#template-objects">Template Objects</a></li>
 <li><a href="#template-loaders">Template Loaders</a></li>
 <li><a href="#exceptions">Exceptions</a></li>
@@ -40,7 +40,7 @@
 </ul>
 <h2 id="template-objects">Template Objects</h2>
 <p>A template starts life as a simple string containing <a href="markup.html">template markup</a>, usually stored in the form of a text file. This string is used to initialize a <code>Template</code> object:</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">flock</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span> <span class="o">=</span> <span class="n">flock</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s">&#39;{{foo}} and {{bar}}&#39;</span><span class="p">)</span>
 </pre>
@@ -48,7 +48,7 @@
 <p>Compiling and rendering the node tree are two distinct processes. The template only needs to be compiled once; it can then be cached and rendered multiple times with different context objects.</p>
 <p>The <code>Template</code> class acts as the public interface to the template engine. This is the only class the end-user needs to interact with directly.</p>
 <p>A <code>Template</code> object is initialized with a template string. It compiles the string and stores the resulting node tree for future rendering. Calling the template object's <code>render()</code> method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">foo</span><span class="o">=</span><span class="s">&#39;ham&#39;</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="s">&#39;eggs&#39;</span><span class="p">)</span>
 <span class="s">&#39;ham and eggs&#39;</span>
 
@@ -59,12 +59,12 @@
 <p>If you want to use <a href="inheritance.html">template inheritance</a> or the <code>include</code> tag you'll need to specify a <em>template loader</em> so Flock can locate the appropriate templates to include or extend. A template loader is a callable that accepts a single string argument - the template name - and returns the corresponding template object.</p>
 <p>You can define your own custom template loader, but in most cases an instance of the built-in <code>FileLoader</code> class will be suitable. <code>FileLoader</code> objects are initialized with a path to a base template directory; template names are then interpreted as paths to UTF-8 encoded text files stored in this directory. Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. (If you don't need this automatic reload functionality you can use a <code>FastFileLoader</code> object instead for a small speed boost.)</p>
 <p>To specify a template loader set the <code>flock.config.loader</code> variable to an instance of your callable:</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="kn">import</span> <span class="nn">flock</span>
 <span class="n">flock</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">flock</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
 </pre>
 <p>Note that you can use slashes in tempate names to load templates from subdirectories of the base directory:</p>
-<pre class="lang-django pygments" data-lang="django">
+<pre class="lang-django stx-pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;subdir/template.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>You may find it useful to use the same <code>FileLoader</code> object to load templates throughout your application to take advantage of its built-in caching.</p>
@@ -120,19 +120,19 @@
 <h2 id="the-undefined-type">The Undefined Type</h2>
 <p>An instance of the <code>flock.errors.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.</p>
 <p>You can specify a fallback for undefined variables in template markup using the <code>undefined</code> filter:</p>
-<pre class="lang-django pygments" data-lang="django">
+<pre class="lang-django stx-pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">undefined</span><span class="s2">:&quot;baz&quot;</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>"baz"</code> will be used in its place.</p>
 <h2 id="custom-filters">Custom Filters</h2>
 <p>A filter is a function that accepts at least one argument - the value to be filtered - and returns the filtered result. It can optionally accept any number of additional arguments.</p>
 <p>Filters are registered using the <code>@register</code> decorator:</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="nd">@flock.filters.register</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
 </pre>
 <p>If no <code>name</code> argument is supplied, the function name will be used.</p>
 <p>As an example, we can register a filter to convert datetime objects into formatted strings:</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="kn">import</span> <span class="nn">flock</span>
 
 <span class="nd">@flock.filters.register</span><span class="p">(</span><span class="s">&#39;dtformat&#39;</span><span class="p">)</span>
@@ -140,7 +140,7 @@
     <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format</span><span class="p">)</span>
 </pre>
 <p>This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in <code>now</code> function which returns a datetime object representing the current time:</p>
-<pre class="lang-django pygments" data-lang="django">
+<pre class="lang-django stx-pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
 
 <span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span><span class="s1">:&#39;%Y&#39;</span> <span class="cp">}}</span><span class="x"></span>
@@ -149,11 +149,11 @@
 <h2 id="custom-tags">Custom Tags</h2>
 <p>You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Flock compiles template strings into trees of <code>Node</code> objects.</p>
 <p>Every syntax tag corresponds to a subclass of the <code>flock.nodes.Node</code> type. To create a new syntax tag you register a subclass using the <code>@register</code> decorator:</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="nd">@flock.nodes.register</span><span class="p">(</span><span class="s">&#39;tag&#39;</span><span class="p">)</span>
 </pre>
 <p>You can give your new tag block scope by specifying the required end tag:</p>
-<pre class="lang-python pygments" data-lang="python">
+<pre class="lang-python stx-pygments" data-lang="python">
 <span class="nd">@flock.nodes.register</span><span class="p">(</span><span class="s">&#39;tag&#39;</span><span class="p">,</span> <span class="s">&#39;endtag&#39;</span><span class="p">)</span>
 </pre>
 <p>You'll need to turn to the source code itself for further details - see the <code>nodes.py</code> file for lots of examples to work from.</p>
