@@ -4,10 +4,10 @@ Default filter functions for use in templates.
 Additional filter functions can be registered using the `@register`
 decorator:
 
-    @flock.filters.register('name')
+    @ibis.filters.register('name')
 
-A filter function should accept at least one argument - the value to be 
-filtered - and return the filtered result. It can optionally accept any 
+A filter function should accept at least one argument - the value to be
+filtered - and return the filtered result. It can optionally accept any
 number of additional arguments.
 
 """
@@ -17,7 +17,6 @@ import re
 import pprint
 import html
 
-from . import config
 from . import errors
 
 
@@ -28,17 +27,17 @@ filtermap = {}
 def register(nameorfunc=None):
 
     """ Decorator function for registering filters.
-    
+
     Can be used as:
-        
+
         @register
         @register()
         @register('name')
-        
+
     If no name is supplied the function name will be used.
-    
+
     """
-    
+
     if callable(nameorfunc):
         filtermap[nameorfunc.__name__] = nameorfunc
         return nameorfunc
@@ -46,7 +45,7 @@ def register(nameorfunc=None):
     def register_filter_function(func):
         filtermap[nameorfunc or func.__name__] = func
         return func
-        
+
     return register_filter_function
 
 
@@ -93,8 +92,8 @@ def firsth(html):
     """ Returns the content of the first heading element. """
     match = re.search(r'<h(\d)+[^>]*>(.*?)</h\1>', html)
     return match.group(2) if match else ''
-    
-    
+
+
 @register
 def firsth1(html):
     """ Returns the content of the first h1 element. """
@@ -161,7 +160,7 @@ def last(seq):
 def length(seq):
     """ Returns the length of the sequence `seq`. """
     return len(seq)
-    
+
 
 @register
 def lower(s):
@@ -212,7 +211,7 @@ def teaser(s, delimiter='<!-- more -->'):
     index = s.find(delimiter)
     if index == -1:
         return ''
-    else:   
+    else:
         return s[:index]
 
 
@@ -221,8 +220,8 @@ def teaser(s, delimiter='<!-- more -->'):
 def titlecase(s):
     """ Returns the string `s` converted to titlecase. """
     return re.sub(
-        r"[A-Za-z]+('[A-Za-z]+)?", 
-        lambda m: m.group(0)[0].upper() + m.group(0)[1:], 
+        r"[A-Za-z]+('[A-Za-z]+)?",
+        lambda m: m.group(0)[0].upper() + m.group(0)[1:],
         s
     )
 

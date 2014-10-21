@@ -30,6 +30,7 @@ body {
 
 .header {
     text-align: right;
+    color: #ccc;
 }
 .footer {
     text-align: center;
@@ -50,7 +51,7 @@ body {
     display: inline-block;
 }
 .header li:before {
-    content: "\A0|\A0\A0";
+    content: "\A0│\A0\A0";
 }
 .footer li:before {
     content: "\A0·\A0\A0";

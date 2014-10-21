@@ -1,9 +1,8 @@
-"""
-Error-handling classes and helpers.
 
-"""
+""" Exception classes. """
 
-class TemplateError(Exception): 
+
+class TemplateError(Exception):
     """ Base class for all exceptions raised by the template engine. """
     pass
 
@@ -51,27 +50,27 @@ class UnpackingError(TemplateError):
 class Undefined:
 
     """ Null type returned when a context lookup fails. """
-    
+
     def __str__(self):
         return ''
-        
+
     def __bool__(self):
         return False
-        
+
     def __len__(self):
         return 0
-        
+
     def __contains__(self, key):
         return False
-        
+
     def __iter__(self):
         return self
-        
+
     def __next__(self):
         raise StopIteration
 
     def __eq__(self, other):
         return False
-        
+
     def __ne__(self, other):
         return True

@@ -30,7 +30,7 @@ Returns true if the string `s` ends with the specified suffix.
 
     escape(s, quotes=True)
 
-Replaces the following HTML syntax characters with their corresponding character entities: `<>&'"`. Also available under the aliases `esc` and `e`. 
+Replaces the following HTML syntax characters with their corresponding character entities: `<`, `>`, `&`, `'`, and `"`. This filter is also available under the aliases `esc` and `e`.
 
 
 === even ===
@@ -143,11 +143,11 @@ Returns the `[start:stop:step]` slice of a sequence.
     spaceless(s)
 
 Strips all whitespace between HTML/XML tags in a string.
-    
+
 
 === startswith ===
 
-   
+
     startswith(s, prefix)
 
 Returns true if the string `s` starts with the specified prefix.

@@ -1,5 +1,5 @@
 """
-Flock: a lightweight template engine.
+Ibis: a lightweight template engine.
 
 How it works: A lexer transforms a template string into an iterable
 sequence of tokens. A parser takes this sequence and compiles it
@@ -34,7 +34,7 @@ License: Public Domain.
 
 """
 
-__version__ = "1.1.1"
+__version__ = "1.2.0"
 
 
 from . import config

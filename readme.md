@@ -1,8 +1,8 @@
 
-Flock
-=====
+Ibis
+====
 
-A lightweight template engine in Python. Can be used as a drop-in component in text-processing applications.
+A lightweight template engine in Python.
 
 Sample syntax:
 
@@ -26,8 +26,8 @@ Quickstart
 
 Create a template object from a string:
 
-    >>> import flock
-    >>> template = flock.Template('{{foo}} and {{bar}}')
+    >>> import ibis
+    >>> template = ibis.Template('{{foo}} and {{bar}}')
 
 The template can be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs or a set of keyword arguments:
 
@@ -37,11 +37,17 @@ The template can be rendered multiple times by calling its `render()` method wit
     >>> template.render({'foo': 1, 'bar': 2})
     '1 and 2'
 
+See the [package documentation](http://pythonhosted.org/ibis) for further details.
 
-Requirements
+
+Installation
 ------------
 
-Requires Python 3.
+Install directly from the Python Package Index using `pip`:
+
+    $ pip install ibis
+
+Ibis requires Python 3.
 
 
 License

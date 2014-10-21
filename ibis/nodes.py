@@ -3,11 +3,11 @@ Default node classes and associated helpers.
 
 Additional node classes can be registered using the `@register` decorator:
 
-    @flock.nodes.register('tag')
-    
+    @ibis.nodes.register('tag')
+
 Node classes can be given block scope by specifying the required end tag:
 
-    @flock.nodes.register('tag', 'endtag')
+    @ibis.nodes.register('tag', 'endtag')
 
 """
 
@@ -22,15 +22,15 @@ from . import utils
 from . import filters
 
 from .errors import (
-    TemplateSyntaxError, 
-    InvalidFilterError, 
-    FilterError, 
-    CallError, 
+    TemplateSyntaxError,
+    InvalidFilterError,
+    FilterError,
+    CallError,
     UnpackingError,
 )
 
 
-# Dictionary of registered node classes. 
+# Dictionary of registered node classes.
 nodemap = { 'endtags': [] }
 
 
@@ -61,14 +61,14 @@ class Expression:
     the variable if it resolves to a callable, and applying the filters to
     the resulting object. The consumer simply needs to call the expression's
     .eval() method and supply an appropriate Context object.
-    
+
     Examples of valid expression syntax include:
-    
+
         foo.bar.baz|default:'bam'|escape
         'foo', 'bar', 'baz'|random
-        
+
     Arguments can be passed to callables using colon or bracket syntax:
-    
+
         foo.bar.baz:'bam'|filter:25:'text'
         foo.bar.baz('bam')|filter(25, 'text')
 
@@ -150,7 +150,7 @@ class Expression:
 class Node:
 
     """ Base class for all node objects. """
-    
+
     def __init__(self, token=None, children=None):
         self.token = token
         self.children = children or []
@@ -211,15 +211,15 @@ class TextNode(Node):
 class PrintNode(Node):
 
     """ Evaluates an expression and prints its result.
-    
+
         {{ <expr> }}
         {{ <expr> or <expr> }}
-        
+
     Multiple expressions can be listed separated by 'or' or '||'.
     The first expression to resolve to a truthy value will be
     inserted. (If none of the expressions are truthy the final value
     will be used regardless.)
-    
+
     """
 
     escape = False
@@ -231,7 +231,7 @@ class PrintNode(Node):
     def render(self, context):
         for expr in self.exprs:
             resolved = expr.eval(context)
-            if resolved:    
+            if resolved:
                 break
         if self.escape:
             return filters.filtermap['escape'](str(resolved))
@@ -249,15 +249,15 @@ class EscapedPrintNode(PrintNode):
 class ForNode(Node):
 
     """ Implements for/empty looping over an iterable expression.
-    
+
         {% for <var> in <expr> %} ... [ {% empty %} ... ] {% endfor %}
 
     Supports unpacking into multiple loop variables:
 
         {% for <var1>, <var2> in <expr> %}
-    
+
     """
-    
+
     regex = re.compile(r'for\s+(\w+(?:,\s*\w+)*)\s+in\s+(.+)')
 
     def process_token(self, token):
@@ -314,30 +314,30 @@ class EmptyNode(Node):
     """ Delimiter node to implement for/empty branching. """
     pass
 
-    
+
 @register('if', 'endif')
 class IfNode(Node):
 
     """ Implements if/elif/else branching.
-    
+
         {% if [not] <expr> %} ... {% endif %}
         {% if [not] <expr> <operator> <expr> %} ... {% endif %}
         {% if <...> %} ... {% elif <...> %} ... {% else %} ... {% endif %}
-        
+
     Supports 'and' and 'or' conjunctions; 'and' has higher precedence so:
-    
+
         if a and b or c and d
-        
+
     is treated as:
-    
+
         if (a and b) or (c and d)
-        
+
     Note that explicit brackets are not supported.
-    
+
     """
 
     condition = collections.namedtuple('Condition', 'negated lhs op rhs')
-    
+
     re_condition = re.compile(r'''
         (not\s+)?(.+?)\s+(==|!=|<|>|<=|>=|not[ ]in|in)\s+(.+)
         |
@@ -365,12 +365,12 @@ class IfNode(Node):
 
         self.condition_groups = [
             [
-                self.parse_condition(condstr) 
+                self.parse_condition(condstr)
                 for condstr in utils.splitre(or_block, (r'\s+and\s+', r'&&'))
             ]
             for or_block in utils.splitre(conditions, (r'\s+or\s+', r'\|\|'))
         ]
-        
+
     def parse_condition(self, condstr):
         match = self.re_condition.match(condstr)
         if match.group(2):
@@ -387,7 +387,7 @@ class IfNode(Node):
                 op = None,
                 rhs = None,
             )
-    
+
     def eval_condition(self, cond, context):
         try:
             if cond.op:
@@ -448,11 +448,11 @@ class CycleNode(Node):
 
     Each time the node is evaluated it will render the next value in the
     sequence, looping once it reaches the end; e.g.
-    
+
         {% cycle 'odd', 'even' %}
 
     will alternate continuously between printing 'odd' and 'even'.
-        
+
     """
 
     def process_token(self, token):
@@ -480,13 +480,13 @@ class CycleNode(Node):
 class IncludeNode(Node):
 
     """ Includes a sub-template.
-    
+
         {% include <expr> %}
 
     Requires a template ID which can be supplied as either a string literal
     or a variable resolving to a string. This ID will be passed to the
     registered template loader.
-        
+
     """
 
     def process_token(self, token):
@@ -495,7 +495,7 @@ class IncludeNode(Node):
         except ValueError:
             msg = "malformed [include] tag: [%s]" % token.content
             raise TemplateSyntaxError(msg) from None
-            
+
         expr = Expression(arg)
 
         if expr.is_literal:
@@ -503,7 +503,7 @@ class IncludeNode(Node):
             self.children.append(template.root)
         else:
             self.expr = expr
-            
+
     def render(self, context):
         if self.children:
             return ''.join(child.render(context) for child in self)
@@ -511,22 +511,22 @@ class IncludeNode(Node):
             template_id = self.expr.eval(context)
             template = config.loader(template_id)
             return template.root.render(context)
-            
+
 
 @register('extends')
 class ExtendsNode(Node):
 
     """ Specifies a parent template.
 
-    Indicates that the current template inherits from or 'extends' the 
-    specified parent template. 
+    Indicates that the current template inherits from or 'extends' the
+    specified parent template.
 
         {% extends "parent.txt" %}
 
     Requires a template ID to pass to the registered template loader.
     This must be supplied as a string literal (not a variable)
     as the parent template must be loaded at compile-time.
-        
+
     """
 
     def process_token(self, token):
@@ -535,9 +535,9 @@ class ExtendsNode(Node):
         except ValueError:
             msg = "malformed [extends] tag: [%s]" % token.content
             raise TemplateSyntaxError(msg) from None
-        
+
         expr = Expression(arg)
-        
+
         if expr.is_literal:
             template = config.loader(expr.literal)
             self.children.append(template.root)
@@ -550,27 +550,27 @@ class ExtendsNode(Node):
 class BlockNode(Node):
 
     """ Implements template inheritance.
-    
+
         {% block title %} ... {% endblock %}
-    
+
     A block tag defines a titled block of content that can be overridden
     by similarly titled blocks in child templates.
-    
+
     """
 
     def process_token(self, token):
         self.title = token.content[5:].strip()
-            
+
     def render(self, context):
         # We only want to render the first block of any given title
-        # that we encounter in the node tree, although we want to substitute 
+        # that we encounter in the node tree, although we want to substitute
         # the content of the last block of that title in its place.
         block_list = context.template.registry[self.title]
         if block_list[0] is self:
             return self.render_block(context, block_list[:])
         else:
             return ''
-            
+
     def render_block(self, context, block_list):
         # A call to {{ super }} inside a block renders and returns the
         # content of the block's immediate ancestor. That ancestor may
@@ -594,23 +594,23 @@ class SpacelessNode(Node):
     """ Strips all whitespace between HTML tags.
 
         {% spaceless %} ... {% endspaceless %}
-    
+
     """
 
     def render(self, context):
         output = ''.join(child.render(context) for child in self)
         return filters.filtermap['spaceless'](output).strip()
-        
+
 
 @register('with', 'endwith')
 class WithNode(Node):
 
     """ Caches a complex expression under a simpler alias.
-    
+
         {% with <alias> = <expr> %} ... {% endwith %}
-    
+
     """
-    
+
     def process_token(self, token):
         try:
             alias, expr = token.content[4:].split('=', 1)
@@ -619,7 +619,7 @@ class WithNode(Node):
             raise TemplateSyntaxError(msg) from None
         self.alias = alias.strip()
         self.expr = Expression(expr.strip())
-        
+
     def render(self, context):
         context.push()
         context[self.alias] = self.expr.eval(context)

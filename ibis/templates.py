@@ -15,8 +15,8 @@ from . import config
 from . import nodes
 
 from .errors import (
-    Undefined, 
-    InvalidTagError, 
+    Undefined,
+    InvalidTagError,
     NestingError
 )
 
@@ -31,24 +31,24 @@ class Template:
 
     def __repr__(self):
         return repr(self.root)
-        
+
     def render(self, *pargs, **kwargs):
         """ Accepts a data dictionary or a set of keyword arguments. """
         data = pargs[0] if pargs else kwargs
         return self.root.render(Context(data, self))
 
     def _parse(self, tokens):
-        """ Compiles a sequence of tokens into a tree of nodes. 
+        """ Compiles a sequence of tokens into a tree of nodes.
 
         Syntax nodes with block scope remain on the stack until we
-        encounter the corresponding end tag in the token stream. We 
-        then pop the stack and call .exit_scope() on the node so it can 
-        process its child nodes.
+        encounter the corresponding end tag in the token stream. We
+        then pop the stack and call .exit_scope() on the block node
+        so it can process its child nodes.
 
         """
         stack, expecting = [], []
         stack.append(nodes.nodemap['root']())
-        
+
         for token in tokens:
             if token.type == 'syntax':
                 if token.tag in nodes.nodemap:
@@ -73,24 +73,24 @@ class Template:
             if node.end_tag:
                 stack.append(node)
                 expecting.append(node.end_tag)
-                
+
         if expecting:
             raise NestingError('expecting [%s]' % expecting[-1])
 
         return stack.pop()
 
     def _block_registry(self, node, registry):
-        """ Assembles a registry of the template's block nodes.
+        """ Assembles a registry of the template's {% block %} nodes.
 
-        This function walks the node tree and assembles a dictionary 
+        This function walks the node tree and assembles a dictionary
         containing lists of block nodes indexed by title. We use this list
-        to implement template inheritance - a node occurring later in a list
-        overrides those occuring earlier.
+        to implement template inheritance - a block node occurring later in
+        a list overrides those occuring earlier.
 
-        Note that we don't implement template inheritance by modifying the 
-        block nodes in situ as the tree may incorporate multiple cached 
-        sub-templates each of which needs to have its individual integrity
-        preserved.
+        Note that we don't implement template inheritance by modifying the
+        block nodes in situ. This is because templates can incorporate
+        multiple (possibly-cached) sub-templates, so a single block node
+        instance can form part of multiple distinct template trees.
 
         """
         if isinstance(node, nodes.nodemap['block']):
@@ -123,35 +123,35 @@ class Context:
 
         # This reference gives nodes access to their parent template object.
         self.template = template
-        
+
     def __setitem__(self, key, value):
         """ Assigns to the last dictionary on the stack. """
         self.stack[-1][key] = value
-        
+
     def __getitem__(self, key):
         """ Checks every dictionary on the stack for `key`. """
         for d in reversed(self.stack):
             if key in d:
                 return d[key]
         raise KeyError(key)
-        
+
     def __delitem__(self, key):
         """ Deletes an item from the last dictionary on the stack. """
         del self.stack[-1][key]
-        
+
     def __contains__(self, key):
         """ True if any dictionary on the stack contains `key`. """
         for d in self.stack:
             if key in d:
                 return True
         return False
-        
+
     def resolve(self, varstring):
         """ Attempts to resolve the object identified by `varstring`.
 
         If the variable name cannot be resolved an instance of the
         Undefined class is returned in its place.
-        
+
         """
         obj = self
         for token in varstring.split('.'):
@@ -164,26 +164,26 @@ class Context:
                     obj = Undefined()
                     break
         return obj
-        
+
     def push(self, data=None):
         """ Pushes a new data dictionary onto the stack. """
         self.stack.append(data or {})
-        
+
     def pop(self):
         """ Pops the most recent data dictionary off the stack. """
         self.stack.pop()
-        
+
     def defined(self, varstring):
         """ Returns true if `varstring` can be successfully resolved. """
         return not isinstance(self.resolve(varstring), Undefined)
-        
+
     def get(self, key, default=None):
         """ Returns `default` if `key` cannot be found on the stack. """
         for d in reversed(self.stack):
             if key in d:
                 return d[key]
         return default
-        
+
     def update(self, data):
         """ Updates the most recent dictionary on the data stack. """
         self.stack[-1].update(data)

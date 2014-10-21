@@ -1,5 +1,5 @@
 
-* [Flock](@root//)
+* [Ibis](@root//)
 * [Quickstart](@root/tutorial//)
 * [Markup](@root/markup//)
 * [Tags](@root/tags//)

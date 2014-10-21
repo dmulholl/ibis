@@ -12,8 +12,8 @@ A template starts life as a simple string containing [template markup](@root/mar
 
 ::: python
 
-    >>> import flock
-    >>> template = flock.Template('{{foo}} and {{bar}}')
+    >>> import ibis
+    >>> template = ibis.Template('{{foo}} and {{bar}}')
 
 Internally, a lexer transforms the string into a sequence of tokens. A parser then takes this sequence and compiles it into a tree of nodes. Each node has a `render()` method which takes a context object and returns a string. The entire compiled node tree can be rendered by calling `render()` on the root node.
 
@@ -35,16 +35,16 @@ A `Template` object is initialized with a template string. It compiles the strin
 Template Loaders
 ----------------
 
-If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Flock can locate the appropriate templates to include or extend. A template loader is a callable that accepts a single string argument - the template name - and returns the corresponding template object.
+If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts a single string argument - the template name - and returns the corresponding template object.
 
-You can define your own custom template loader, but in most cases an instance of the built-in `FileLoader` class will be suitable. `FileLoader` objects are initialized with a path to a base template directory; template names are then interpreted as paths to UTF-8 encoded text files stored in this directory. Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. (If you don't need this automatic reload functionality you can use a `FastFileLoader` object instead for a small speed boost.) 
+You can define your own custom template loader, but in most cases an instance of the built-in `FileLoader` class will be suitable. `FileLoader` objects are initialized with a path to a base template directory; template names are then interpreted as paths to UTF-8 encoded text files stored in this directory. Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. (If you don't need this automatic reload functionality you can use a `FastFileLoader` object instead for a small speed boost.)
 
-To specify a template loader set the `flock.config.loader` variable to an instance of your callable:
+To specify a template loader set the `ibis.config.loader` variable to an instance of your callable:
 
 ::: python
 
-    import flock
-    flock.config.loader = flock.loaders.FileLoader('/path/to/template/directory')
+    import ibis
+    ibis.config.loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
 Note that you can use slashes in tempate names to load templates from subdirectories of the base directory:
 
@@ -61,47 +61,47 @@ Exceptions
 The following exception types may be raised by the template engine:
 
 
-*   `flock.errors.TemplateError`
+*   `ibis.errors.TemplateError`
 
     Base class for all exceptions raised by the template engine.
 
 
-    *   `flock.errors.CallError`
+    *   `ibis.errors.CallError`
 
         Raised if a callable variable throws an exception.
 
 
-    *   `flock.errors.FilterError`
+    *   `ibis.errors.FilterError`
 
         Raised if a filter function throws an exception.
 
 
-    *   `flock.errors.InvalidFilterError`
+    *   `ibis.errors.InvalidFilterError`
 
         Unrecognised filter name.
 
 
-    *   `flock.errors.InvalidTagError`
+    *   `ibis.errors.InvalidTagError`
 
         Unrecognised syntax tag.
 
 
-    *   `flock.errors.LoadError`
+    *   `ibis.errors.LoadError`
 
         Error attempting to load a template file.
 
 
-    *   `flock.errors.NestingError`
+    *   `ibis.errors.NestingError`
 
         Improperly nested template tags.
 
 
-    *   `flock.errors.TemplateSyntaxError`
+    *   `ibis.errors.TemplateSyntaxError`
 
         Invalid template syntax.
 
 
-    *   `flock.errors.UnpackingError`
+    *   `ibis.errors.UnpackingError`
 
         Raised if an attempt to unpack a for-loop variable fails.
 
@@ -135,7 +135,7 @@ The following built-in variables and functions are available in all contexts:
 The Undefined Type
 ------------------
 
-An instance of the `flock.errors.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
+An instance of the `ibis.errors.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
 
 You can specify a fallback for undefined variables in template markup using the `undefined` filter:
 
@@ -155,7 +155,7 @@ Filters are registered using the `@register` decorator:
 
 ::: python
 
-    @flock.filters.register('name')
+    @ibis.filters.register('name')
 
 If no `name` argument is supplied, the function name will be used.
 
@@ -163,9 +163,9 @@ As an example, we can register a filter to convert datetime objects into formatt
 
 ::: python
 
-    import flock
+    import ibis
 
-    @flock.filters.register('dtformat')
+    @ibis.filters.register('dtformat')
     def datetime_formatter(dt, format='%Y-%m-%d'):
         return dt.strftime(format)
 
@@ -183,18 +183,18 @@ As it happens, `dtformat` already exists as a built-in filter. Re-registering th
 Custom Tags
 -----------
 
-You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Flock compiles template strings into trees of `Node` objects.
+You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
 
-Every syntax tag corresponds to a subclass of the `flock.nodes.Node` type. To create a new syntax tag you register a subclass using the `@register` decorator:
+Every syntax tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new syntax tag you register a subclass using the `@register` decorator:
 
 ::: python
 
-    @flock.nodes.register('tag')
+    @ibis.nodes.register('tag')
 
 You can give your new tag block scope by specifying the required end tag:
 
 ::: python
 
-    @flock.nodes.register('tag', 'endtag')
+    @ibis.nodes.register('tag', 'endtag')
 
 You'll need to turn to the source code itself for further details - see the `nodes.py` file for lots of examples to work from.

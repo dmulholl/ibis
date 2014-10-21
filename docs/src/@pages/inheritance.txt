@@ -2,7 +2,7 @@
 Template Inheritance
 ====================
 
-Flock supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.
+Ibis supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.
 
 Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call `base.html`:
 
@@ -49,10 +49,10 @@ Some points to note:
 
 * The `extends` tag should be the first tag in a child template.
 
-* The `extends` tag requires a string literal argument specifying the name of the parent template. 
+* The `extends` tag requires a string literal argument specifying the name of the parent template.
 
-* You need to configure a [template loader](@root/api//#template-loaders) so Flock can locate the appropriate parent template.
+* You need to configure a [template loader](@root/api//#template-loaders) so Ibis can locate the appropriate parent template.
 
-* You can use as many levels of inheritance as you like. 
+* You can use as many levels of inheritance as you like.
 
 * The built-in `{{ super }}` variable gives you access to the content of the parent block.

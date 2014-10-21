@@ -6,8 +6,8 @@ A template starts life as a simple string containing [template markup](@root/mar
 
 ::: python
 
-    >>> import flock
-    >>> template = flock.Template('{{foo}} and {{bar}}')
+    >>> import ibis
+    >>> template = ibis.Template('{{foo}} and {{bar}}')
 
 The `Template` class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs or a set of keyword arguments:
 
@@ -29,8 +29,8 @@ A `FileLoader` object is initialized with a path to a base template directory:
 
 ::: python
 
-    import flock
-    loader = flock.loaders.FileLoader('/path/to/template/directory')
+    import ibis
+    loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
 Calling the loader with a template name (a string interpreted as a path to a text file stored in the base directory) will return the corresponding template object:
 
@@ -38,6 +38,6 @@ Calling the loader with a template name (a string interpreted as a path to a tex
 
     template = loader('template.txt')
 
-Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. 
+Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes.
 
 You can learn more about using template loaders [here](@root/api//#template-loaders).

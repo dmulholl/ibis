@@ -1,7 +1,5 @@
-"""
-Utility functions.
 
-"""
+""" Utility functions. """
 
 import re
 
@@ -31,23 +29,23 @@ def splitc(s, delimiter, strip=False, discard_empty=False, maxsplit=-1):
                 if char in ('"', "'"):
                     expecting = char
         escaped = not escaped if char == '\\' else False
-    
+
     tokens.append(''.join(buf))
-    
+
     if strip:
         tokens = [t.strip() for t in tokens]
-        
+
     if discard_empty:
         tokens = [t for t in tokens if t]
-        
+
     return tokens
 
 
 def splitws(s, maxsplit=-1):
-    """ Splits a string on blocks of whitespace. 
+    """ Splits a string on blocks of whitespace.
 
     Strips leading and trailing whitespace. Ignores quoted whitespace.
-    
+
     """
     tokens, buf, expecting, escaped, wsrun = [], [], None, False, False
 
@@ -72,7 +70,7 @@ def splitws(s, maxsplit=-1):
                 if char in ('"', "'"):
                     expecting = char
         escaped = not escaped if char == '\\' else False
-    
+
     tokens.append(''.join(buf))
     return tokens
 
@@ -81,11 +79,11 @@ def splitre(s, delimiters, keepdels=False):
     """ Splits a string using a list of regular expression patterns.
 
     Ignores quoted delimiter matches.
-    
+
     """
     tokens, buf = [], []
     end_last_match = 0
-    
+
     pattern = r'''"(?:[^\\"]|\\.)*"|'(?:[^\\']|\\.)*'|%s'''
     pattern %= '|'.join(delimiters)
 
@@ -100,8 +98,8 @@ def splitre(s, delimiters, keepdels=False):
         end_last_match = match.end()
         if keepdels:
             tokens.append(match.group())
-            
+
     buf.append(s[end_last_match:])
     tokens.append(''.join(buf))
-    
+
     return tokens

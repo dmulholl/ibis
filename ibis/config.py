@@ -1,13 +1,11 @@
-"""
-Environment settings. 
 
-"""
+""" User configuration settings. """
 
 import datetime
 
 
 # Assign a template-loading callable here to enable the {% include %}
-# and {% extends %} tags. The callable should accept a single string 
+# and {% extends %} tags. The callable should accept a single string
 # argument and return the corresponding template object.
 loader = None
 
