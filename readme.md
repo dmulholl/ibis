@@ -37,7 +37,7 @@ The template can be rendered multiple times by calling its `render()` method wit
     >>> template.render({'foo': 1, 'bar': 2})
     '1 and 2'
 
-See the [package documentation](http://pythonhosted.org/ibis) for further details.
+See the package's [documentation](http://pythonhosted.org/ibis) for further details.
 
 
 Installation
