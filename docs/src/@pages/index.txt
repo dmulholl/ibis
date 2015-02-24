@@ -47,17 +47,19 @@ Documentation
 Installation
 ------------
 
-You can install Ibis directly from the Python Package Index using `pip`:
+Install Ibis directly from the Python Package Index using `pip`:
 
     $ pip install ibis
 
-Alternatively, you can download the latest version from the project's [Github homepage][github] and run:
-
-    $ python setup.py install
-
 Ibis requires Python 3.2 or later.
 
-[github]: https://github.com/dmulholland/ibis
+
+Links
+-----
+
+* [Github Homepage](https://github.com/dmulholland/ibis)
+* [Python Package Index](https://pypi.python.org/pypi/ibis/)
+* [Online Documentation](https://pythonhosted.org/ibis/)
 
 
 License
