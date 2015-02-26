@@ -14,6 +14,7 @@ Tag Reference
 The `block` tag is used with the `extends` tag to implement [template inheritance](@root/inheritance//). The `title` argument is an arbitrary alphanumeric identifier for the block.
 
 
+
 === cycle ===
 
 ::: django
@@ -33,6 +34,7 @@ A typical use case might be to add alternating CSS classes to elements in a list
     </ul>
 
 
+
 === extends ===
 
 ::: django
@@ -42,6 +44,7 @@ A typical use case might be to add alternating CSS classes to elements in a list
 The `extends` tag is used with the `block` tag to implement [template inheritance](@root/inheritance//). The `parent` argument should be a quoted string literal specifying the name of the parent template.
 
 
+
 === include ===
 
 ::: django
@@ -49,6 +52,7 @@ The `extends` tag is used with the `block` tag to implement [template inheritanc
     {% include <name> %}
 
 The `include` tag incorporates a sub-template into the current template. The `name` argument should be a quoted string literal or an expression evaluating to a string specifying the name of the sub-template to include. Note that you need to configure a [template loader](@root/api//#template-loaders) to use this tag.
+
 
 
 === for ===
@@ -79,6 +83,7 @@ The automatic `loop` variable gives access to some useful data within the body o
     `loop.first`  | True on the first iteration of the loop.
     `loop.last`   | True on the last iteration of the loop.
     `loop.parent` | For nested loops, the loop variable of the parent loop.
+
 
 
 === if ===
@@ -128,6 +133,7 @@ is evaluated as:
 Note that explicit brackets are not supported by the syntax.
 
 
+
 === spaceless ===
 
 ::: django
@@ -149,6 +155,17 @@ would be rendered as:
 ::: html
 
     <ul><li>List item.</li></ul>
+
+
+
+=== trim ===
+
+::: django
+
+    {% trim %} ... {% endtrim %}
+
+The `trim` tag strips all leading and trailing whitespace from its content.
+
 
 
 === with ===
