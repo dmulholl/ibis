@@ -483,6 +483,16 @@ class SpacelessTagTests(unittest.TestCase):
         self.assertEqual(rendered, '<ul><li> foo </li></ul>')
 
 
+class TrimTagTests(unittest.TestCase):
+
+    def test_trim_block(self):
+        template =  '{% trim %}'
+        template += '\n  foo bar baz\t  '
+        template += '{% endtrim %}'
+        rendered = Template(template).render()
+        self.assertEqual(rendered, 'foo bar baz')
+
+
 class IncludeTagTests(unittest.TestCase):
 
     def test_template_include(self):

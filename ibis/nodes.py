@@ -602,6 +602,19 @@ class SpacelessNode(Node):
         return filters.filtermap['spaceless'](output).strip()
 
 
+@register('trim', 'endtrim')
+class TrimNode(Node):
+
+    """ Trims leading and trailing whitespace.
+
+        {% trim %} ... {% endtrim %}
+
+    """
+
+    def render(self, context):
+        return ''.join(child.render(context) for child in self).strip()
+
+
 @register('with', 'endwith')
 class WithNode(Node):
 
