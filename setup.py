@@ -19,8 +19,8 @@ Sample syntax::
         {% endfor %}
     </ul>
 
-See the package documentation (http://pythonhosted.org/ibis) or the project's
-Github homepage (https://github.com/dmulholland/ibis) for further details.
+See the `package documentation <http://pythonhosted.org/ibis>`_ or the project's
+`Github homepage <https://github.com/dmulholland/ibis`_ for further details.
 
 """
 

@@ -30,7 +30,8 @@ Example:
     >>> template.render({'foo': 1, 'bar': 2})
     '1 and 2'
 
-License: Public Domain.
+Author: Darren Mulholland
+License: Public Domain
 
 """
 

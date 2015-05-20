@@ -59,7 +59,7 @@ Links
 
 * [Github Homepage](https://github.com/dmulholland/ibis)
 * [Python Package Index](https://pypi.python.org/pypi/ibis/)
-* [Online Documentation](https://pythonhosted.org/ibis/)
+* [Online Documentation](http://pythonhosted.org/ibis/)
 
 
 License
