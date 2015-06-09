@@ -20,7 +20,7 @@ Sample syntax::
     </ul>
 
 See the `package documentation <http://pythonhosted.org/ibis>`_ or the project's
-`Github homepage <https://github.com/dmulholland/ibis`_ for further details.
+`Github homepage <https://github.com/dmulholland/ibis>`_ for further details.
 
 """
 
