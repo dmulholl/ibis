@@ -27,7 +27,7 @@ class Template:
 
     def __init__(self, string):
         self.root = self._parse(Lexer(string))
-        self.registry = self._block_registry(self.root, {})
+        self.registry = self._register_blocks(self.root, {})
 
     def __repr__(self):
         return repr(self.root)
@@ -79,7 +79,7 @@ class Template:
 
         return stack.pop()
 
-    def _block_registry(self, node, registry):
+    def _register_blocks(self, node, registry):
         """ Assembles a registry of the template's {% block %} nodes.
 
         This function walks the node tree and assembles a dictionary
@@ -96,7 +96,7 @@ class Template:
         if isinstance(node, nodes.nodemap['block']):
             registry.setdefault(node.title, []).append(node)
         for child in node.children:
-            self._block_registry(child, registry)
+            self._register_blocks(child, registry)
         return registry
 
 
@@ -106,16 +106,16 @@ class Context:
 
     def __init__(self, data, template):
 
-        # Context data is stored on a stack of dictionaries.
+        # Data is stored on a stack of dictionaries.
         self.stack = []
 
-        # We begin with a standard dictionary of builtins.
+        # Standard builtins.
         self.stack.append({'context': self, 'defined': self.defined})
 
-        # We add a user-configurable dictionary of builtins to the stack.
+        # User-configurable, per-application builtins.
         self.stack.append(config.builtins)
 
-        # We add the user's context-specific data dictionary to the stack.
+        # Instance-specific data.
         self.stack.append(data)
 
         # Nodes can store state information here to avoid threading issues.

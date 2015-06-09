@@ -30,13 +30,12 @@ Example:
     >>> template.render({'foo': 1, 'bar': 2})
     '1 and 2'
 
-Author: Darren Mulholland
+Author: Darren Mulholland <dmulholland@outlook.ie>
 License: Public Domain
 
 """
 
-__version__ = "1.3.0"
-
+__version__ = "1.3.1"
 
 from . import config
 from . import filters
