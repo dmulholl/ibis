@@ -4,70 +4,86 @@
 import os
 
 from .templates import Template
-from .errors import LoadError
+from .errors import LoadError, TemplateNotFound
 
 
 class FileLoader:
 
-    """ Loads templates from the file system.
+    """ Loads templates from the file system. Assumes files are utf-8 encoded.
 
-    Assumes template files are utf-8 encoded.
+    Compiled templates are cached in memory, so they only need to be
+    compiled once. Templates are *not* automatically recompiled if the
+    underlying template file changes.
 
-    Caches compiled template objects in memory. Automatically reloads
-    if the underlying template file changes.
-
-    Should be initialized with the path to the base template directory:
+    A FileLoader instance should be initialized with a path to a base
+    template directory.
 
         loader = FileLoader('/path/to/base/directory')
 
-    Template ID strings may include subdirectory paths:
+    The loader instance can then be called with one or more path strings.
+    The loader will return the template object corresponding to the first
+    existing template file or raise a TemplateNotFound exception if no file
+    can be located.
+
+    Note that the path strings may include subdirectory paths:
 
         template = loader('foo.txt')
         template = loader('subdir/foo.txt')
 
     """
 
-    def __init__(self, dirpath):
-        self.dirpath = dirpath
+    def __init__(self, root):
+        self.root = root
         self.cache = {}
 
-    def __call__(self, id):
-        path = os.path.join(self.dirpath, id)
+    def __call__(self, *paths):
+        for path in paths:
 
-        try:
-            mtime = os.path.getmtime(path)
-            if id in self.cache:
-                if mtime == self.cache[id][0]:
-                    return self.cache[id][1]
-            with open(path, encoding='utf-8') as tfile:
-                tstring = tfile.read()
-        except OSError:
-            raise LoadError("error loading template file [%s]" % id)
+            if path in self.cache:
+                return self.cache[path]
 
-        tobj = Template(tstring)
-        self.cache[id] = (mtime, tobj)
-        return tobj
+            fullpath = os.path.join(self.root, path)
+            if os.path.isfile(fullpath):
+                try:
+                    with open(fullpath, encoding='utf-8') as file:
+                        return self.cache.setdefault(path, Template(file.read()))
+                except OSError:
+                    raise LoadError("error loading template file [%s]" % path)
+
+        raise TemplateNotFound()
 
 
-class FastFileLoader(FileLoader):
+class FileReloader:
 
-    """ File system loader with no automatic reloading. """
+    """ Loads templates from the file system. Assumes files are utf-8 encoded.
 
-    def __call__(self, id):
-        if id in self.cache:
-            return self.cache[id]
+    Compiled templates are cached in memory, so they only need to be
+    compiled once. Templates are automatically recompiled if the
+    underlying template file changes.
 
-        path = os.path.join(self.dirpath, id)
+    """
 
-        try:
-            with open(path, encoding='utf-8') as tfile:
-                tstring = tfile.read()
-        except OSError:
-            raise LoadError("error loading template file [%s]" % id)
+    def __init__(self, root):
+        self.root = root
+        self.cache = {}
 
-        tobj = Template(tstring)
-        self.cache[id] = tobj
-        return tobj
+    def __call__(self, *paths):
+        for path in paths:
+
+            fullpath = os.path.join(self.root, path)
+            if os.path.isfile(fullpath):
+                try:
+                    mtime = os.path.getmtime(fullpath)
+                    if path in self.cache:
+                        if mtime == self.cache[path][0]:
+                            return self.cache[path][1]
+                    with open(fullpath, encoding='utf-8') as file:
+                        self.cache[path] = (mtime, Template(file.read()))
+                        return self.cache[path][1]
+                except OSError:
+                    raise LoadError("error loading template file [%s]" % path)
+
+        raise TemplateNotFound()
 
 
 class DictLoader:
@@ -78,12 +94,14 @@ class DictLoader:
         self.templates = {}
         self.strings = strings
 
-    def __call__(self, id):
-        if id in self.templates:
-            return self.templates[id]
-        elif id in self.strings:
-            template = Template(self.strings[id])
-            self.templates[id] = template
-            return template
-        else:
-            raise LoadError("no template matching [%s]" % id)
+    def __call__(self, *names):
+        for name in names:
+            if name in self.templates:
+                return self.templates[name]
+            elif name in self.strings:
+                return self.templates.setdefault(name, Template(self.strings[name]))
+        raise TemplateNotFound()
+
+
+# Deprecated. This alias will be removed in a future version.
+FastFileLoader = FileLoader

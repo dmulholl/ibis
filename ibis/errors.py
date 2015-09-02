@@ -47,6 +47,11 @@ class UnpackingError(TemplateError):
     pass
 
 
+class TemplateNotFound(TemplateError):
+    """ Raised if a loader cannot locate a template. """
+    pass
+
+
 class Undefined:
 
     """ Null type returned when a context lookup fails. """

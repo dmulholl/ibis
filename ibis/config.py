@@ -5,8 +5,9 @@ import datetime
 
 
 # Assign a template-loading callable here to enable the {% include %}
-# and {% extends %} tags. The callable should accept a single string
-# argument and return the corresponding template object.
+# and {% extends %} tags. The callable should accept one or more string
+# arguments and either return an instance of the Template class or raise
+# a TemplateNotFound exception.
 loader = None
 
 
