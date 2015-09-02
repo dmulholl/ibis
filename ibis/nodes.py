@@ -323,8 +323,10 @@ class ForNode(Node):
                     'index': index,
                     'count': index + 1,
                     'length': length,
-                    'first': index == 0,
-                    'last': index == length - 1,
+                    'is_first': index == 0,
+                    'first':    index == 0,             # deprecated - will be removed
+                    'is_last': index == length - 1,
+                    'last':    index == length - 1,     # deprecated - will be removed
                     'parent': context.get('loop'),
                 }
                 output.append(self.for_branch.render(context))
