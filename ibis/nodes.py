@@ -213,30 +213,60 @@ class PrintNode(Node):
     """ Evaluates an expression and prints its result.
 
         {{ <expr> }}
-        {{ <expr> or <expr> }}
 
     Multiple expressions can be listed separated by 'or' or '||'.
     The first expression to resolve to a truthy value will be
-    inserted. (If none of the expressions are truthy the final value
-    will be used regardless.)
+    printed. (If none of the expressions are truthy the final value
+    will be printed regardless.)
+
+        {{ <expr> or <expr> or <expr> }}
+
+    Alternatively, print statements can use the ternary operator: ?? ::
+
+        {{ <test-expr> ?? <expr1> :: <expr2> }}
+
+    If <test-expr> is truthy, <expr1> will be printed, otherwise <expr2>
+    will be printed.
+
+    Note that *either* 'or'-chaining or the ternary operator can be used
+    in a single print statement, but not both.
 
     """
 
     escape = False
 
     def process_token(self, token):
-        exprs = utils.splitre(token.content, (r'\s+or\s+', r'\|\|'))
-        self.exprs = [Expression(e) for e in exprs]
+
+        # Check for a ternary operator.
+        chunks = utils.splitre(token.content, (r'\?\?', r'\:\:'), True)
+        if len(chunks) == 5 and chunks[1] == '??' and chunks[3] == '::':
+            self.is_ternary = True
+            self.testexpr = Expression(chunks[0])
+            self.iftrue = Expression(chunks[2])
+            self.iffalse = Expression(chunks[4])
+
+        # Look for a list of 'or' separated expressions.
+        else:
+            self.is_ternary = False
+            exprs = utils.splitre(token.content, (r'\s+or\s+', r'\|\|'))
+            self.exprs = [Expression(e) for e in exprs]
 
     def render(self, context):
-        for expr in self.exprs:
-            resolved = expr.eval(context)
-            if resolved:
-                break
-        if self.escape:
-            return filters.filtermap['escape'](str(resolved))
+        if self.is_ternary:
+            if self.testexpr.eval(context):
+                content = self.iftrue.eval(context)
+            else:
+                content = self.iffalse.eval(context)
         else:
-            return str(resolved)
+            for expr in self.exprs:
+                content = expr.eval(context)
+                if content:
+                    break
+
+        if self.escape:
+            return filters.filtermap['escape'](str(content))
+        else:
+            return str(content)
 
 
 @register('eprint')

@@ -94,6 +94,16 @@ class PrintStatementTests(unittest.TestCase):
         rendered = Template(template).render(var1=None, var2='foo')
         self.assertEqual(rendered, 'foo')
 
+    def test_ternary_operator_true(self):
+        template = '{{test ?? var1 :: var2}}'
+        rendered = Template(template).render(test=True, var1='foo', var2='bar')
+        self.assertEqual(rendered, 'foo')
+
+    def test_ternary_operator_false(self):
+        template = '{{test ?? var1 :: var2}}'
+        rendered = Template(template).render(test=False, var1='foo', var2='bar')
+        self.assertEqual(rendered, 'bar')
+
 
 class FilterMechanismTests(unittest.TestCase):
 
