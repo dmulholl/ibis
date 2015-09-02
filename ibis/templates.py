@@ -46,8 +46,8 @@ class Template:
         so it can process its child nodes.
 
         """
-        stack, expecting = [], []
-        stack.append(nodes.nodemap['root']())
+        root = nodes.nodemap['root']()
+        stack, expecting = [root], []
 
         for token in tokens:
             if token.type == 'syntax':
