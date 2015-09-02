@@ -35,8 +35,14 @@ License: Public Domain
 
 """
 
-__version__ = "1.3.2"
 
+# Library version number.
+__version__ = "1.4.0"
+
+
+# Import modules to make them available to callers via a simple 'import ibis'
+# statement. Otherwise callers would have to 'import.foo' for each
+# individual module.
 from . import config
 from . import filters
 from . import nodes
