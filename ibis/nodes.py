@@ -23,7 +23,7 @@ from . import filters
 
 from .errors import (
     TemplateSyntaxError,
-    InvalidFilterError,
+    InvalidFilter,
     FilterError,
     CallError,
     UnpackingError,
@@ -134,7 +134,7 @@ class Expression:
                 self.filters.append((name, filters.filtermap[name], args))
             else:
                 msg = "[%s] is not a recognised filter"
-                raise InvalidFilterError(msg % name)
+                raise InvalidFilter(msg % name)
 
     def _apply_filters(self, obj):
         for name, func, args in self.filters:

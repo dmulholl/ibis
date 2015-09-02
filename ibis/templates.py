@@ -16,8 +16,8 @@ from . import nodes
 
 from .errors import (
     Undefined,
-    InvalidTagError,
-    NestingError
+    InvalidTag,
+    NestingError,
 )
 
 
@@ -66,7 +66,7 @@ class Template:
                         raise NestingError(msg % (expecting[-1], token.tag))
                 else:
                     msg = '[%s] is not a recognised template tag'
-                    raise InvalidTagError(msg % token.tag)
+                    raise InvalidTag(msg % token.tag)
             else:
                 node = nodes.nodemap[token.type](token)
             stack[-1].children.append(node)

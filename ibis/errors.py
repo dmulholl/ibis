@@ -17,12 +17,12 @@ class NestingError(TemplateError):
     pass
 
 
-class InvalidTagError(TemplateError):
+class InvalidTag(TemplateError):
     """ Unrecognised template tag. """
     pass
 
 
-class InvalidFilterError(TemplateError):
+class InvalidFilter(TemplateError):
     """ Unrecognised filter name. """
     pass
 
@@ -79,3 +79,8 @@ class Undefined:
 
     def __ne__(self, other):
         return True
+
+
+# Deprecated. The following aliases will be removed in a future version.
+InvalidTagError = InvalidTag
+InvalidFilterError = InvalidFilter
