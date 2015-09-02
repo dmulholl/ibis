@@ -38,20 +38,20 @@
 <p>Comments can span multiple lines and can be used to comment-out sections of template code.</p>
 <h2 id="print-statements">Print Statements</h2>
 <p>Print statements evaluate and print <a href="#expressions">expressions</a>. They look like this:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"></span>
+<pre>
+{{ post.title }}
 </pre>
 <p>Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:</p>
 <pre>
 {{{ post.title }}}
 </pre>
 <p>Escaped print statements are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="x"></span>
+<pre>
+{{ post.title|escape }}
 </pre>
 <p>Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the <code>or</code> keyword. The first expression to evaluate as 'truthy' will be printed:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.title</span> <span class="k">or</span> <span class="s2">&quot;Untitled Post&quot;</span> <span class="cp">}}</span><span class="x"></span>
+<pre class="lang-python stx-pygments" data-lang="python">
+<span class="p">{{</span> <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s">&quot;Untitled Post&quot;</span> <span class="p">}}</span>
 </pre>
 <p>Second, print statements can make use of a C-style ternary operator, <code>?? ::</code>:</p>
 <pre>

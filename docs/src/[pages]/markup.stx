@@ -17,8 +17,6 @@ Print Statements
 
 Print statements evaluate and print [expressions](#expressions). They look like this:
 
-::: django
-
     {{ post.title }}
 
 Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:
@@ -27,19 +25,15 @@ Print statements come in two flavours: regular and escaped. Escaped print statem
 
 Escaped print statements are simply a shortcut for applying the built-in `escape` filter to their content. The example above is equivalent to:
 
-::: django
-
     {{ post.title|escape }}
 
 Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the `or` keyword. The first expression to evaluate as 'truthy' will be printed:
 
-::: django
+::: python
 
     {{ post.title or "Untitled Post" }}
 
 Second, print statements can make use of a C-style ternary operator, `?? ::`:
-
-:::
 
     {{ is_homepage ?? site.title :: post.title }}
 
