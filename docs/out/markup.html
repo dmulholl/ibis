@@ -58,7 +58,7 @@
 {{ is_homepage ?? site.title :: post.title }}
 </pre>
 <p>If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.</p>
-<p>Note that a single print statement can <em>either</em> make use of <code>or</code>-chaining or the ternary construct but not both.</p>
+<p>Note that a single print statement can make use of <code>or</code>-chaining or the ternary construct, but not both.</p>
 <h2 id="expressions">Expressions</h2>
 <p>An <em>expression</em> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.</p>
 <p>Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:</p>

@@ -45,7 +45,7 @@ Second, print statements can make use of a C-style ternary operator, `?? ::`:
 
 If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.
 
-Note that a single print statement can *either* make use of `or`-chaining or the ternary construct but not both.
+Note that a single print statement can make use of `or`-chaining or the ternary construct, but not both.
 
 
 
