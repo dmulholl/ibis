@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Template API</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/vanilla.css">
-        <link rel="stylesheet" href="css/pygments.css">
-        <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery-1.11.2.min.js"></script>
-        <script src="js/vanilla.js"></script>
-    </head>
-    <body class="pages single">
+  <head>
+    <meta charset="utf-8">
+    <title>Template API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/pygments.css">
+    <!--[if lt IE 9]><script src="js/html5shiv.min.js"></script><![endif]-->
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/theme.js"></script>
+  </head>
+  <body class="pages single">
 
-        <header id="header" class="header meta">
-            <ul>
+    <header id="header" class="header meta">
+      
+        <div class="hamburger unselectable">☰</div>
+        <ul>
 <li><a href="index.html">Ibis</a></li>
 <li><a href="tutorial.html">Quickstart</a></li>
 <li><a href="markup.html">Markup</a></li>
@@ -24,14 +24,13 @@
 <li><a href="inheritance.html">Inheritance</a></li>
 <li><a href="api.html">API</a></li>
 </ul>
-        </header>
+      
+    </header>
 
-        <article id="content" class="content">
-            
+    <article id="content" class="content">
+      
 
-    
-    
-    <h1 id="template-api">Template API</h1>
+      <h1 id="template-api">Template API</h1>
 <ul class="stx-toc">
 <li><a href="#template-objects">Template Objects</a></li>
 <li><a href="#template-loaders">Template Loaders</a></li>
@@ -59,18 +58,20 @@
 <span class="s">&#39;1 and 2&#39;</span>
 </pre>
 <h2 id="template-loaders">Template Loaders</h2>
-<p>If you want to use <a href="inheritance.html">template inheritance</a> or the <code>include</code> tag you'll need to specify a <em>template loader</em> so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts a single string argument - the template name - and returns the corresponding template object.</p>
-<p>You can define your own custom template loader, but in most cases an instance of the built-in <code>FileLoader</code> class will be suitable. <code>FileLoader</code> objects are initialized with a path to a base template directory; template names are then interpreted as paths to UTF-8 encoded text files stored in this directory. Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. (If you don't need this automatic reload functionality you can use a <code>FastFileLoader</code> object instead for a small speed boost.)</p>
+<p>If you want to use <a href="inheritance.html">template inheritance</a> or the <code>include</code> tag you'll need to specify a <em>template loader</em> so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts one or more string arguments and either returns a corresponding template object or raises a <code>TemplateNotFound</code> exception, i.e. a template loader has a signature like the following function:</p>
+<pre class="lang-python stx-pygments" data-lang="python">
+<span class="k">def</span> <span class="nf">loader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;loaded template text&quot;</span><span class="p">)</span>
+</pre>
+<p>You can define your own custom template loaders, but in many cases an instance of the builtin <code>FileLoader</code> class will be suitable. A <code>FileLoader</code> instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.</p>
+<p>A <code>FileLoader</code> instance compiles its templates once and caches them in memory for future lookups. A <code>FileReloader</code> instance is identical but will automatically reload and recompile a template if the underlying template file changes.</p>
 <p>To specify a template loader set the <code>ibis.config.loader</code> variable to an instance of your callable:</p>
 <pre class="lang-python stx-pygments" data-lang="python">
 <span class="kn">import</span> <span class="nn">ibis</span>
 <span class="n">ibis</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
 </pre>
-<p>Note that you can use slashes in tempate names to load templates from subdirectories of the base directory:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;subdir/template.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
-</pre>
-<p>You may find it useful to use the same <code>FileLoader</code> object to load templates throughout your application to take advantage of its built-in caching.</p>
+<p>You may find it useful to use a single <code>FileLoader</code> object to load templates throughout your application to take full advantage of its built-in caching.</p>
 <h2 id="exceptions">Exceptions</h2>
 <p>The following exception types may be raised by the template engine:</p>
 <ul>
@@ -83,17 +84,20 @@
 <li><p><code>ibis.errors.FilterError</code></p>
 <p>Raised if a filter function throws an exception.</p>
 </li>
-<li><p><code>ibis.errors.InvalidFilterError</code></p>
+<li><p><code>ibis.errors.InvalidFilter</code></p>
 <p>Unrecognised filter name.</p>
 </li>
-<li><p><code>ibis.errors.InvalidTagError</code></p>
+<li><p><code>ibis.errors.InvalidTag</code></p>
 <p>Unrecognised syntax tag.</p>
 </li>
 <li><p><code>ibis.errors.LoadError</code></p>
-<p>Error attempting to load a template file.</p>
+<p>OS error attempting to load a template file.</p>
 </li>
 <li><p><code>ibis.errors.NestingError</code></p>
 <p>Improperly nested template tags.</p>
+</li>
+<li><p><code>ibis.errors.TemplateNotFound</code></p>
+<p>Raised by a template loader when no template is found.</p>
 </li>
 <li><p><code>ibis.errors.TemplateSyntaxError</code></p>
 <p>Invalid template syntax.</p>
@@ -107,11 +111,11 @@
 <h2 id="builtins">Builtins</h2>
 <p>The following built-in variables and functions are available in all contexts:</p>
 <ul>
-<li><p><code>defined(varstring)</code></p>
+<li><p><code>defined("name")</code></p>
 <p>Returns <code>True</code> if the supplied string literal is a resolvable variable name.</p>
 </li>
 <li><p><code>now()</code></p>
-<p>Returns a datetime object representing the current instant.</p>
+<p>Returns a datetime object representing the instant the function is called.</p>
 </li>
 <li><p><code>range()</code></p>
 <p>Provides access to Python's builtin <code>range</code> function.</p>
@@ -151,23 +155,21 @@
 <p>As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.</p>
 <h2 id="custom-tags">Custom Tags</h2>
 <p>You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of <code>Node</code> objects.</p>
-<p>Every syntax tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new syntax tag you register a subclass using the <code>@register</code> decorator:</p>
+<p>Every syntax tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new syntax tag, register a subclass using the <code>@register</code> decorator:</p>
 <pre class="lang-python stx-pygments" data-lang="python">
 <span class="nd">@ibis.nodes.register</span><span class="p">(</span><span class="s">&#39;tag&#39;</span><span class="p">)</span>
 </pre>
-<p>You can give your new tag block scope by specifying the required end tag:</p>
+<p>You can give your new tag block scope by specifying a required end tag:</p>
 <pre class="lang-python stx-pygments" data-lang="python">
 <span class="nd">@ibis.nodes.register</span><span class="p">(</span><span class="s">&#39;tag&#39;</span><span class="p">,</span> <span class="s">&#39;endtag&#39;</span><span class="p">)</span>
 </pre>
 <p>You'll need to turn to the source code itself for further details - see the <code>nodes.py</code> file for lots of examples to work from.</p>
 
-    
+      
+    </article>
 
-
-        </article>
-
-        <footer id="footer" class="footer meta">
-            <ul>
+    <footer id="footer" class="footer meta">
+      <ul>
 <li><a href="index.html">Ibis</a></li>
 <li><a href="tutorial.html">Quickstart</a></li>
 <li><a href="markup.html">Markup</a></li>
@@ -176,11 +178,7 @@
 <li><a href="inheritance.html">Inheritance</a></li>
 <li><a href="api.html">API</a></li>
 </ul>
-        </footer>
+    </footer>
 
-    </body>
+  </body>
 </html>
-
-
-
-

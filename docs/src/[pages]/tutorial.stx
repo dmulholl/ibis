@@ -20,24 +20,23 @@ The `Template` class takes the string and compiles it into a template object. Co
     '1 and 2'
 
 
+
 Loading Template Files
 ----------------------
 
 In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting `Template` objects yourself, or you can take advantage of the built-in `FileLoader` class to take care of the details for you.
 
-A `FileLoader` object is initialized with a path to a base template directory:
+A `FileLoader` instance is initialized with a path to a root template directory:
 
 ::: python
 
     import ibis
     loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
-Calling the loader with a template name (a string interpreted as a path to a text file stored in the base directory) will return the corresponding template object:
+Calling the loader with a template name (a string interpreted as a path to a text file stored in the root directory) will return the corresponding template object:
 
 ::: python
 
     template = loader('template.txt')
 
-Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes.
-
-You can learn more about using template loaders [here](@root/api//#template-loaders).
+The loader compiles the templates once and caches them in memory for future lookups. You can learn more about using template loaders [here](@root/api//#template-loaders).

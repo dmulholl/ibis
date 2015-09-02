@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Quickstart</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/vanilla.css">
-        <link rel="stylesheet" href="css/pygments.css">
-        <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery-1.11.2.min.js"></script>
-        <script src="js/vanilla.js"></script>
-    </head>
-    <body class="pages single">
+  <head>
+    <meta charset="utf-8">
+    <title>Quickstart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/pygments.css">
+    <!--[if lt IE 9]><script src="js/html5shiv.min.js"></script><![endif]-->
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/theme.js"></script>
+  </head>
+  <body class="pages single">
 
-        <header id="header" class="header meta">
-            <ul>
+    <header id="header" class="header meta">
+      
+        <div class="hamburger unselectable">☰</div>
+        <ul>
 <li><a href="index.html">Ibis</a></li>
 <li><a href="tutorial.html">Quickstart</a></li>
 <li><a href="markup.html">Markup</a></li>
@@ -24,14 +24,13 @@
 <li><a href="inheritance.html">Inheritance</a></li>
 <li><a href="api.html">API</a></li>
 </ul>
-        </header>
+      
+    </header>
 
-        <article id="content" class="content">
-            
+    <article id="content" class="content">
+      
 
-    
-    
-    <h1 id="quickstart">Quickstart</h1>
+      <h1 id="quickstart">Quickstart</h1>
 <p>A template starts life as a simple string containing <a href="markup.html">template markup</a>. We use this string to initialize a <code>Template</code> object:</p>
 <pre class="lang-python stx-pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ibis</span>
@@ -47,25 +46,22 @@
 </pre>
 <h2 id="loading-template-files">Loading Template Files</h2>
 <p>In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting <code>Template</code> objects yourself, or you can take advantage of the built-in <code>FileLoader</code> class to take care of the details for you.</p>
-<p>A <code>FileLoader</code> object is initialized with a path to a base template directory:</p>
+<p>A <code>FileLoader</code> instance is initialized with a path to a root template directory:</p>
 <pre class="lang-python stx-pygments" data-lang="python">
 <span class="kn">import</span> <span class="nn">ibis</span>
 <span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
 </pre>
-<p>Calling the loader with a template name (a string interpreted as a path to a text file stored in the base directory) will return the corresponding template object:</p>
+<p>Calling the loader with a template name (a string interpreted as a path to a text file stored in the root directory) will return the corresponding template object:</p>
 <pre class="lang-python stx-pygments" data-lang="python">
 <span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="s">&#39;template.txt&#39;</span><span class="p">)</span>
 </pre>
-<p>Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes.</p>
-<p>You can learn more about using template loaders <a href="api.html#template-loaders">here</a>.</p>
+<p>The loader compiles the templates once and caches them in memory for future lookups. You can learn more about using template loaders <a href="api.html#template-loaders">here</a>.</p>
 
-    
+      
+    </article>
 
-
-        </article>
-
-        <footer id="footer" class="footer meta">
-            <ul>
+    <footer id="footer" class="footer meta">
+      <ul>
 <li><a href="index.html">Ibis</a></li>
 <li><a href="tutorial.html">Quickstart</a></li>
 <li><a href="markup.html">Markup</a></li>
@@ -74,11 +70,7 @@
 <li><a href="inheritance.html">Inheritance</a></li>
 <li><a href="api.html">API</a></li>
 </ul>
-        </footer>
+    </footer>
 
-    </body>
+  </body>
 </html>
-
-
-
-

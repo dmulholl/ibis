@@ -72,6 +72,9 @@ body {
     color: #4183C4;
     transition: color 0.3s;
 }
+.hamburger {
+    display: none;
+}
 
 /*
     Headings
@@ -118,16 +121,15 @@ p {
 */
 
 blockquote {
-    margin: 2rem 0;
-    margin-left: 1rem;
-    padding: 0 3rem 0 1.5rem;
-    border-left: 3px solid #ddd;
+    margin: 3rem 1rem;
+    padding: 0 2rem;
+    border-left: 3px solid #e8e8e8;
     color: #666;
     font-style: italic;
 }
 
 /*
-    Lists
+    Ordered/Unordered Lists
 */
 
 ul, ol {
@@ -140,6 +142,25 @@ ul ul, ol ol, ul ol, ol ul {
 li {
     margin: 0.5rem 0;
     padding: 0;
+}
+
+/*
+    Definition Lists
+*/
+
+dl {
+    margin: 3rem 0;
+    padding: 0;
+}
+dt {
+    margin: 2rem 0;
+    padding: 0;
+    font-weight: bold;
+}
+dd {
+    margin: 2rem 1rem;
+    padding: 0 2rem;
+    border-left: 3px solid #e8e8e8;
 }
 
 /*
@@ -250,10 +271,10 @@ th, td {
     padding: 0.6rem 1.2rem;
     text-align: left;
 }
-table .align-center {
+table .stx-center {
     text-align: center;
 }
-table .align-right {
+table .stx-right {
     text-align: right;
 }
 
@@ -288,23 +309,34 @@ h1 + ul {
 .stx-alert {
     margin: 3rem;
     border: 1px solid;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     border-radius: 3px;
 }
 .stx-info {
-    color: #31708f;
-    border-color: #bce8f1;
-    background-color: #d9edf7;
+    color: #224466;
+    border-color: #bac6d3;
+    background-color: #e2eef9;
 }
 .stx-warning {
-    color: #8a6d3b;
-    border-color: #faebcc;
-    background-color: #fcf8e3;
+    color: #4c4a42;
+    border-color: #dfd8c2;
+    background-color: #fff9ea;
 }
 .stx-error {
-    color: #a94442;
-    border-color: #ebccd1;
-    background-color: #f2dede;
+    color: #991111;
+    border-color: #d2b2b2;
+    background-color: #fcdede;
+}
+
+/*
+    Utility Styles
+*/
+
+.unselectable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /*
@@ -314,6 +346,7 @@ h1 + ul {
 @media (max-width: 800px) {
     html {
         font-size: 58.333333%;
+        -webkit-text-size-adjust: 100%;
     }
     body {
         padding: 0;
@@ -338,32 +371,42 @@ h1 + ul {
 @media (max-width: 420px) {
     html {
         font-size: 54.166667%;
+        -webkit-text-size-adjust: 100%;
     }
     .content {
         padding: 0 20px 30px;
     }
     .header {
-        text-align: left;
-        font-size: 1.5rem;
-        padding: 15px 20px;
+        text-align: center;
+        font-size: 1.6rem;
+        padding: 20px 0;
         color: #333;
     }
+    .hamburger {
+        display: block;
+        margin: 0 auto;
+        width: 10rem;
+        text-align: center;
+        font-size: 4rem;
+        color: #888;
+        cursor: pointer;
+    }
     .header ul {
-        border-top:    1px dotted #ccc;
-        margin: 15px 40px;
+        border-top: 1px dotted #ccc;
+        margin: 15px 80px;
+        display: none;
     }
     .header li {
         margin: 0;
-        padding-left: 10px;
         display: list-item;
         border-bottom: 1px dotted #ccc;
     }
     .header li:before, .header li:first-child:before {
-        content: "§";
+        content: none;
     }
     .header a {
         display: inline-block;
-        padding: 5px 10px;
+        padding: 8px 10px;
         color: #4183C4;
         text-decoration: none;
     }

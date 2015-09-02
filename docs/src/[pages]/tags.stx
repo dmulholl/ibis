@@ -5,7 +5,7 @@ Tag Reference
 :insert toc
 
 
-=== block ===
+### block
 
 ::: django
 
@@ -15,7 +15,7 @@ The `block` tag is used with the `extends` tag to implement [template inheritanc
 
 
 
-=== cycle ===
+### cycle
 
 ::: django
 
@@ -35,7 +35,7 @@ A typical use case might be to add alternating CSS classes to elements in a list
 
 
 
-=== extends ===
+### extends
 
 ::: django
 
@@ -45,7 +45,7 @@ The `extends` tag is used with the `block` tag to implement [template inheritanc
 
 
 
-=== include ===
+### include
 
 ::: django
 
@@ -55,7 +55,7 @@ The `include` tag incorporates a sub-template into the current template. The `na
 
 
 
-=== for ===
+### for
 
 ::: django
 
@@ -75,18 +75,18 @@ The automatic `loop` variable gives access to some useful data within the body o
 
 :++
 
-    Variable      | Description
-    ------------- | -----------
-    `loop.index`  | The current iteration of the loop (0-indexed).
-    `loop.count`  | The current iteration of the loop (1-indexed).
-    `loop.length` | The number of items in the sequence.
-    `loop.first`  | True on the first iteration of the loop.
-    `loop.last`   | True on the last iteration of the loop.
-    `loop.parent` | For nested loops, the loop variable of the parent loop.
+    Variable         | Description
+    ---------------- | -----------
+    `loop.index`     | The current iteration of the loop (0-indexed).
+    `loop.count`     | The current iteration of the loop (1-indexed).
+    `loop.length`    | The number of items in the sequence.
+    `loop.is_first`  | True on the first iteration of the loop.
+    `loop.is_last`   | True on the last iteration of the loop.
+    `loop.parent`    | For nested loops, the loop variable of the parent loop.
 
 
 
-=== if ===
+### if
 
 ::: django
 
@@ -134,7 +134,7 @@ Note that explicit brackets are not supported by the syntax.
 
 
 
-=== spaceless ===
+### spaceless
 
 ::: django
 
@@ -158,7 +158,7 @@ would be rendered as:
 
 
 
-=== trim ===
+### trim
 
 ::: django
 
@@ -168,7 +168,7 @@ The `trim` tag strips all leading and trailing whitespace from its content.
 
 
 
-=== with ===
+### with
 
 ::: django
 

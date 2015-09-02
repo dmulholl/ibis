@@ -2,150 +2,154 @@
 Filter Reference
 ================
 
+
+Filters are chainable functions that modify the value of an expression. Ibis's builtin filters are listed below in function form; in each case, the first argument of the function is the expression the filter operates on.
+
+
 :insert toc
 
 
-=== default ===
+### default
 
     default(obj, fallback)
 
 Returns `obj` if `obj` is truthy, otherwise returns the specified fallback.
 
 
-=== dtformat ===
+### dtformat
 
     dtformat(datetime, format='%Y-%m-%d %H:%M')
 
 Formats a datetime object using the specified format string.
 
 
-=== endswith ===
+### endswith
 
     endswith(s, suffix)
 
 Returns true if the string `s` ends with the specified suffix.
 
 
-=== escape ===
+### escape
 
     escape(s, quotes=True)
 
 Replaces the following HTML syntax characters with their corresponding character entities: `<`, `>`, `&`, `'`, and `"`. This filter is also available under the aliases `esc` and `e`.
 
 
-=== even ===
+### even
 
     even(i)
 
 Returns true if the integer `i` is even.
 
 
-=== first ===
+### first
 
     first(seq)
 
 Returns the first element in a sequence.
 
 
-=== firsth ===
+### firsth
 
     firsth(s)
 
 Returns the content of the first heading element in a string of HTML.
 
 
-=== firstp ===
+### firstp
 
     firstp(s)
 
 Returns the content of the first `<p>` element in a string of HTML.
 
 
-=== index ===
+### index
 
     index(seq, i)
 
 Returns the ith element in a sequence.
 
 
-=== join ===
+### join
 
     join(seq, sep='')
 
 Joins elements of a sequence with the specified separator string.
 
 
-=== last ===
+### last
 
     last(seq)
 
 Returns the last element in a sequence.
 
 
-=== len ===
+### len
 
     len(seq)
 
 Returns the length of a sequence.
 
 
-=== lower ===
+### lower
 
     lower(s)
 
 Converts the string `s` to lowercase.
 
 
-=== odd ===
+### odd
 
     odd(i)
 
 Returns true if the integer `i` is odd.
 
 
-=== pprint ===
+### pprint
 
     pprint(obj)
 
 Pretty prints an object.
 
 
-=== random ===
+### random
 
     random(seq)
 
 Returns a random element from a sequence.
 
 
-=== repr ===
+### repr
 
     repr(obj)
 
 Returns the string representation of an object.
 
 
-=== reversed ===
+### reversed
 
     reversed(seq)
 
 Returns a reverse iterator over a sequence.
 
 
-=== slice ===
+### slice
 
     slice(seq, start, stop=None, step=None)
 
 Returns the `[start:stop:step]` slice of a sequence.
 
 
-=== spaceless ===
+### spaceless
 
     spaceless(s)
 
 Strips all whitespace between HTML/XML tags in a string.
 
 
-=== startswith ===
+### startswith
 
 
     startswith(s, prefix)
@@ -153,49 +157,49 @@ Strips all whitespace between HTML/XML tags in a string.
 Returns true if the string `s` starts with the specified prefix.
 
 
-=== striptags ===
+### striptags
 
     striptags(s)
 
 Strips all HTML/XML tags from a string.
 
 
-=== titlecase ===
+### titlecase
 
     titlecase(s)
 
 Converts the string `s` to titlecase.
 
 
-=== truncatechars ===
+### truncatechars
 
     truncatechars(s, n, ellipsis='...')
 
 Truncates the string `s` to at most `n` chars.
 
 
-=== truncatewords ===
+### truncatewords
 
     truncatewords(s, n, ellipsis=' [...]')
 
 Truncates the string `s` to at most `n` words.
 
 
-=== undefined ===
+### undefined
 
     undefined(obj, fallback)
 
 Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise returns the specified fallback.
 
 
-=== upper ===
+### upper
 
     upper(s)
 
 Converts the string `s` to uppercase.
 
 
-=== wrap ===
+### wrap
 
     wrap(s, tag)
 

@@ -11,6 +11,7 @@ There are three kinds of template markup: comments, print statements, and syntax
 Comments can span multiple lines and can be used to comment-out sections of template code.
 
 
+
 Print Statements
 ----------------
 
@@ -20,27 +21,38 @@ Print statements evaluate and print [expressions](#expressions). They look like 
 
     {{ post.title }}
 
-Print statements can contain multiple expressions separated by the `or` keyword. The first expression to evaluate as 'truthy' will be printed.
-
-::: django
-
-    {{ post.title or "Untitled Post" }}
-
-Print statements come in both regular and escaped flavours. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:
+Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:
 
     {{{ post.title }}}
 
-Escaped print statements are simply a shortcut for applying the built-in `escape` filter. The example above is equivalent to:
+Escaped print statements are simply a shortcut for applying the built-in `escape` filter to their content. The example above is equivalent to:
 
 ::: django
 
     {{ post.title|escape }}
 
+Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the `or` keyword. The first expression to evaluate as 'truthy' will be printed:
+
+::: django
+
+    {{ post.title or "Untitled Post" }}
+
+Second, print statements can make use of a C-style ternary operator, `?? ::`:
+
+:::
+
+    {{ is_homepage ?? site.title :: post.title }}
+
+If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.
+
+Note that a single print statement can *either* make use of `or`-chaining or the ternary construct but not both.
+
+
 
 Expressions
 -----------
 
-An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters. 
+An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 
 Variables use `.` syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:
 
@@ -73,6 +85,7 @@ Note that expressions can use simple Python literals in place of variables:
     {% endif %}
 
 The following literal structures can be used in expressions as arguments to callables or in place of variables: strings, bytes, numbers, tuples, lists, dicts, sets, booleans, and `None`.
+
 
 
 Syntax Tags

@@ -32,12 +32,21 @@ A `Template` object is initialized with a template string. It compiles the strin
     '1 and 2'
 
 
+
 Template Loaders
 ----------------
 
-If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts a single string argument - the template name - and returns the corresponding template object.
+If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts one or more string arguments and either returns a corresponding template object or raises a `TemplateNotFound` exception, i.e. a template loader has a signature like the following function:
 
-You can define your own custom template loader, but in most cases an instance of the built-in `FileLoader` class will be suitable. `FileLoader` objects are initialized with a path to a base template directory; template names are then interpreted as paths to UTF-8 encoded text files stored in this directory. Templates are compiled once and cached in memory for future lookups, but are automatically recompiled if the underlying template file changes. (If you don't need this automatic reload functionality you can use a `FastFileLoader` object instead for a small speed boost.)
+::: python
+
+    def loader(*args):
+        ...
+        return Template("loaded template text")
+
+You can define your own custom template loaders, but in many cases an instance of the builtin `FileLoader` class will be suitable. A `FileLoader` instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.
+
+A `FileLoader` instance compiles its templates once and caches them in memory for future lookups. A `FileReloader` instance is identical but will automatically reload and recompile a template if the underlying template file changes.
 
 To specify a template loader set the `ibis.config.loader` variable to an instance of your callable:
 
@@ -46,13 +55,8 @@ To specify a template loader set the `ibis.config.loader` variable to an instanc
     import ibis
     ibis.config.loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
-Note that you can use slashes in tempate names to load templates from subdirectories of the base directory:
+You may find it useful to use a single `FileLoader` object to load templates throughout your application to take full advantage of its built-in caching.
 
-::: django
-
-    {% include "subdir/template.html" %}
-
-You may find it useful to use the same `FileLoader` object to load templates throughout your application to take advantage of its built-in caching.
 
 
 Exceptions
@@ -76,24 +80,29 @@ The following exception types may be raised by the template engine:
         Raised if a filter function throws an exception.
 
 
-    *   `ibis.errors.InvalidFilterError`
+    *   `ibis.errors.InvalidFilter`
 
         Unrecognised filter name.
 
 
-    *   `ibis.errors.InvalidTagError`
+    *   `ibis.errors.InvalidTag`
 
         Unrecognised syntax tag.
 
 
     *   `ibis.errors.LoadError`
 
-        Error attempting to load a template file.
+        OS error attempting to load a template file.
 
 
     *   `ibis.errors.NestingError`
 
         Improperly nested template tags.
+
+
+    *   `ibis.errors.TemplateNotFound`
+
+        Raised by a template loader when no template is found.
 
 
     *   `ibis.errors.TemplateSyntaxError`
@@ -112,14 +121,14 @@ Builtins
 The following built-in variables and functions are available in all contexts:
 
 
-*   `defined(varstring)`
+*   `defined("name")`
 
     Returns `True` if the supplied string literal is a resolvable variable name.
 
 
 *   `now()`
 
-    Returns a datetime object representing the current instant.
+    Returns a datetime object representing the instant the function is called.
 
 
 *   `range()`
@@ -185,13 +194,13 @@ Custom Tags
 
 You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
 
-Every syntax tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new syntax tag you register a subclass using the `@register` decorator:
+Every syntax tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new syntax tag, register a subclass using the `@register` decorator:
 
 ::: python
 
     @ibis.nodes.register('tag')
 
-You can give your new tag block scope by specifying the required end tag:
+You can give your new tag block scope by specifying a required end tag:
 
 ::: python
 

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Template Markup</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/vanilla.css">
-        <link rel="stylesheet" href="css/pygments.css">
-        <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery-1.11.2.min.js"></script>
-        <script src="js/vanilla.js"></script>
-    </head>
-    <body class="pages single">
+  <head>
+    <meta charset="utf-8">
+    <title>Template Markup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/pygments.css">
+    <!--[if lt IE 9]><script src="js/html5shiv.min.js"></script><![endif]-->
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/theme.js"></script>
+  </head>
+  <body class="pages single">
 
-        <header id="header" class="header meta">
-            <ul>
+    <header id="header" class="header meta">
+      
+        <div class="hamburger unselectable">☰</div>
+        <ul>
 <li><a href="index.html">Ibis</a></li>
 <li><a href="tutorial.html">Quickstart</a></li>
 <li><a href="markup.html">Markup</a></li>
@@ -24,14 +24,13 @@
 <li><a href="inheritance.html">Inheritance</a></li>
 <li><a href="api.html">API</a></li>
 </ul>
-        </header>
+      
+    </header>
 
-        <article id="content" class="content">
-            
+    <article id="content" class="content">
+      
 
-    
-    
-    <h1 id="template-markup">Template Markup</h1>
+      <h1 id="template-markup">Template Markup</h1>
 <p>There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:</p>
 <pre class="lang-django stx-pygments" data-lang="django">
 <span class="c">{# This is a comment. #}</span><span class="x"></span>
@@ -42,18 +41,24 @@
 <pre class="lang-django stx-pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
-<p>Print statements can contain multiple expressions separated by the <code>or</code> keyword. The first expression to evaluate as 'truthy' will be printed.</p>
-<pre class="lang-django stx-pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.title</span> <span class="k">or</span> <span class="s2">&quot;Untitled Post&quot;</span> <span class="cp">}}</span><span class="x"></span>
-</pre>
-<p>Print statements come in both regular and escaped flavours. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:</p>
+<p>Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:</p>
 <pre>
 {{{ post.title }}}
 </pre>
-<p>Escaped print statements are simply a shortcut for applying the built-in <code>escape</code> filter. The example above is equivalent to:</p>
+<p>Escaped print statements are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:</p>
 <pre class="lang-django stx-pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
+<p>Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the <code>or</code> keyword. The first expression to evaluate as 'truthy' will be printed:</p>
+<pre class="lang-django stx-pygments" data-lang="django">
+<span class="cp">{{</span> <span class="nv">post.title</span> <span class="k">or</span> <span class="s2">&quot;Untitled Post&quot;</span> <span class="cp">}}</span><span class="x"></span>
+</pre>
+<p>Second, print statements can make use of a C-style ternary operator, <code>?? ::</code>:</p>
+<pre>
+{{ is_homepage ?? site.title :: post.title }}
+</pre>
+<p>If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.</p>
+<p>Note that a single print statement can <em>either</em> make use of <code>or</code>-chaining or the ternary construct but not both.</p>
 <h2 id="expressions">Expressions</h2>
 <p>An <em>expression</em> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.</p>
 <p>Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:</p>
@@ -90,13 +95,11 @@
 <p>Tags with block scope can contain further template markup and can be nested to any depth.</p>
 <p>You can find a list of built-in syntax tags <a href="tags.html">here</a>.</p>
 
-    
+      
+    </article>
 
-
-        </article>
-
-        <footer id="footer" class="footer meta">
-            <ul>
+    <footer id="footer" class="footer meta">
+      <ul>
 <li><a href="index.html">Ibis</a></li>
 <li><a href="tutorial.html">Quickstart</a></li>
 <li><a href="markup.html">Markup</a></li>
@@ -105,11 +108,7 @@
 <li><a href="inheritance.html">Inheritance</a></li>
 <li><a href="api.html">API</a></li>
 </ul>
-        </footer>
+    </footer>
 
-    </body>
+  </body>
 </html>
-
-
-
-
