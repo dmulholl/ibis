@@ -19,11 +19,6 @@ The `Template` class takes the string and compiles it into a template object. Co
     >>> template.render({'foo': 1, 'bar': 2})
     '1 and 2'
 
-
-
-Loading Template Files
-----------------------
-
 In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting `Template` objects yourself, or you can take advantage of the built-in `FileLoader` class to take care of the details for you.
 
 A `FileLoader` instance is initialized with a path to a root template directory:
