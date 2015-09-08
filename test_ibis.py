@@ -188,10 +188,20 @@ class FilterFunctionTests(unittest.TestCase):
         rendered = Template(template).render(var=('foo <h1>bar</h1> baz'))
         self.assertEqual(rendered, 'bar')
 
+    def test_firsth_with_newline(self):
+        template = '{{var|firsth}}'
+        rendered = Template(template).render(var=('foo <h1>bar\nbar</h1> baz'))
+        self.assertEqual(rendered, 'bar\nbar')
+
     def test_firstp(self):
         template = '{{var|firstp}}'
         rendered = Template(template).render(var=('foo <p>bar</p> baz'))
         self.assertEqual(rendered, 'bar')
+
+    def test_firstp_with_newline(self):
+        template = '{{var|firstp}}'
+        rendered = Template(template).render(var=('foo <p>bar\nbar</p> baz'))
+        self.assertEqual(rendered, 'bar\nbar')
 
     def test_index(self):
         template = '{{var|index:1}}'

@@ -90,21 +90,21 @@ def first(seq):
 @register
 def firsth(html):
     """ Returns the content of the first heading element. """
-    match = re.search(r'<h(\d)+[^>]*>(.*?)</h\1>', html)
+    match = re.search(r'<h(\d)+[^>]*>(.*?)</h\1>', html, flags=re.DOTALL)
     return match.group(2) if match else ''
 
 
 @register
 def firsth1(html):
     """ Returns the content of the first h1 element. """
-    match = re.search(r'<h1[^>]*>(.*?)</h1>', html)
+    match = re.search(r'<h1[^>]*>(.*?)</h1>', html, flags=re.DOTALL)
     return match.group(1) if match else ''
 
 
 @register
 def firstp(html):
     """ Returns the content of the first p element. """
-    match = re.search(r'<p[^>]*>(.*?)</p>', html)
+    match = re.search(r'<p[^>]*>(.*?)</p>', html, flags=re.DOTALL)
     return match.group(1) if match else ''
 
 
