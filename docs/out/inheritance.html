@@ -1,39 +1,66 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>Template Inheritance</title>
+    <title>
+        
+Template Inheritance
+
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]><script src="js/html5shiv.min.js"></script><![endif]-->
-    <script src="js/jquery-1.11.2.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/theme.js"></script>
-  </head>
-  <body class="pages single">
+</head>
 
-    <header id="header" class="header meta">
-      
-        <div class="hamburger unselectable">☰</div>
+<body class="pages single">
+
+    <header id="head" class="head">
+        <input id="togglebox" type="checkbox">
+        <label id="togglelabel" for="togglebox" class="unselectable"></label>
         <ul>
-<li><a href="index.html">Ibis</a></li>
-<li><a href="tutorial.html">Quickstart</a></li>
-<li><a href="markup.html">Markup</a></li>
-<li><a href="tags.html">Tags</a></li>
-<li><a href="filters.html">Filters</a></li>
-<li><a href="inheritance.html">Inheritance</a></li>
-<li><a href="api.html">API</a></li>
+<li>
+<a href="index.html">Ibis</a>
+</li>
+<li>
+<a href="tutorial.html">Quickstart</a>
+</li>
+<li>
+<a href="markup.html">Markup</a>
+</li>
+<li>
+<a href="tags.html">Tags</a>
+</li>
+<li>
+<a href="filters.html">Filters</a>
+</li>
+<li>
+<a href="inheritance.html">Inheritance</a>
+</li>
+<li>
+<a href="api.html">API</a>
+</li>
 </ul>
-      
+
     </header>
 
-    <article id="content" class="content">
-      
+    <article id="main" class="main">
+        
 
-      <h1 id="template-inheritance">Template Inheritance</h1>
-<p>Ibis supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.</p>
-<p>Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call <code>base.html</code>:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+        <h1 id="template-inheritance">
+Template Inheritance
+</h1>
+<p>
+Ibis supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.
+</p>
+<p>
+Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call <code>base.html</code>:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
 <span class="x">    &lt;head&gt;</span>
@@ -56,8 +83,10 @@
 <span class="x">    &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
 </pre>
-<p>This template uses <code>block</code> tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the <code>extends</code> tag to declare that they inherit from a particular base template:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+This template uses <code>block</code> tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the <code>extends</code> tag to declare that they inherit from a particular base template:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Homepage</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
@@ -67,35 +96,68 @@
 <span class="x">    &lt;p&gt;Here&#39;s some waffle about my wonderful site...&lt;/p&gt;</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
-<p>In this case we didn't override the <code>sidebar</code> block so the default content from the parent template will be used as a fallback.</p>
-<p>Some points to note:</p>
+<p>
+In this case we didn't override the <code>sidebar</code> block so the default content from the parent template will be used as a fallback.
+</p>
+<p>
+Some points to note:
+</p>
 <ul>
-<li><p>The <code>extends</code> tag should be the first tag in a child template.</p>
+<li>
+<p>
+The <code>extends</code> tag should be the first tag in a child template.
+</p>
 </li>
-<li><p>The <code>extends</code> tag requires a string literal argument specifying the name of the parent template.</p>
+<li>
+<p>
+The <code>extends</code> tag requires a string literal argument specifying the name of the parent template.
+</p>
 </li>
-<li><p>You need to configure a <a href="api.html#template-loaders">template loader</a> so Ibis can locate the appropriate parent template.</p>
+<li>
+<p>
+You need to configure a <a href="api.html#template-loaders">template loader</a> so Ibis can locate the appropriate parent template.
+</p>
 </li>
-<li><p>You can use as many levels of inheritance as you like.</p>
+<li>
+<p>
+You can use as many levels of inheritance as you like.
+</p>
 </li>
-<li><p>The built-in <code>{{ super }}</code> variable gives you access to the content of the parent block.</p>
+<li>
+<p>
+The built-in <code>{{ super }}</code> variable gives you access to the content of the parent block.
+</p>
 </li>
 </ul>
 
-      
     </article>
 
-    <footer id="footer" class="footer meta">
-      <ul>
-<li><a href="index.html">Ibis</a></li>
-<li><a href="tutorial.html">Quickstart</a></li>
-<li><a href="markup.html">Markup</a></li>
-<li><a href="tags.html">Tags</a></li>
-<li><a href="filters.html">Filters</a></li>
-<li><a href="inheritance.html">Inheritance</a></li>
-<li><a href="api.html">API</a></li>
+    <footer id="foot" class="foot">
+        <ul>
+<li>
+<a href="index.html">Ibis</a>
+</li>
+<li>
+<a href="tutorial.html">Quickstart</a>
+</li>
+<li>
+<a href="markup.html">Markup</a>
+</li>
+<li>
+<a href="tags.html">Tags</a>
+</li>
+<li>
+<a href="filters.html">Filters</a>
+</li>
+<li>
+<a href="inheritance.html">Inheritance</a>
+</li>
+<li>
+<a href="api.html">API</a>
+</li>
 </ul>
+
     </footer>
 
-  </body>
+</body>
 </html>

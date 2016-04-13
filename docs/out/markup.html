@@ -1,114 +1,197 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>Template Markup</title>
+    <title>
+        
+Template Markup
+
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]><script src="js/html5shiv.min.js"></script><![endif]-->
-    <script src="js/jquery-1.11.2.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/theme.js"></script>
-  </head>
-  <body class="pages single">
+</head>
 
-    <header id="header" class="header meta">
-      
-        <div class="hamburger unselectable">☰</div>
+<body class="pages single">
+
+    <header id="head" class="head">
+        <input id="togglebox" type="checkbox">
+        <label id="togglelabel" for="togglebox" class="unselectable"></label>
         <ul>
-<li><a href="index.html">Ibis</a></li>
-<li><a href="tutorial.html">Quickstart</a></li>
-<li><a href="markup.html">Markup</a></li>
-<li><a href="tags.html">Tags</a></li>
-<li><a href="filters.html">Filters</a></li>
-<li><a href="inheritance.html">Inheritance</a></li>
-<li><a href="api.html">API</a></li>
+<li>
+<a href="index.html">Ibis</a>
+</li>
+<li>
+<a href="tutorial.html">Quickstart</a>
+</li>
+<li>
+<a href="markup.html">Markup</a>
+</li>
+<li>
+<a href="tags.html">Tags</a>
+</li>
+<li>
+<a href="filters.html">Filters</a>
+</li>
+<li>
+<a href="inheritance.html">Inheritance</a>
+</li>
+<li>
+<a href="api.html">API</a>
+</li>
 </ul>
-      
+
     </header>
 
-    <article id="content" class="content">
-      
+    <article id="main" class="main">
+        
 
-      <h1 id="template-markup">Template Markup</h1>
-<p>There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+        <h1 id="template-markup">
+Template Markup
+</h1>
+<p>
+There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="c">{# This is a comment. #}</span><span class="x"></span>
 </pre>
-<p>Comments can span multiple lines and can be used to comment-out sections of template code.</p>
-<h2 id="print-statements">Print Statements</h2>
-<p>Print statements evaluate and print <a href="#expressions">expressions</a>. They look like this:</p>
+<p>
+Comments can span multiple lines and can be used to comment-out sections of template code.
+</p>
+<h2 id="print-statements">
+Print Statements
+</h2>
+<p>
+Print statements evaluate and print <a href="#expressions">expressions</a>. They look like this:
+</p>
 <pre>
 {{ post.title }}
 </pre>
-<p>Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:</p>
+<p>
+Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:
+</p>
 <pre>
 {{{ post.title }}}
 </pre>
-<p>Escaped print statements are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:</p>
+<p>
+Escaped print statements are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:
+</p>
 <pre>
 {{ post.title|escape }}
 </pre>
-<p>Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the <code>or</code> keyword. The first expression to evaluate as 'truthy' will be printed:</p>
-<pre class="lang-python stx-pygments" data-lang="python">
-<span class="p">{{</span> <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s">&quot;Untitled Post&quot;</span> <span class="p">}}</span>
+<p>
+Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the <code>or</code> keyword. The first expression to evaluate as 'truthy' will be printed:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="p">{{</span> <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s2">&quot;Untitled Post&quot;</span> <span class="p">}}</span>
 </pre>
-<p>Second, print statements can make use of a C-style ternary operator, <code>?? ::</code>:</p>
+<p>
+Second, print statements can make use of a C-style ternary operator, <code>?? ::</code>:
+</p>
 <pre>
 {{ is_homepage ?? site.title :: post.title }}
 </pre>
-<p>If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.</p>
-<p>Note that a single print statement can make use of <code>or</code>-chaining or the ternary construct, but not both.</p>
-<h2 id="expressions">Expressions</h2>
-<p>An <em>expression</em> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.</p>
-<p>Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.
+</p>
+<p>
+Note that a single print statement can make use of <code>or</code>-chaining or the ternary construct, but not both.
+</p>
+<h2 id="expressions">
+Expressions
+</h2>
+<p>
+An <em>expression</em> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
+</p>
+<p>
+Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">:</span><span class="m">42</span><span class="s2">:&quot;foo&quot;</span> <span class="cp">}}</span><span class="x"></span>
 
 <span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">(</span><span class="m">42</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
-<p>Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
-<p>Like callables, filters accept arguments using colon or bracket syntax:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+Like callables, filters accept arguments using colon or bracket syntax:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">post.content</span><span class="o">|</span><span class="nf">striptags</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">:</span><span class="m">50</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
-<p>You can find a list of built-in filters <a href="filters.html">here</a>.</p>
-<p>Note that expressions can use simple Python literals in place of variables:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+You can find a list of built-in filters <a href="filters.html">here</a>.
+</p>
+<p>
+Note that expressions can use simple Python literals in place of variables:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">if</span> <span class="nv">day</span><span class="o">|</span><span class="nf">lower</span> <span class="k">in</span> <span class="o">(</span><span class="s2">&quot;saturday&quot;</span><span class="o">,</span> <span class="s2">&quot;sunday&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    It&#39;s the weekend!</span>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
-<p>The following literal structures can be used in expressions as arguments to callables or in place of variables: strings, bytes, numbers, tuples, lists, dicts, sets, booleans, and <code>None</code>.</p>
-<h2 id="syntax-tags">Syntax Tags</h2>
-<p>Syntax tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+The following literal structures can be used in expressions as arguments to callables or in place of variables: strings, bytes, numbers, tuples, lists, dicts, sets, booleans, and <code>None</code>.
+</p>
+<h2 id="syntax-tags">
+Syntax Tags
+</h2>
+<p>
+Syntax tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">tag</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
-<p>Some syntax tags have block scope and require a closing tag. They look like this:</p>
-<pre class="lang-django stx-pygments" data-lang="django">
+<p>
+Some syntax tags have block scope and require a closing tag. They look like this:
+</p>
+<pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">tag</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endtag</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
-<p>Tags with block scope can contain further template markup and can be nested to any depth.</p>
-<p>You can find a list of built-in syntax tags <a href="tags.html">here</a>.</p>
+<p>
+Tags with block scope can contain further template markup and can be nested to any depth.
+</p>
+<p>
+You can find a list of built-in syntax tags <a href="tags.html">here</a>.
+</p>
 
-      
     </article>
 
-    <footer id="footer" class="footer meta">
-      <ul>
-<li><a href="index.html">Ibis</a></li>
-<li><a href="tutorial.html">Quickstart</a></li>
-<li><a href="markup.html">Markup</a></li>
-<li><a href="tags.html">Tags</a></li>
-<li><a href="filters.html">Filters</a></li>
-<li><a href="inheritance.html">Inheritance</a></li>
-<li><a href="api.html">API</a></li>
+    <footer id="foot" class="foot">
+        <ul>
+<li>
+<a href="index.html">Ibis</a>
+</li>
+<li>
+<a href="tutorial.html">Quickstart</a>
+</li>
+<li>
+<a href="markup.html">Markup</a>
+</li>
+<li>
+<a href="tags.html">Tags</a>
+</li>
+<li>
+<a href="filters.html">Filters</a>
+</li>
+<li>
+<a href="inheritance.html">Inheritance</a>
+</li>
+<li>
+<a href="api.html">API</a>
+</li>
 </ul>
+
     </footer>
 
-  </body>
+</body>
 </html>
