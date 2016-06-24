@@ -20,37 +20,6 @@ Features:
 * Self-contained, no dependencies. Use as a drop-in component in any project.
 * Public domain code. No license compatibility issues.
 
+See the [documentation][] for details.
 
-Quickstart
-----------
-
-Create a template object from a string:
-
-    >>> import ibis
-    >>> template = ibis.Template('{{foo}} and {{bar}}')
-
-The template can be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs or a set of keyword arguments:
-
-    >>> template.render(foo='ham', bar='eggs')
-    'ham and eggs'
-
-    >>> template.render({'foo': 1, 'bar': 2})
-    '1 and 2'
-
-See the package's [documentation](http://mulholland.xyz/docs/ibis/) for further details.
-
-
-Installation
-------------
-
-Install directly from the Python Package Index using `pip`:
-
-    $ pip install ibis
-
-Ibis requires Python 3.
-
-
-License
--------
-
-This work has been placed in the public domain.
+[docs]: http://mulholland.xyz/docs/ibis/
