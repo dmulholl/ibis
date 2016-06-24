@@ -20,6 +20,6 @@ Features:
 * Self-contained, no dependencies. Use as a drop-in component in any project.
 * Public domain code. No license compatibility issues.
 
-See the [documentation][] for details.
+See the [documentation][docs] for details.
 
 [docs]: http://mulholland.xyz/docs/ibis/
