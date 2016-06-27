@@ -1,12 +1,11 @@
-""""
-The Template class is the public interface to the template engine.
-
-A Template object is initialized with a template string. It compiles the
-string and stores the resulting tree of template nodes. A compiled template
-can be rendered multiple times by calling its .render() method with
-a dictionary of key-value pairs or a set of keyword arguments.
-
-"""
+# --------------------------------------------------------------------------
+# The Template class is the public interface to the template engine.
+#
+# A Template object is initialized with a template string. It compiles the
+# string and stores the resulting tree of template nodes. A compiled
+# template can be rendered multiple times by calling its render() method
+# with a dictionary of key-value pairs or a set of keyword arguments.
+# --------------------------------------------------------------------------
 
 import re
 import collections

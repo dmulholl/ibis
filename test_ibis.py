@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-
-""" Unit tests for the Ibis package. """
+# --------------------------------------------------------------------------
+# Unit tests for the Ibis package.
+# --------------------------------------------------------------------------
 
 import unittest
 import datetime
 
 from ibis import Template, config, loaders
+
+
+# --------------------------------------------------------------------------
+# Templates.
+# --------------------------------------------------------------------------
 
 
 # Loadable templates for testing the 'include' and 'extends' tags.
@@ -32,6 +38,11 @@ config.loader = loaders.DictLoader({
         '{% endfor %}'
     ),
 })
+
+
+# --------------------------------------------------------------------------
+# Tests.
+# --------------------------------------------------------------------------
 
 
 class BasicInputTests(unittest.TestCase):

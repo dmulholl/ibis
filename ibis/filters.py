@@ -1,16 +1,13 @@
-"""
-Default filter functions for use in templates.
-
-Additional filter functions can be registered using the `@register`
-decorator:
-
-    @ibis.filters.register('name')
-
-A filter function should accept at least one argument - the value to be
-filtered - and return the filtered result. It can optionally accept any
-number of additional arguments.
-
-"""
+# --------------------------------------------------------------------------
+# Default filter functions for use in templates. Additional filter functions
+# can be registered using the `@register` decorator:
+#
+#     @ibis.filters.register('name')
+#
+# A filter function should accept at least one argument - the value to be
+# filtered - and return the filtered result. It can optionally accept any
+# number of additional arguments.
+# --------------------------------------------------------------------------
 
 import random
 import re

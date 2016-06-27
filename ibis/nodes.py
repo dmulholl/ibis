@@ -1,15 +1,13 @@
-"""
-Default node classes and associated helpers.
-
-Additional node classes can be registered using the `@register` decorator:
-
-    @ibis.nodes.register('tag')
-
-Node classes can be given block scope by specifying the required end tag:
-
-    @ibis.nodes.register('tag', 'endtag')
-
-"""
+# --------------------------------------------------------------------------
+# Default node classes and associated helpers. Additional node classes can
+# be registered using the `@register` decorator:
+#
+#     @ibis.nodes.register('tag')
+#
+# Node classes can be given block scope by specifying the required end tag:
+#
+#     @ibis.nodes.register('tag', 'endtag')
+# --------------------------------------------------------------------------
 
 import ast
 import operator
