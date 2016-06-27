@@ -496,16 +496,16 @@ class CycleNode(Node):
         self.expr = Expression(arg)
 
     def render(self, context):
-        # We store our state info on the context object to avoid a
-        # threading mess if the template is being simultaneously
-        # rendered by multiple threads.
+        # We store our state info on the context object to avoid a threading
+        # mess if the template is being simultaneously rendered by multiple
+        # threads.
         if not self in context.stash:
             items = self.expr.eval(context)
             if not hasattr(items, '__iter__'):
                 items = ''
             context.stash[self] = itertools.cycle(items)
         iterator = context.stash[self]
-        return str(next(iterator))
+        return str(next(iterator, ''))
 
 
 @register('include')
