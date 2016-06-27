@@ -13,11 +13,7 @@ import collections
 from . import config
 from . import nodes
 
-from .errors import (
-    Undefined,
-    InvalidTag,
-    NestingError,
-)
+from .errors import Undefined, InvalidTag, NestingError
 
 
 class Template:
