@@ -80,8 +80,3 @@ class Undefined:
 
     def __ne__(self, other):
         return True
-
-
-# Deprecated. The following aliases will be removed in a future version.
-InvalidTagError = InvalidTag
-InvalidFilterError = InvalidFilter
