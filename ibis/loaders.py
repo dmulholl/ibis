@@ -102,7 +102,3 @@ class DictLoader:
             elif name in self.strings:
                 return self.templates.setdefault(name, Template(self.strings[name]))
         raise TemplateNotFound()
-
-
-# Deprecated. This alias will be removed in a future version.
-FastFileLoader = FileLoader
