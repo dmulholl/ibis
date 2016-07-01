@@ -75,7 +75,7 @@ class Expression:
     re_callable = re.compile(r'^([a-zA-Z_][a-zA-Z0-9_.]*)[(](.*)[)]$')
 
     def __init__(self, expr):
-        self.expr = expr
+        self.expr = expr.strip()
         self.filters = []
         elements = utils.splitc(expr, '|', strip=True)
         self._parse_expression(elements[0])

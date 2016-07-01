@@ -36,7 +36,7 @@
 
 
 # Library version number.
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 
 
 # Import modules to make them available to callers via a simple 'import ibis'
