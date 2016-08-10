@@ -23,11 +23,3 @@ Features:
 See the [documentation][docs] for details.
 
 [docs]: http://mulholland.xyz/docs/ibis/
-
-[1.5.0]
-
-This is a test.
-
-## 1.3.0
-
-This is a test.
