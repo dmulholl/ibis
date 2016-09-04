@@ -105,12 +105,6 @@ def firstp(html):
     return match.group(1) if match else ''
 
 
-@register('repr')
-def get_repr(obj):
-    """ Returns the string representation of `obj`. """
-    return repr(obj)
-
-
 @register('reversed')
 def get_reversed(seq):
     """ Returns a reverse iterator over the sequence `seq`. """
@@ -177,6 +171,12 @@ def random(seq):
     return random.choice(seq)
 
 
+@register('repr')
+def to_repr(obj):
+    """ Returns the result of calling repr() on `obj`. """
+    return repr(obj)
+
+
 @register
 def slice(seq, start, stop=None, step=None):
     """ Returns the start:stop:step slice of the sequence `seq`. """
@@ -193,6 +193,12 @@ def spaceless(html):
 def startswith(s, prefix):
     """ True if the string starts with the specified prefix. """
     return s.startswith(prefix)
+
+
+@register('str')
+def to_str(obj):
+    """ Returns the result of calling str() on `obj`. """
+    return str(obj)
 
 
 @register

@@ -239,6 +239,16 @@ class FilterFunctionTests(unittest.TestCase):
         rendered = Template(template).render(var='Foo')
         self.assertEqual(rendered, 'foo')
 
+    def test_repr(self):
+        template = '{{var|repr}}'
+        rendered = Template(template).render(var=123)
+        self.assertEqual(rendered, '123')
+
+    def test_str(self):
+        template = '{{var|str}}'
+        rendered = Template(template).render(var=123)
+        self.assertEqual(rendered, '123')
+
     def test_striptags(self):
         template = '{{var|striptags}}'
         rendered = Template(template).render(var='foo <em>bar</em> baz')
