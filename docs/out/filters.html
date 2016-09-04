@@ -2,17 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>
-        
-Filter Reference
-
-    </title>
+    <title>Filter Reference</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]><script src="js/html5shiv.js"></script><![endif]-->
-    <script src="js/jquery-1.12.3.min.js"></script>
-    <script src="js/theme.js"></script>
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.js"></script>
+    <![endif]-->
 </head>
 
 <body class="type-pages single">
@@ -50,6 +46,7 @@ Filter Reference
 
     </header>
 
+    
     <article id="main" class="main">
         
 
@@ -106,6 +103,9 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 <a href="#pprint">pprint</a>
 </li>
 <li>
+<a href="#pygmentize">pygmentize</a>
+</li>
+<li>
 <a href="#random">random</a>
 </li>
 <li>
@@ -122,6 +122,9 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 </li>
 <li>
 <a href="#startswith">startswith</a>
+</li>
+<li>
+<a href="#str">str</a>
 </li>
 <li>
 <a href="#striptags">striptags</a>
@@ -280,6 +283,18 @@ pprint(obj)
 <p>
 Pretty prints an object.
 </p>
+<h3 id="pygmentize">
+pygmentize
+</h3>
+<pre>
+pygmentize(text, lang=None)
+</pre>
+<p>
+Applies syntax-highlighting to a string using <a href="http://pygments.org">Pygments</a>. If no language is specified, Pygments will attempt to guess the correct lexer to use.
+</p>
+<p>
+If Pygments is not installed or if an appropriate lexer cannot be found this filter will return the input text with any HTML special characters escaped.
+</p>
 <h3 id="random">
 random
 </h3>
@@ -296,7 +311,7 @@ repr
 repr(obj)
 </pre>
 <p>
-Returns the string representation of an object.
+Returns the result of calling <code>repr()</code> on an object.
 </p>
 <h3 id="reversed">
 reversed
@@ -333,6 +348,15 @@ startswith(s, prefix)
 </pre>
 <p>
 Returns true if the string <code>s</code> starts with the specified prefix.
+</p>
+<h3 id="str">
+str
+</h3>
+<pre>
+str(obj)
+</pre>
+<p>
+Returns the result of calling <code>str()</code> on an object.
 </p>
 <h3 id="striptags">
 striptags
@@ -400,6 +424,7 @@ Wraps the string <code>s</code> in opening and closing tags.
 
     </article>
 
+
     <footer id="foot" class="foot">
         <ul>
 <li>
@@ -429,3 +454,8 @@ Wraps the string <code>s</code> in opening and closing tags.
 
 </body>
 </html>
+
+
+
+
+

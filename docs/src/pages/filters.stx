@@ -114,6 +114,15 @@ Returns true if the integer `i` is odd.
 Pretty prints an object.
 
 
+### pygmentize
+
+    pygmentize(text, lang=None)
+
+Applies syntax-highlighting to a string using [Pygments](http://pygments.org). If no language is specified, Pygments will attempt to guess the correct lexer to use.
+
+If Pygments is not installed or if an appropriate lexer cannot be found this filter will return the input text with any HTML special characters escaped.
+
+
 ### random
 
     random(seq)
@@ -125,7 +134,7 @@ Returns a random element from a sequence.
 
     repr(obj)
 
-Returns the string representation of an object.
+Returns the result of calling `repr()` on an object.
 
 
 ### reversed
@@ -155,6 +164,13 @@ Strips all whitespace between HTML/XML tags in a string.
     startswith(s, prefix)
 
 Returns true if the string `s` starts with the specified prefix.
+
+
+### str
+
+    str(obj)
+
+Returns the result of calling `str()` on an object.
 
 
 ### striptags
