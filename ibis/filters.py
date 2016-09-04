@@ -16,6 +16,13 @@ import html
 
 from . import errors
 
+try:
+    import pygments
+    import pygments.lexers
+    import pygments.formatters
+except ImportError:
+    pygments = None
+
 
 # Dictionary of registered filter functions.
 filtermap = {}
@@ -163,6 +170,36 @@ def lower(s):
 def prettyprint(obj):
     """ Returns a pretty-printed representation of `obj`. """
     return pprint.pformat(obj)
+
+
+@register
+def pygmentize(text, lang=None):
+    """ Applies syntax highlighting using Pygments.
+
+    If no language is specified, Pygments will attempt to guess the correct
+    lexer to use. If Pygments is not available or if an appropriate lexer
+    cannot be found then the filter will return the input text with any
+    html special characters escaped.
+    """
+    if pygments:
+        if lang:
+            try:
+                lexer = pygments.lexers.get_lexer_by_name(lang)
+            except pygments.util.ClassNotFound:
+                lexer = None
+        else:
+            try:
+                lexer = pygments.lexers.guess_lexer(text)
+            except pygments.util.ClassNotFound:
+                lexer = None
+        if lexer:
+            formatter = pygments.formatters.HtmlFormatter(nowrap=True)
+            text = pygments.highlight(text, lexer, formatter)
+        else:
+            text = html.escape(text)
+    else:
+        text = html.escape(text)
+    return text
 
 
 @register
