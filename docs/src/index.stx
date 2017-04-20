@@ -2,7 +2,7 @@
 Ibis
 ====
 
-A lightweight template engine in Python. Useful as a drop-in component in text-processing applications.
+Ibis is a lightweight template engine written in Python. It's useful as a drop-in component in text-processing applications.
 
 Sample syntax:
 
