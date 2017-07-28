@@ -1,6 +1,6 @@
-
-Tag Reference
-=============
+---
+title: Tag Reference
+---
 
 :insert toc
 
@@ -75,8 +75,6 @@ The automatic `loop` variable gives access to some useful data within the body o
 
 :++
 
-    Variable         | Description
-    ---------------- | -----------
     `loop.index`     | The current iteration of the loop (0-indexed).
     `loop.count`     | The current iteration of the loop (1-indexed).
     `loop.length`    | The number of items in the sequence.

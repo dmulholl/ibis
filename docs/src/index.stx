@@ -1,18 +1,17 @@
+---
+meta title: Ibis &mdash; a lightweight template engine in Python
+title: Home
+---
 
-Ibis
-====
-
-Ibis is a lightweight template engine written in Python. It's useful as a drop-in component in text-processing applications.
+Ibis is a lightweight, Django-style template engine written in Python.
 
 Sample syntax:
 
 ::: django
 
-    <ul>
-        {% for post in posts %}
-            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-        {% endfor %}
-    </ul>
+    {% for post in posts %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
 
 Features:
 
@@ -20,34 +19,11 @@ Features:
 * Supports looping, conditionals, filters, template inheritance.
 * Extensible. Easily add custom template tags and filters.
 * Self-contained, no dependencies. Use as a drop-in component in any project.
-* Public domain code. No license compatibility issues.
+* Public domain code. 
 
 
 
-Documentation
--------------
-
-* [Quickstart](@root/tutorial//)
-* [Template Markup](@root/markup//)
-    * [Print Statements](@root/markup//#print-statements)
-    * [Expressions](@root/markup//#expressions)
-    * [Syntax Tags](@root/markup//#syntax-tags)
-* [Tag Reference](@root/tags//)
-* [Filter Reference](@root/filters//)
-* [Template Inheritance](@root/inheritance//)
-* [Template API](@root/api//)
-    * [Template Objects](@root/api//#template-objects)
-    * [Template Loaders](@root/api//#template-loaders)
-    * [Exceptions](@root/api//#exceptions)
-    * [Builtins](@root/api//#builtins)
-    * [The Undefined Type](@root/api//#the-undefined-type)
-    * [Custom Filters](@root/api//#custom-filters)
-    * [Custom Tags](@root/api//#custom-tags)
-
-
-
-Installation
-------------
+### Installation
 
 Install Ibis directly from the Python Package Index using `pip`:
 
@@ -57,8 +33,7 @@ Ibis requires Python 3.2 or later.
 
 
 
-Links
------
+### Links
 
 * [Github Homepage](https://github.com/dmulholland/ibis)
 * [Python Package Index](https://pypi.python.org/pypi/ibis/)
@@ -66,7 +41,6 @@ Links
 
 
 
-License
--------
+### License
 
 This work has been placed in the public domain.

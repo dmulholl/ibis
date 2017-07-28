@@ -1,6 +1,6 @@
-
-Quickstart
-==========
+---
+title: Quickstart
+---
 
 A template starts life as a simple string containing [template markup](@root/markup//). We use this string to initialize a `Template` object:
 

@@ -1,6 +1,6 @@
-
-Filter Reference
-================
+---
+title: Filter Reference
+---
 
 
 Filters are chainable functions that modify the value of an expression. Ibis's builtin filters are listed below in function form; in each case, the first argument of the function is the expression the filter operates on.
@@ -25,14 +25,14 @@ Formats a datetime object using the specified format string.
 
 ### endswith
 
-    endswith(s, suffix)
+    endswith(str, suffix)
 
-Returns true if the string `s` ends with the specified suffix.
+Returns true if the string `str` ends with the specified suffix.
 
 
 ### escape
 
-    escape(s, quotes=True)
+    escape(str, quotes=True)
 
 Replaces the following HTML syntax characters with their corresponding character entities: `<`, `>`, `&`, `'`, and `"`. This filter is also available under the aliases `esc` and `e`.
 
@@ -53,14 +53,14 @@ Returns the first element in a sequence.
 
 ### firsth
 
-    firsth(s)
+    firsth(str)
 
 Returns the content of the first heading element in a string of HTML.
 
 
 ### firstp
 
-    firstp(s)
+    firstp(str)
 
 Returns the content of the first `<p>` element in a string of HTML.
 
@@ -95,9 +95,9 @@ Returns the length of a sequence.
 
 ### lower
 
-    lower(s)
+    lower(str)
 
-Converts the string `s` to lowercase.
+Converts the string `str` to lowercase.
 
 
 ### odd
@@ -153,7 +153,7 @@ Returns the `[start:stop:step]` slice of a sequence.
 
 ### spaceless
 
-    spaceless(s)
+    spaceless(str)
 
 Strips all whitespace between HTML/XML tags in a string.
 
@@ -161,9 +161,9 @@ Strips all whitespace between HTML/XML tags in a string.
 ### startswith
 
 
-    startswith(s, prefix)
+    startswith(str, prefix)
 
-Returns true if the string `s` starts with the specified prefix.
+Returns true if the string `str` starts with the specified prefix.
 
 
 ### str
@@ -175,30 +175,30 @@ Returns the result of calling `str()` on an object.
 
 ### striptags
 
-    striptags(s)
+    striptags(str)
 
 Strips all HTML/XML tags from a string.
 
 
 ### titlecase
 
-    titlecase(s)
+    titlecase(str)
 
-Converts the string `s` to titlecase.
+Converts the string `str` to titlecase.
 
 
 ### truncatechars
 
-    truncatechars(s, n, ellipsis='...')
+    truncatechars(str, n, ellipsis='...')
 
-Truncates the string `s` to at most `n` chars.
+Truncates the string `str` to at most `n` chars.
 
 
 ### truncatewords
 
-    truncatewords(s, n, ellipsis=' [...]')
+    truncatewords(str, n, ellipsis=' [...]')
 
-Truncates the string `s` to at most `n` words.
+Truncates the string `str` to at most `n` words.
 
 
 ### undefined
@@ -210,13 +210,13 @@ Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise re
 
 ### upper
 
-    upper(s)
+    upper(str)
 
-Converts the string `s` to uppercase.
+Converts the string `str` to uppercase.
 
 
 ### wrap
 
-    wrap(s, tag)
+    wrap(str, tag)
 
-Wraps the string `s` in opening and closing tags.
+Wraps the string `str` in opening and closing tags.

@@ -1,6 +1,6 @@
-
-Template Markup
-===============
+---
+title: Template Markup
+---
 
 There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
 
@@ -27,13 +27,13 @@ Escaped print statements are simply a shortcut for applying the built-in `escape
 
     {{ post.title|escape }}
 
-Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the `or` keyword. The first expression to evaluate as 'truthy' will be printed:
+Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the `||` sigil. The first expression to evaluate as 'truthy' will be printed:
 
 ::: python
 
-    {{ post.title or "Untitled Post" }}
+    {{ post.title || "Untitled Post" }}
 
-Second, print statements can make use of a C-style ternary operator, `?? ::`:
+Second, print statements can make use of a C-style ternary operator:
 
     {{ is_homepage ?? site.title :: post.title }}
 

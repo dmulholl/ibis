@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>
-        
-Tag Reference
-
-    </title>
+    <title>Tag Reference</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-    <![endif]-->
-</head>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pygments.css">
+    
+  </head>
+  <body class="node-tags node">
 
-<body class="node-tags node">
+    <header class="masthead">
+      <h1>
+        <a href="index.html">Ibis</a>
+      </h1>
 
-    <header id="head" class="head">
+      
+        <p class="tagline">A lightweight template engine in Python.</p>
+      
+
+      <nav class="menu">
         <input id="menu-check" type="checkbox"/>
         <label id="menu-label" for="menu-check" class="unselectable">
-            <span class="icon close">✕</span>
-            <span class="icon open">☰</span>
-            <span class="text">MENU</span>
+          <span class="icon close-icon">✕</span>
+          <span class="icon open-icon">☰</span>
+          <span class="text">Menu</span>
         </label>
         <ul>
 <li>
-<a href="index.html">Ibis</a>
+<a href="index.html">Home</a>
 </li>
 <li>
-<a href="tutorial.html">Quickstart</a>
+<a href="quickstart.html">Quickstart</a>
 </li>
 <li>
-<a href="markup.html">Markup</a>
+<a href="markup.html">Template Markup</a>
 </li>
 <li>
-<a href="tags.html">Tags</a>
+<a href="tags.html">Tag Reference</a>
 </li>
 <li>
-<a href="filters.html">Filters</a>
+<a href="filters.html">Filter Reference</a>
 </li>
 <li>
-<a href="inheritance.html">Inheritance</a>
+<a href="inheritance.html">Template Inheritance</a>
 </li>
 <li>
-<a href="api.html">API</a>
+<a href="api.html">Template API</a>
 </li>
 </ul>
 
+      </nav>
     </header>
 
-    <article id="main" class="main">
+    <article class="main">
+      <header class="title">
+        <h1>Tag Reference</h1>
         
-
-        <h1 id="tag-reference">
-Tag Reference
-</h1>
-<ul class="stx-toc">
+        <hr>
+      </header>
+      <ul class="stx-toc">
 <li>
 <a href="#block">block</a>
 </li>
@@ -151,16 +155,6 @@ The <code>for</code> tag implements looping over an iterable expression. <code>f
 The automatic <code>loop</code> variable gives access to some useful data within the body of the loop:
 </p>
 <table>
-<thead>
-<tr>
-<th>
-Variable
-</th>
-<th>
-Description
-</th>
-</tr>
-</thead>
 <tbody>
 <tr>
 <td>
@@ -310,5 +304,6 @@ Note that the alias is only available within the scope of the tag.
 
     </article>
 
-</body>
+    
+  </body>
 </html>

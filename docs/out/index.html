@@ -1,73 +1,75 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>
-        
-Ibis
-
-    </title>
+    <title>Ibis &mdash; a lightweight template engine in Python</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-    <![endif]-->
-</head>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pygments.css">
+    
+  </head>
+  <body class="node homepage">
 
-<body class="node">
+    <header class="masthead">
+      <h1>
+        <a href="index.html">Ibis</a>
+      </h1>
 
-    <header id="head" class="head">
+      
+        <p class="tagline">A lightweight template engine in Python.</p>
+      
+
+      <nav class="menu">
         <input id="menu-check" type="checkbox"/>
         <label id="menu-label" for="menu-check" class="unselectable">
-            <span class="icon close">✕</span>
-            <span class="icon open">☰</span>
-            <span class="text">MENU</span>
+          <span class="icon close-icon">✕</span>
+          <span class="icon open-icon">☰</span>
+          <span class="text">Menu</span>
         </label>
         <ul>
 <li>
-<a href="index.html">Ibis</a>
+<a href="index.html">Home</a>
 </li>
 <li>
-<a href="tutorial.html">Quickstart</a>
+<a href="quickstart.html">Quickstart</a>
 </li>
 <li>
-<a href="markup.html">Markup</a>
+<a href="markup.html">Template Markup</a>
 </li>
 <li>
-<a href="tags.html">Tags</a>
+<a href="tags.html">Tag Reference</a>
 </li>
 <li>
-<a href="filters.html">Filters</a>
+<a href="filters.html">Filter Reference</a>
 </li>
 <li>
-<a href="inheritance.html">Inheritance</a>
+<a href="inheritance.html">Template Inheritance</a>
 </li>
 <li>
-<a href="api.html">API</a>
+<a href="api.html">Template API</a>
 </li>
 </ul>
 
+      </nav>
     </header>
 
-    <article id="main" class="main">
+    <article class="main">
+      <header class="title">
+        <h1>Home</h1>
         
-
-        <h1 id="ibis">
-Ibis
-</h1>
-<p>
-Ibis is a lightweight template engine written in Python. It's useful as a drop-in component in text-processing applications.
+        <hr>
+      </header>
+      <p>
+Ibis is a lightweight, Django-style template engine written in Python.
 </p>
 <p>
 Sample syntax:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="x">&lt;ul&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">post</span> <span class="k">in</span> <span class="nv">posts</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">        &lt;li&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">post.url</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;/ul&gt;</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">post</span> <span class="k">in</span> <span class="nv">posts</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;li&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">post.url</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
 Features:
@@ -86,69 +88,12 @@ Extensible. Easily add custom template tags and filters.
 Self-contained, no dependencies. Use as a drop-in component in any project.
 </li>
 <li>
-Public domain code. No license compatibility issues.
+Public domain code.
 </li>
 </ul>
-<h2 id="documentation">
-Documentation
-</h2>
-<ul>
-<li>
-<a href="tutorial.html">Quickstart</a>
-</li>
-<li>
-<a href="markup.html">Template Markup</a>
-<ul>
-<li>
-<a href="markup.html#print-statements">Print Statements</a>
-</li>
-<li>
-<a href="markup.html#expressions">Expressions</a>
-</li>
-<li>
-<a href="markup.html#syntax-tags">Syntax Tags</a>
-</li>
-</ul>
-</li>
-<li>
-<a href="tags.html">Tag Reference</a>
-</li>
-<li>
-<a href="filters.html">Filter Reference</a>
-</li>
-<li>
-<a href="inheritance.html">Template Inheritance</a>
-</li>
-<li>
-<a href="api.html">Template API</a>
-<ul>
-<li>
-<a href="api.html#template-objects">Template Objects</a>
-</li>
-<li>
-<a href="api.html#template-loaders">Template Loaders</a>
-</li>
-<li>
-<a href="api.html#exceptions">Exceptions</a>
-</li>
-<li>
-<a href="api.html#builtins">Builtins</a>
-</li>
-<li>
-<a href="api.html#the-undefined-type">The Undefined Type</a>
-</li>
-<li>
-<a href="api.html#custom-filters">Custom Filters</a>
-</li>
-<li>
-<a href="api.html#custom-tags">Custom Tags</a>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="installation">
+<h3 id="installation">
 Installation
-</h2>
+</h3>
 <p>
 Install Ibis directly from the Python Package Index using <code>pip</code>:
 </p>
@@ -158,9 +103,9 @@ $ pip install ibis
 <p>
 Ibis requires Python 3.2 or later.
 </p>
-<h2 id="links">
+<h3 id="links">
 Links
-</h2>
+</h3>
 <ul>
 <li>
 <a href="https://github.com/dmulholland/ibis">Github Homepage</a>
@@ -172,14 +117,15 @@ Links
 <a href="http://mulholland.xyz/docs/ibis/">Online Documentation</a>
 </li>
 </ul>
-<h2 id="license">
+<h3 id="license">
 License
-</h2>
+</h3>
 <p>
 This work has been placed in the public domain.
 </p>
 
     </article>
 
-</body>
+    
+  </body>
 </html>

@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>
-        
-Filter Reference
-
-    </title>
+    <title>Filter Reference</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-    <![endif]-->
-</head>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pygments.css">
+    
+  </head>
+  <body class="node-filters node">
 
-<body class="node-filters node">
+    <header class="masthead">
+      <h1>
+        <a href="index.html">Ibis</a>
+      </h1>
 
-    <header id="head" class="head">
+      
+        <p class="tagline">A lightweight template engine in Python.</p>
+      
+
+      <nav class="menu">
         <input id="menu-check" type="checkbox"/>
         <label id="menu-label" for="menu-check" class="unselectable">
-            <span class="icon close">✕</span>
-            <span class="icon open">☰</span>
-            <span class="text">MENU</span>
+          <span class="icon close-icon">✕</span>
+          <span class="icon open-icon">☰</span>
+          <span class="text">Menu</span>
         </label>
         <ul>
 <li>
-<a href="index.html">Ibis</a>
+<a href="index.html">Home</a>
 </li>
 <li>
-<a href="tutorial.html">Quickstart</a>
+<a href="quickstart.html">Quickstart</a>
 </li>
 <li>
-<a href="markup.html">Markup</a>
+<a href="markup.html">Template Markup</a>
 </li>
 <li>
-<a href="tags.html">Tags</a>
+<a href="tags.html">Tag Reference</a>
 </li>
 <li>
-<a href="filters.html">Filters</a>
+<a href="filters.html">Filter Reference</a>
 </li>
 <li>
-<a href="inheritance.html">Inheritance</a>
+<a href="inheritance.html">Template Inheritance</a>
 </li>
 <li>
-<a href="api.html">API</a>
+<a href="api.html">Template API</a>
 </li>
 </ul>
 
+      </nav>
     </header>
 
-    <article id="main" class="main">
+    <article class="main">
+      <header class="title">
+        <h1>Filter Reference</h1>
         
-
-        <h1 id="filter-reference">
-Filter Reference
-</h1>
-<p>
+        <hr>
+      </header>
+      <p>
 Filters are chainable functions that modify the value of an expression. Ibis's builtin filters are listed below in function form; in each case, the first argument of the function is the expression the filter operates on.
 </p>
 <ul class="stx-toc">
@@ -173,16 +177,16 @@ Formats a datetime object using the specified format string.
 endswith
 </h3>
 <pre>
-endswith(s, suffix)
+endswith(str, suffix)
 </pre>
 <p>
-Returns true if the string <code>s</code> ends with the specified suffix.
+Returns true if the string <code>str</code> ends with the specified suffix.
 </p>
 <h3 id="escape">
 escape
 </h3>
 <pre>
-escape(s, quotes=True)
+escape(str, quotes=True)
 </pre>
 <p>
 Replaces the following HTML syntax characters with their corresponding character entities: <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>'</code>, and <code>"</code>. This filter is also available under the aliases <code>esc</code> and <code>e</code>.
@@ -209,7 +213,7 @@ Returns the first element in a sequence.
 firsth
 </h3>
 <pre>
-firsth(s)
+firsth(str)
 </pre>
 <p>
 Returns the content of the first heading element in a string of HTML.
@@ -218,7 +222,7 @@ Returns the content of the first heading element in a string of HTML.
 firstp
 </h3>
 <pre>
-firstp(s)
+firstp(str)
 </pre>
 <p>
 Returns the content of the first <code>&lt;p&gt;</code> element in a string of HTML.
@@ -263,10 +267,10 @@ Returns the length of a sequence.
 lower
 </h3>
 <pre>
-lower(s)
+lower(str)
 </pre>
 <p>
-Converts the string <code>s</code> to lowercase.
+Converts the string <code>str</code> to lowercase.
 </p>
 <h3 id="odd">
 odd
@@ -338,7 +342,7 @@ Returns the <code>[start:stop:step]</code> slice of a sequence.
 spaceless
 </h3>
 <pre>
-spaceless(s)
+spaceless(str)
 </pre>
 <p>
 Strips all whitespace between HTML/XML tags in a string.
@@ -347,10 +351,10 @@ Strips all whitespace between HTML/XML tags in a string.
 startswith
 </h3>
 <pre>
-startswith(s, prefix)
+startswith(str, prefix)
 </pre>
 <p>
-Returns true if the string <code>s</code> starts with the specified prefix.
+Returns true if the string <code>str</code> starts with the specified prefix.
 </p>
 <h3 id="str">
 str
@@ -365,7 +369,7 @@ Returns the result of calling <code>str()</code> on an object.
 striptags
 </h3>
 <pre>
-striptags(s)
+striptags(str)
 </pre>
 <p>
 Strips all HTML/XML tags from a string.
@@ -374,28 +378,28 @@ Strips all HTML/XML tags from a string.
 titlecase
 </h3>
 <pre>
-titlecase(s)
+titlecase(str)
 </pre>
 <p>
-Converts the string <code>s</code> to titlecase.
+Converts the string <code>str</code> to titlecase.
 </p>
 <h3 id="truncatechars">
 truncatechars
 </h3>
 <pre>
-truncatechars(s, n, ellipsis='...')
+truncatechars(str, n, ellipsis='...')
 </pre>
 <p>
-Truncates the string <code>s</code> to at most <code>n</code> chars.
+Truncates the string <code>str</code> to at most <code>n</code> chars.
 </p>
 <h3 id="truncatewords">
 truncatewords
 </h3>
 <pre>
-truncatewords(s, n, ellipsis=' [...]')
+truncatewords(str, n, ellipsis=' [...]')
 </pre>
 <p>
-Truncates the string <code>s</code> to at most <code>n</code> words.
+Truncates the string <code>str</code> to at most <code>n</code> words.
 </p>
 <h3 id="undefined">
 undefined
@@ -410,22 +414,23 @@ Returns <code>obj</code> if <code>obj</code> is not an instance of the <code>Und
 upper
 </h3>
 <pre>
-upper(s)
+upper(str)
 </pre>
 <p>
-Converts the string <code>s</code> to uppercase.
+Converts the string <code>str</code> to uppercase.
 </p>
 <h3 id="wrap">
 wrap
 </h3>
 <pre>
-wrap(s, tag)
+wrap(str, tag)
 </pre>
 <p>
-Wraps the string <code>s</code> in opening and closing tags.
+Wraps the string <code>str</code> in opening and closing tags.
 </p>
 
     </article>
 
-</body>
+    
+  </body>
 </html>

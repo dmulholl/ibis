@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>
-        
-Quickstart
-
-    </title>
+    <title>Quickstart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/pygments.css">
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-    <![endif]-->
-</head>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pygments.css">
+    
+  </head>
+  <body class="node-quickstart node">
 
-<body class="node-tutorial node">
+    <header class="masthead">
+      <h1>
+        <a href="index.html">Ibis</a>
+      </h1>
 
-    <header id="head" class="head">
+      
+        <p class="tagline">A lightweight template engine in Python.</p>
+      
+
+      <nav class="menu">
         <input id="menu-check" type="checkbox"/>
         <label id="menu-label" for="menu-check" class="unselectable">
-            <span class="icon close">✕</span>
-            <span class="icon open">☰</span>
-            <span class="text">MENU</span>
+          <span class="icon close-icon">✕</span>
+          <span class="icon open-icon">☰</span>
+          <span class="text">Menu</span>
         </label>
         <ul>
 <li>
-<a href="index.html">Ibis</a>
+<a href="index.html">Home</a>
 </li>
 <li>
-<a href="tutorial.html">Quickstart</a>
+<a href="quickstart.html">Quickstart</a>
 </li>
 <li>
-<a href="markup.html">Markup</a>
+<a href="markup.html">Template Markup</a>
 </li>
 <li>
-<a href="tags.html">Tags</a>
+<a href="tags.html">Tag Reference</a>
 </li>
 <li>
-<a href="filters.html">Filters</a>
+<a href="filters.html">Filter Reference</a>
 </li>
 <li>
-<a href="inheritance.html">Inheritance</a>
+<a href="inheritance.html">Template Inheritance</a>
 </li>
 <li>
-<a href="api.html">API</a>
+<a href="api.html">Template API</a>
 </li>
 </ul>
 
+      </nav>
     </header>
 
-    <article id="main" class="main">
+    <article class="main">
+      <header class="title">
+        <h1>Quickstart</h1>
         
-
-        <h1 id="quickstart">
-Quickstart
-</h1>
-<p>
+        <hr>
+      </header>
+      <p>
 A template starts life as a simple string containing <a href="markup.html">template markup</a>. We use this string to initialize a <code>Template</code> object:
 </p>
 <pre class="lang-python pygments" data-lang="python">
@@ -95,5 +99,6 @@ The loader compiles the templates once and caches them in memory for future look
 
     </article>
 
-</body>
+    
+  </body>
 </html>
