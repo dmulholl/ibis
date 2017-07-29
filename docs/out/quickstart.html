@@ -66,10 +66,10 @@ A template starts life as a simple string containing <a href="markup.html">templ
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{{foo}} and {{bar}}&#39;</span><span class="p">)</span>
 </pre>
 <p>
-The <code>Template</code> class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its <code>render()</code> method with a dictionary of key-value pairs or a set of keyword arguments:
+The <code>Template</code> class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its <code>render()</code> method with a dictionary of key-value pairs:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">foo</span><span class="o">=</span><span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="s1">&#39;eggs&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="s1">&#39;eggs&#39;</span><span class="p">})</span>
 <span class="s1">&#39;ham and eggs&#39;</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>

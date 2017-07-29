@@ -9,11 +9,11 @@ A template starts life as a simple string containing [template markup](@root/mar
     >>> import ibis
     >>> template = ibis.Template('{{foo}} and {{bar}}')
 
-The `Template` class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs or a set of keyword arguments:
+The `Template` class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs:
 
 ::: python
 
-    >>> template.render(foo='ham', bar='eggs')
+    >>> template.render({'foo': 'ham', 'bar': 'eggs'})
     'ham and eggs'
 
     >>> template.render({'foo': 1, 'bar': 2})
