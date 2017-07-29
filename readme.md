@@ -2,7 +2,7 @@
 Ibis
 ====
 
-A lightweight template engine in Python.
+Ibis is a lightweight, Django-style template engine written in Python.
 
 Sample syntax:
 
@@ -17,8 +17,8 @@ Features:
 * Django/Jinja-style syntax.
 * Supports looping, conditionals, filters, template inheritance.
 * Extensible. Easily add custom template tags and filters.
-* Self-contained, no dependencies. Use as a drop-in component in any project.
-* Public domain code. No license compatibility issues.
+* Self-contained, no dependencies.
+* Public domain code.
 
 See the [documentation][docs] for details.
 
