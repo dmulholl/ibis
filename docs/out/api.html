@@ -12,9 +12,7 @@
   <body class="node-api node">
 
     <header class="masthead">
-      <h1>
-        <a href="index.html">Ibis</a>
-      </h1>
+      <h1><a href="index.html">Ibis</a></h1>
 
       
         <p class="tagline">A lightweight template engine in Python.</p>
@@ -279,7 +277,7 @@ An instance of the <code>ibis.errors.Undefined</code> type is returned whenever 
 You can specify a fallback for undefined variables in template markup using the <code>undefined</code> filter:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">undefined</span><span class="s2">:&quot;baz&quot;</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>"baz"</code> will be used in its place.
@@ -315,7 +313,7 @@ This gives us a filter with an optional format string argument that we can call 
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
 
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span><span class="s1">:&#39;%Y&#39;</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.
@@ -339,7 +337,7 @@ You can give your new tag block scope by specifying a required end tag:
 <span class="nd">@ibis.nodes.register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="s1">&#39;endtag&#39;</span><span class="p">)</span>
 </pre>
 <p>
-You'll need to turn to the source code itself for further details - see the <code>nodes.py</code> file for lots of examples to work from.
+You'll need to turn to the source code itself for further details &mdash; see the <code>nodes.py</code> file for lots of examples to work from.
 </p>
 
     </article>

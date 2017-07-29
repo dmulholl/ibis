@@ -177,7 +177,7 @@ The `with` tag caches a complex expression under a simpler alias. It's particula
 ::: django
 
     {% with foo = expensive.database.lookup("arg") %}
-        Do someting with {{ foo }} here...
+        ... do someting with {{ foo }} here ...
     {% endwith %}
 
 Note that the alias is only available within the scope of the tag.

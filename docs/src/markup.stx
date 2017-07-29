@@ -4,8 +4,6 @@ title: Template Markup
 
 There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
 
-::: django
-
     {# This is a comment. #}
 
 Comments can span multiple lines and can be used to comment-out sections of template code.
@@ -48,13 +46,11 @@ Expressions
 
 An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 
-Variables use `.` syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:
+Variables use `.` syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
 
 ::: django
 
-    {{ some.callable:42:"foo" }}
-
-    {{ some.callable(42, "foo") }}
+    {{ some.callable("foo", 42) }}
 
 Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
 
@@ -62,11 +58,11 @@ Filters are chainable functions that modify the value of an expression. You appl
 
     {{ post.title|escape }}
 
-Like callables, filters accept arguments using colon or bracket syntax:
+Like callables, filters accept arguments in brackets:
 
 ::: django
 
-    {{ post.content|striptags|truncatewords:50 }}
+    {{ post.content|striptags|truncatewords(50) }}
 
 You can find a list of built-in filters [here](@root/filters//).
 

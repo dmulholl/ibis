@@ -150,7 +150,7 @@ You can specify a fallback for undefined variables in template markup using the 
 
 ::: django
 
-    {{ foo.bar|undefined:"baz" }}
+    {{ foo.bar|undefined("baz") }}
 
 In this case if the variable `foo.bar` is not defined in the current context, the fallback string `"baz"` will be used in its place.
 
@@ -184,7 +184,7 @@ This gives us a filter with an optional format string argument that we can call 
 
     {{ now|dtformat }}
 
-    {{ now|dtformat:'%Y' }}
+    {{ now|dtformat('%Y') }}
 
 As it happens, `dtformat` already exists as a built-in filter. Re-registering the `dtformat` name would simply override the built-in filter with our own custom version.
 
@@ -206,4 +206,4 @@ You can give your new tag block scope by specifying a required end tag:
 
     @ibis.nodes.register('tag', 'endtag')
 
-You'll need to turn to the source code itself for further details - see the `nodes.py` file for lots of examples to work from.
+You'll need to turn to the source code itself for further details --- see the `nodes.py` file for lots of examples to work from.

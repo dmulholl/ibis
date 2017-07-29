@@ -12,9 +12,7 @@
   <body class="node-markup node">
 
     <header class="masthead">
-      <h1>
-        <a href="index.html">Ibis</a>
-      </h1>
+      <h1><a href="index.html">Ibis</a></h1>
 
       
         <p class="tagline">A lightweight template engine in Python.</p>
@@ -63,8 +61,8 @@
       <p>
 There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
 </p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="c">{# This is a comment. #}</span><span class="x"></span>
+<pre>
+{# This is a comment. #}
 </pre>
 <p>
 Comments can span multiple lines and can be used to comment-out sections of template code.
@@ -115,12 +113,10 @@ Expressions
 An <em>expression</em> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 </p>
 <p>
-Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them using colon or bracket syntax:
+Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">:</span><span class="m">42</span><span class="s2">:&quot;foo&quot;</span> <span class="cp">}}</span><span class="x"></span>
-
-<span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">(</span><span class="m">42</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="m">42</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
@@ -129,10 +125,10 @@ Filters are chainable functions that modify the value of an expression. You appl
 <span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
-Like callables, filters accept arguments using colon or bracket syntax:
+Like callables, filters accept arguments in brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.content</span><span class="o">|</span><span class="nf">striptags</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">:</span><span class="m">50</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">post.content</span><span class="o">|</span><span class="nf">striptags</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">(</span><span class="m">50</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 You can find a list of built-in filters <a href="filters.html">here</a>.
