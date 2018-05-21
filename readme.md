@@ -22,4 +22,4 @@ Features:
 
 See the [documentation][docs] for details.
 
-[docs]: http://mulholland.xyz/docs/ibis/
+[docs]: https://darrenmulholland.com/docs/ibis/
