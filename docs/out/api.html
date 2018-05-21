@@ -3,21 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title>Template API</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="pygments.css">
     
+    
   </head>
+
   <body class="node-api node">
 
     <header class="masthead">
       <h1><a href="index.html">Ibis</a></h1>
-
       
         <p class="tagline">A lightweight template engine in Python.</p>
       
-
       <nav class="menu">
         <input id="menu-check" type="checkbox"/>
         <label id="menu-label" for="menu-check" class="unselectable">
@@ -236,7 +236,7 @@ The following built-in variables and functions are available in all contexts:
 <ul>
 <li>
 <p>
-<code>defined("name")</code>
+<code>defined(&quot;name&quot;)</code>
 </p>
 <p>
 Returns <code>True</code> if the supplied string literal is a resolvable variable name.
@@ -280,7 +280,7 @@ You can specify a fallback for undefined variables in template markup using the 
 <span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
-In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>"baz"</code> will be used in its place.
+In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>&quot;baz&quot;</code> will be used in its place.
 </p>
 <h2 id="custom-filters">
 Custom Filters
@@ -343,5 +343,6 @@ You'll need to turn to the source code itself for further details &mdash; see th
     </article>
 
     
+
   </body>
 </html>

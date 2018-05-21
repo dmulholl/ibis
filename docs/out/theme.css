@@ -235,7 +235,7 @@ body {
 
 .main {
     width: 600px;
-    padding: 32px 50px 20px;
+    padding: 32px 50px 20px 50px;
     margin-left: 360px;
     border-left: 3px solid black;
     min-height: calc(100vh - 80px);
@@ -284,13 +284,6 @@ body {
     content: "•\00a\000a0\00a0"
 }
 
-.unselectable {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
 #menu-check {
     display: none;
 }
@@ -319,24 +312,24 @@ body {
  * Alert Boxes
  */
 
-.stx-alert {
+.alertbox {
     margin: 40px 20px;
     border: 1px solid;
     padding: 0 25px;
     border-radius: 3px;
 }
 
-.stx-info {
+.alertbox.info {
     border-color: #bac6d3;
     background-color: #e2eef9;
 }
 
-.stx-warning {
+.alertbox.warning {
     border-color: #dfd8c2;
     background-color: #fff9ea;
 }
 
-.stx-error {
+.alertbox.error {
     border-color: #d2b2b2;
     background-color: #fcdede;
 }
@@ -410,6 +403,18 @@ th, td {
     font-style: italic;
 }
 
+.indent {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.unselectable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /**
  * -------------------------------------------------------------------------
  *  Media Queries
@@ -446,7 +451,7 @@ th, td {
     .masthead {
         width: auto;
         float: none;
-        padding: 20px 20px 60px;
+        padding: 20px 20px 60px 20px;
         text-align: center;
         margin-left: 40px;
         margin-right: 40px;
@@ -467,6 +472,11 @@ th, td {
 
     .masthead .tagline {
         text-align: center;
+        display: none;
+    }
+
+    .homepage .masthead .tagline {
+        display: block;
     }
 
     .masthead .menu {
