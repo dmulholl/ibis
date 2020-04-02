@@ -18,6 +18,7 @@
       
         <p class="tagline">A lightweight template engine in Python.</p>
       
+      
       <nav class="menu">
         <input id="menu-check" type="checkbox"/>
         <label id="menu-label" for="menu-check" class="unselectable">
@@ -48,7 +49,7 @@
 <a href="api.html">Template API</a>
 </li>
 <li>
-<a href="https://github.com/dmulholland/ibis">Source</a>
+<a href="https://github.com/dmulholl/ibis">Source</a>
 </li>
 </ul>
 
@@ -295,7 +296,7 @@ A filter is a function that accepts at least one argument - the value to be filt
 Filters are registered using the <code>@register</code> decorator:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis.filters.register</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
 </pre>
 <p>
 If no <code>name</code> argument is supplied, the function name will be used.
@@ -306,9 +307,9 @@ As an example, we can register a filter to convert datetime objects into formatt
 <pre class="lang-python pygments" data-lang="python">
 <span class="kn">import</span> <span class="nn">ibis</span>
 
-<span class="nd">@ibis.filters.register</span><span class="p">(</span><span class="s1">&#39;dtformat&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;dtformat&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
 </pre>
 <p>
 This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in <code>now</code> function which returns a datetime object representing the current time:
@@ -331,13 +332,13 @@ You can register custom syntax tags to supplement or override the built-in ones.
 Every syntax tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new syntax tag, register a subclass using the <code>@register</code> decorator:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis.nodes.register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">)</span>
 </pre>
 <p>
 You can give your new tag block scope by specifying a required end tag:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis.nodes.register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="s1">&#39;endtag&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="s1">&#39;endtag&#39;</span><span class="p">)</span>
 </pre>
 <p>
 You'll need to turn to the source code itself for further details &mdash; see the <code>nodes.py</code> file for lots of examples to work from.

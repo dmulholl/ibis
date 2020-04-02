@@ -10,8 +10,8 @@ Comments can span multiple lines and can be used to comment-out sections of temp
 
 
 
-Print Statements
-----------------
+## Print Statements
+
 
 Print statements evaluate and print [expressions](#expressions). They look like this:
 
@@ -27,8 +27,6 @@ Escaped print statements are simply a shortcut for applying the built-in `escape
 
 Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the `||` sigil. The first expression to evaluate as 'truthy' will be printed:
 
-::: python
-
     {{ post.title || "Untitled Post" }}
 
 Second, print statements can make use of a C-style ternary operator:
@@ -41,26 +39,25 @@ Note that a single print statement can make use of `or`-chaining or the ternary 
 
 
 
-Expressions
------------
+## Expressions
 
 An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 
 Variables use `.` syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
 
-::: django
+::: code django
 
     {{ some.callable("foo", 42) }}
 
 Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
 
-::: django
+::: code django
 
     {{ post.title|escape }}
 
 Like callables, filters accept arguments in brackets:
 
-::: django
+::: code django
 
     {{ post.content|striptags|truncatewords(50) }}
 
@@ -68,7 +65,7 @@ You can find a list of built-in filters [here](@root/filters//).
 
 Note that expressions can use simple Python literals in place of variables:
 
-::: django
+::: code django
 
     {% if day|lower in ("saturday", "sunday") %}
         It's the weekend!
@@ -78,18 +75,17 @@ The following literal structures can be used in expressions as arguments to call
 
 
 
-Syntax Tags
------------
+## Syntax Tags
 
 Syntax tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
 
-::: django
+::: code django
 
     {% tag %}
 
 Some syntax tags have block scope and require a closing tag. They look like this:
 
-::: django
+::: code django
 
     {% tag %} ... {% endtag %}
 

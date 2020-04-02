@@ -2,12 +2,12 @@
 title: Tag Reference
 ---
 
-:insert toc
+::: insert toc
 
 
 ### block
 
-::: django
+::: code django
 
     {% block <title> %} ... {% endblock %}
 
@@ -17,7 +17,7 @@ The `block` tag is used with the `extends` tag to implement [template inheritanc
 
 ### cycle
 
-::: django
+::: code django
 
     {% cycle <expr> %}
 
@@ -25,7 +25,7 @@ The `cycle` tag can be used within a loop to cycle over the values of an iterabl
 
 A typical use case might be to add alternating CSS classes to elements in a list:
 
-::: django
+::: code django
 
     <ul>
         {% for item in somelist %}
@@ -37,7 +37,7 @@ A typical use case might be to add alternating CSS classes to elements in a list
 
 ### extends
 
-::: django
+::: code django
 
     {% extends <parent> %}
 
@@ -47,7 +47,7 @@ The `extends` tag is used with the `block` tag to implement [template inheritanc
 
 ### include
 
-::: django
+::: code django
 
     {% include <name> %}
 
@@ -57,13 +57,13 @@ The `include` tag incorporates a sub-template into the current template. The `na
 
 ### for
 
-::: django
+::: code django
 
     {% for <varname> in <expr> %} ... [ {% empty %} ... ] {% endfor %}
 
 The `for` tag implements looping over an iterable expression. `for` tags support variable unpacking and an optional `empty` clause that gets rendered if the sequence is empty:
 
-::: django
+::: code django
 
     {% for key, value in somedict.items() %}
         {{ key }}: {{ value }}
@@ -73,7 +73,7 @@ The `for` tag implements looping over an iterable expression. `for` tags support
 
 The automatic `loop` variable gives access to some useful data within the body of the loop:
 
-:++
+::: table
 
     `loop.index`     | The current iteration of the loop (0-indexed).
     `loop.count`     | The current iteration of the loop (1-indexed).
@@ -86,7 +86,7 @@ The automatic `loop` variable gives access to some useful data within the body o
 
 ### if
 
-::: django
+::: code django
 
     {% if <expr> %} ... {% endif %}
 
@@ -94,7 +94,7 @@ The automatic `loop` variable gives access to some useful data within the body o
 
 The `if` tag implements conditional branching. You can test the 'truthiness' of an expression or use any of the standard `==, !=, <, >, <=, >=, in, not in` operators to compare pairs of expressions:
 
-::: django
+::: code django
 
     {% if author %}
         By {{ author }}.
@@ -106,7 +106,7 @@ The `if` tag implements conditional branching. You can test the 'truthiness' of 
 
 The `if` tag supports multiple `elif` clauses, along with an optional `else` clause:
 
-::: django
+::: code django
 
     {% if balance > 100 %}
         We have lots of money.
@@ -118,13 +118,13 @@ The `if` tag supports multiple `elif` clauses, along with an optional `else` cla
 
 The `if` tag also supports negation with the `not` keyword and combination with the `and` and `or` keywords; `and` has higher precedence than `or` so the condition:
 
-::: django
+::: code django
 
     {% if a and b or c and d %}
 
 is evaluated as:
 
-::: django
+::: code django
 
     {% if (a and b) or (c and d) %}
 
@@ -134,13 +134,13 @@ Note that explicit brackets are not supported by the syntax.
 
 ### spaceless
 
-::: django
+::: code django
 
     {% spaceless %} ... {% endspaceless %}
 
 The `spaceless` tag strips all whitespace from between HTML tags. For example, the HTML string:
 
-::: django
+::: code django
 
     {% spaceless %}
         <ul>
@@ -150,7 +150,7 @@ The `spaceless` tag strips all whitespace from between HTML tags. For example, t
 
 would be rendered as:
 
-::: html
+::: code html
 
     <ul><li>List item.</li></ul>
 
@@ -158,7 +158,7 @@ would be rendered as:
 
 ### trim
 
-::: django
+::: code django
 
     {% trim %} ... {% endtrim %}
 
@@ -168,13 +168,13 @@ The `trim` tag strips all leading and trailing whitespace from its content.
 
 ### with
 
-::: django
+::: code django
 
     {% with <alias> = <expr> %} ... {% endwith %}
 
 The `with` tag caches a complex expression under a simpler alias. It's particularly useful for caching expensive method calls, e.g. database lookups:
 
-::: django
+::: code django
 
     {% with foo = expensive.database.lookup("arg") %}
         ... do someting with {{ foo }} here ...

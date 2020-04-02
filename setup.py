@@ -19,8 +19,8 @@ Sample syntax::
         {% endfor %}
     </ul>
 
-See the `package documentation <http://mulholland.xyz/docs/ibis/>`_ or the
-project's `Github homepage <https://github.com/dmulholland/ibis>`_ for
+See the `package documentation <http://www.dmulholl.com/docs/ibis/>`_ or the
+project's `Github homepage <https://github.com/dmulholl/ibis>`_ for
 further details.
 
 """
@@ -44,7 +44,7 @@ setup(
     packages =  find_packages(),
     include_package_data = True,
     author = 'Darren Mulholland',
-    url='https://github.com/dmulholland/ibis',
+    url='https://github.com/dmulholl/ibis',
     license = 'Public Domain',
     description = (
         'A lightweight template engine.'

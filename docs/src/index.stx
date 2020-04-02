@@ -7,7 +7,7 @@ Ibis is a lightweight, Django-style template engine written in Python.
 
 Sample syntax:
 
-::: django
+::: code django
 
     {% for post in posts %}
         <li><a href="{{ post.url }}">{{ post.title }}</a></li>
@@ -35,9 +35,8 @@ Ibis requires Python 3.2 or later.
 
 ### Links
 
-* [Github Homepage](https://github.com/dmulholland/ibis)
+* [Github Homepage](https://github.com/dmulholl/ibis)
 * [Python Package Index](https://pypi.python.org/pypi/ibis/)
-* [Online Documentation](https://darrenmulholland.com/docs/ibis/)
 
 
 

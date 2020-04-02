@@ -4,14 +4,14 @@ title: Quickstart
 
 A template starts life as a simple string containing [template markup](@root/markup//). We use this string to initialize a `Template` object:
 
-::: python
+::: code python
 
     >>> import ibis
     >>> template = ibis.Template('{{foo}} and {{bar}}')
 
 The `Template` class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its `render()` method with a dictionary of key-value pairs:
 
-::: python
+::: code python
 
     >>> template.render({'foo': 'ham', 'bar': 'eggs'})
     'ham and eggs'
@@ -23,14 +23,14 @@ In practice you'll most likely store your templates in the form of text files. Y
 
 A `FileLoader` instance is initialized with a path to a root template directory:
 
-::: python
+::: code python
 
     import ibis
     loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
 Calling the loader with a template name (a string interpreted as a path to a text file stored in the root directory) will return the corresponding template object:
 
-::: python
+::: code python
 
     template = loader('template.txt')
 
