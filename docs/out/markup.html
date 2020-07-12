@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Template Markup</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="theme.css">
-    <link rel="stylesheet" href="pygments.css">
-    
-    
-  </head>
-
-  <body class="node-markup node">
-
-    <header class="masthead">
-      <h1><a href="index.html">Ibis</a></h1>
-      
-        <p class="tagline">A lightweight template engine in Python.</p>
-      
-      
-      <nav class="menu">
-        <input id="menu-check" type="checkbox"/>
-        <label id="menu-label" for="menu-check" class="unselectable">
-          <span class="icon close-icon">✕</span>
-          <span class="icon open-icon">☰</span>
-          <span class="text">Menu</span>
-        </label>
-        <ul>
+    <head>
+        <meta charset="utf-8">
+        <title>Template Markup</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="fonts.css">
+        <link rel="stylesheet" href="graphite.css">
+        <link rel="stylesheet" href="pygments.css">
+        
+        
+    </head>
+    <body class="node-markup node">
+        <header class="masthead">
+            <h1><a href="index.html">Ibis</a></h1>
+            
+            <p class="tagline">A lightweight template engine in Python.</p>
+            
+            
+            <p class="version">Version 1.6.0</p>
+            
+            <nav class="menu">
+                <input id="menu-check" type="checkbox"/>
+                <label id="menu-label" for="menu-check" class="unselectable">
+                    <span class="icon close-icon">✕</span>
+                    <span class="icon open-icon">☰</span>
+                    <span class="text">Menu</span>
+                </label>
+                <ul>
 <li>
 <a href="index.html">Home</a>
 </li>
@@ -49,20 +49,18 @@
 <a href="api.html">Template API</a>
 </li>
 <li>
-<a href="https://github.com/dmulholl/ibis">Source</a>
+<a href="https://github.com/dmulholl/ibis">Github</a>
 </li>
 </ul>
-
-      </nav>
-    </header>
-
-    <article class="main">
-      <header class="title">
-        <h1>Template Markup</h1>
-        
-        <hr>
-      </header>
-      <p>
+            </nav>
+        </header>
+        <article class="main">
+            <header class="title">
+                <h1>Template Markup</h1>
+                
+                <hr>
+            </header>
+            <p>
 There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
 </p>
 <pre>
@@ -114,7 +112,7 @@ Note that a single print statement can make use of <code>or</code>-chaining or t
 Expressions
 </h2>
 <p>
-An <em>expression</em> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
+An <i>expression</i> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 </p>
 <p>
 Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
@@ -169,10 +167,7 @@ Tags with block scope can contain further template markup and can be nested to a
 <p>
 You can find a list of built-in syntax tags <a href="tags.html">here</a>.
 </p>
-
-    </article>
-
-    
-
-  </body>
+        </article>
+        
+    </body>
 </html>

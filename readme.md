@@ -1,6 +1,4 @@
-
-Ibis
-====
+# Ibis
 
 Ibis is a lightweight, Django-style template engine written in Python.
 
