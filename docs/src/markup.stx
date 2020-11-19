@@ -10,7 +10,7 @@ Comments can span multiple lines and can be used to comment-out sections of temp
 
 
 
-## Print Statements
+### Print Statements
 
 
 Print statements evaluate and print [expressions](#expressions). They look like this:
@@ -39,7 +39,7 @@ Note that a single print statement can make use of `or`-chaining or the ternary 
 
 
 
-## Expressions
+### Expressions
 
 An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 
@@ -75,7 +75,7 @@ The following literal structures can be used in expressions as arguments to call
 
 
 
-## Syntax Tags
+### Syntax Tags
 
 Syntax tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
 

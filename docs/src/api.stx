@@ -5,12 +5,11 @@ title: Template API
 ::: insert toc
 
 
-## Template Objects
+### Template Objects
 
 A template starts life as a simple string containing [template markup](@root/markup//), usually stored in the form of a text file. This string is used to initialize a `Template` object:
 
 ::: code python
-
     >>> import ibis
     >>> template = ibis.Template('{{foo}} and {{bar}}')
 
@@ -23,7 +22,6 @@ The `Template` class acts as the public interface to the template engine. This i
 A `Template` object is initialized with a template string. It compiles the string and stores the resulting node tree for future rendering. Calling the template object's `render()` method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
 
 ::: code python
-
     >>> template.render(foo='ham', bar='eggs')
     'ham and eggs'
 
@@ -32,12 +30,11 @@ A `Template` object is initialized with a template string. It compiles the strin
 
 
 
-## Template Loaders
+### Template Loaders
 
 If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts one or more string arguments and either returns a corresponding template object or raises a `TemplateNotFound` exception, i.e. a template loader has a signature like the following function:
 
 ::: code python
-
     def loader(*args):
         ...
         return Template("loaded template text")
@@ -49,7 +46,6 @@ A `FileLoader` instance compiles its templates once and caches them in memory fo
 To specify a template loader set the `ibis.config.loader` variable to an instance of your callable:
 
 ::: code python
-
     import ibis
     ibis.config.loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
@@ -57,7 +53,7 @@ You may find it useful to use a single `FileLoader` object to load templates thr
 
 
 
-## Exceptions
+### Exceptions
 
 The following exception types may be raised by the template engine:
 
@@ -112,7 +108,7 @@ The following exception types may be raised by the template engine:
         Raised if an attempt to unpack a for-loop variable fails.
 
 
-## Builtins
+### Builtins
 
 The following built-in variables and functions are available in all contexts:
 
@@ -137,27 +133,25 @@ The following built-in variables and functions are available in all contexts:
     References the current context object.
 
 
-## The Undefined Type
+### The Undefined Type
 
 An instance of the `ibis.errors.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
 
 You can specify a fallback for undefined variables in template markup using the `undefined` filter:
 
 ::: code django
-
     {{ foo.bar|undefined("baz") }}
 
 In this case if the variable `foo.bar` is not defined in the current context, the fallback string `"baz"` will be used in its place.
 
 
-## Custom Filters
+### Custom Filters
 
 A filter is a function that accepts at least one argument - the value to be filtered - and returns the filtered result. It can optionally accept any number of additional arguments.
 
 Filters are registered using the `@register` decorator:
 
 ::: code python
-
     @ibis.filters.register('name')
 
 If no `name` argument is supplied, the function name will be used.
@@ -165,7 +159,6 @@ If no `name` argument is supplied, the function name will be used.
 As an example, we can register a filter to convert datetime objects into formatted strings:
 
 ::: code python
-
     import ibis
 
     @ibis.filters.register('dtformat')
@@ -175,7 +168,6 @@ As an example, we can register a filter to convert datetime objects into formatt
 This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in `now` function which returns a datetime object representing the current time:
 
 ::: code django
-
     {{ now|dtformat }}
 
     {{ now|dtformat('%Y') }}
@@ -183,20 +175,18 @@ This gives us a filter with an optional format string argument that we can call 
 As it happens, `dtformat` already exists as a built-in filter. Re-registering the `dtformat` name would simply override the built-in filter with our own custom version.
 
 
-## Custom Tags
+### Custom Tags
 
 You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
 
 Every syntax tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new syntax tag, register a subclass using the `@register` decorator:
 
 ::: code python
-
     @ibis.nodes.register('tag')
 
 You can give your new tag block scope by specifying a required end tag:
 
 ::: code python
-
     @ibis.nodes.register('tag', 'endtag')
 
 You'll need to turn to the source code itself for further details --- see the `nodes.py` file for lots of examples to work from.

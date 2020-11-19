@@ -83,9 +83,9 @@
 <a href="#custom-tags">Custom Tags</a>
 </li>
 </ul>
-<h2 id="template-objects">
+<h3 id="template-objects">
 Template Objects
-</h2>
+</h3>
 <p>
 A template starts life as a simple string containing <a href="markup.html">template markup</a>, usually stored in the form of a text file. This string is used to initialize a <code>Template</code> object:
 </p>
@@ -112,9 +112,9 @@ A <code>Template</code> object is initialized with a template string. It compile
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 <span class="s1">&#39;1 and 2&#39;</span>
 </pre>
-<h2 id="template-loaders">
+<h3 id="template-loaders">
 Template Loaders
-</h2>
+</h3>
 <p>
 If you want to use <a href="inheritance.html">template inheritance</a> or the <code>include</code> tag you'll need to specify a <i>template loader</i> so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts one or more string arguments and either returns a corresponding template object or raises a <code>TemplateNotFound</code> exception, i.e. a template loader has a signature like the following function:
 </p>
@@ -139,9 +139,9 @@ To specify a template loader set the <code>ibis.config.loader</code> variable to
 <p>
 You may find it useful to use a single <code>FileLoader</code> object to load templates throughout your application to take full advantage of its built-in caching.
 </p>
-<h2 id="exceptions">
+<h3 id="exceptions">
 Exceptions
-</h2>
+</h3>
 <p>
 The following exception types may be raised by the template engine:
 </p>
@@ -229,9 +229,9 @@ Raised if an attempt to unpack a for-loop variable fails.
 </ul>
 </li>
 </ul>
-<h2 id="builtins">
+<h3 id="builtins">
 Builtins
-</h2>
+</h3>
 <p>
 The following built-in variables and functions are available in all contexts:
 </p>
@@ -269,9 +269,9 @@ References the current context object.
 </p>
 </li>
 </ul>
-<h2 id="the-undefined-type">
+<h3 id="the-undefined-type">
 The Undefined Type
-</h2>
+</h3>
 <p>
 An instance of the <code>ibis.errors.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.
 </p>
@@ -284,9 +284,9 @@ You can specify a fallback for undefined variables in template markup using the 
 <p>
 In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>&quot;baz&quot;</code> will be used in its place.
 </p>
-<h2 id="custom-filters">
+<h3 id="custom-filters">
 Custom Filters
-</h2>
+</h3>
 <p>
 A filter is a function that accepts at least one argument - the value to be filtered - and returns the filtered result. It can optionally accept any number of additional arguments.
 </p>
@@ -320,9 +320,9 @@ This gives us a filter with an optional format string argument that we can call 
 <p>
 As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.
 </p>
-<h2 id="custom-tags">
+<h3 id="custom-tags">
 Custom Tags
-</h2>
+</h3>
 <p>
 You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of <code>Node</code> objects.
 </p>
