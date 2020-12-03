@@ -19,7 +19,7 @@ Sample syntax::
         {% endfor %}
     </ul>
 
-See the `package documentation <http://www.dmulholl.com/docs/ibis/>`_ or the
+See the `package documentation <http://www.dmulholl.com/docs/ibis/master/>`_ or the
 project's `Github homepage <https://github.com/dmulholl/ibis>`_ for
 further details.
 
@@ -46,9 +46,7 @@ setup(
     author = 'Darren Mulholland',
     url='https://github.com/dmulholl/ibis',
     license = 'Public Domain',
-    description = (
-        'A lightweight template engine.'
-    ),
+    description = 'A lightweight template engine.',
     long_description = __doc__,
     classifiers = [
         'Programming Language :: Python :: 3',

@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Unit tests for the Ibis package.
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 import unittest
 import datetime
 
-from ibis import Template, config, loaders
+import ibis
+from ibis import Template
 
 
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Templates.
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 
 # Loadable templates for testing the 'include' and 'extends' tags.
-config.loader = loaders.DictLoader({
+ibis.loader = ibis.loaders.DictLoader({
     'simple': '{{var}}',
     'base': (
         '|#|'
@@ -40,9 +41,9 @@ config.loader = loaders.DictLoader({
 })
 
 
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Tests.
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 
 class BasicInputTests(unittest.TestCase):
@@ -287,8 +288,8 @@ class FilterFunctionTests(unittest.TestCase):
 
 class BuiltinFunctionTests(unittest.TestCase):
 
-    def test_defined(self):
-        template = '{% if defined("var") %}foo{% else %}bar{% endif %}'
+    def test_is_defined(self):
+        template = '{% if is_defined("var") %}foo{% else %}bar{% endif %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, 'foo')
         rendered = Template(template).render()
@@ -475,7 +476,7 @@ class ForTagTests(unittest.TestCase):
         rendered = Template(template).render(var='abcd')
         self.assertEqual(rendered, '0123')
         template =  '{% for i in var %}'
-        template += '{% if loop.first %}{{i}}{% endif %}'
+        template += '{% if loop.is_first %}{{i}}{% endif %}'
         template += '{% endfor %}'
         rendered = Template(template).render(var='abcd')
         self.assertEqual(rendered, 'a')

@@ -1,12 +1,7 @@
-# --------------------------------------------------------------------------
-# Utility functions.
-# --------------------------------------------------------------------------
-
 import re
 
 
-# Splits a string on instances of a delimiter character. Ignores quoted
-# delimiters.
+# Splits a string on instances of a delimiter character. Ignores quoted delimiters.
 def splitc(s, delimiter, strip=False, discard_empty=False, maxsplit=-1):
 
     tokens, buf, expecting, escaped = [], [], None, False
@@ -40,8 +35,8 @@ def splitc(s, delimiter, strip=False, discard_empty=False, maxsplit=-1):
     return tokens
 
 
-# Splits a string on blocks of whitespace. Strips leading and trailing
-# whitespace. Ignores quoted whitespace.
+# Splits a string on blocks of whitespace. Strips leading and trailing whitespace.
+# Ignores quoted whitespace.
 def splitws(s, maxsplit=-1):
 
     tokens, buf, expecting, escaped, wsrun = [], [], None, False, False
@@ -72,8 +67,7 @@ def splitws(s, maxsplit=-1):
     return tokens
 
 
-# Splits a string using a list of regular expression patterns. Igores quoted
-# delimiter matches.
+# Splits a string using a list of regular expression patterns. Igores quoted delimiter matches.
 def splitre(s, delimiters, keepdels=False):
 
     tokens, buf = [], []

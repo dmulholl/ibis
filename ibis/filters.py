@@ -1,20 +1,9 @@
-# --------------------------------------------------------------------------
-# Default filter functions for use in templates. Additional filter functions
-# can be registered using the `@register` decorator:
-#
-#     @ibis.filters.register('name')
-#
-# A filter function should accept at least one argument - the value to be
-# filtered - and return the filtered result. It can optionally accept any
-# number of additional arguments.
-# --------------------------------------------------------------------------
-
-import random
 import re
 import pprint
 import html
+import random
 
-from . import errors
+from . import context
 
 try:
     import pygments
@@ -28,19 +17,18 @@ except ImportError:
 filtermap = {}
 
 
+# Decorator function for registering filters.  A filter function should accept at least one
+# argument - the value to be filtered - and return the filtered result. It can optionally
+# accept any number of additional arguments.
+#
+# This decorator can be used as:
+#
+#     @register
+#     @register()
+#     @register('name')
+#
+# If no name is supplied the function name will be used.
 def register(nameorfunc=None):
-
-    """ Decorator function for registering filters.
-
-    Can be used as:
-
-        @register
-        @register()
-        @register('name')
-
-    If no name is supplied the function name will be used.
-
-    """
 
     if callable(nameorfunc):
         filtermap[nameorfunc.__name__] = nameorfunc
@@ -286,9 +274,10 @@ def truncatewords(s, n, ellipsis=' [...]'):
 
 
 @register
+@register('ifundef')
 def undefined(obj, fallback):
     """ Returns `obj` if `obj` is defined, otherwise `fallback`. """
-    return fallback if isinstance(obj, errors.Undefined) else obj
+    return fallback if isinstance(obj, context.Undefined) else obj
 
 
 @register
