@@ -20,4 +20,4 @@ Features:
 
 See the [documentation][docs] for details.
 
-[docs]: http://www.dmulholl.com/docs/ibis/master/
+[docs]: http://www.dmulholl.com/docs/ibis/v1/
