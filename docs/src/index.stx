@@ -1,6 +1,6 @@
 ---
-meta title: Ibis &mdash; a lightweight template engine in Python
 title: Home
+meta_title: Ibis &mdash; a lightweight template engine in Python
 ---
 
 Ibis is a lightweight, Django-style template engine written in Python.
@@ -29,14 +29,14 @@ Install Ibis directly from the Python Package Index using `pip`:
 
     $ pip install ibis
 
-Ibis requires Python 3.2 or later.
+Ibis requires Python 3.8 or later.
 
 
 
 ### Links
 
-* [Github Homepage](https://github.com/dmulholl/ibis)
-* [Python Package Index](https://pypi.python.org/pypi/ibis/)
+* [Github](https://github.com/dmulholl/ibis)
+* [Package Index](https://pypi.python.org/pypi/ibis/)
 
 
 

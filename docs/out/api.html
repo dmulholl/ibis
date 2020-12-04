@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Template API</title>
+        <title>Ibis &mdash; Template API</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 1.6.0</p>
+            <p class="version">Version 2.0.0-alpha.1</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -94,16 +94,17 @@ A template starts life as a simple string containing <a href="markup.html">templ
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{{foo}} and {{bar}}&#39;</span><span class="p">)</span>
 </pre>
 <p>
-Internally, a lexer transforms the string into a sequence of tokens. A parser then takes this sequence and compiles it into a tree of nodes. Each node has a <code>render()</code> method which takes a context object and returns a string. The entire compiled node tree can be rendered by calling <code>render()</code> on the root node.
+Internally, a lexer transforms the string into a sequence of tokens. A parser then takes this
+sequence and compiles it into a tree of nodes. Each node has a <code>.render()</code> method which takes a
+context object and returns a string. The entire compiled node tree can be rendered by calling <code>.render()</code> on the root node.
 </p>
 <p>
-Compiling and rendering the node tree are two distinct processes. The template only needs to be compiled once; it can then be cached and rendered multiple times with different context objects.
+Compiling and rendering the node tree are two distinct operations. The template only needs to be compiled once; it can then be cached and rendered multiple times with different context objects.
 </p>
 <p>
 The <code>Template</code> class acts as the public interface to the template engine. This is the only class the end-user needs to interact with directly.
-</p>
-<p>
-A <code>Template</code> object is initialized with a template string. It compiles the string and stores the resulting node tree for future rendering. Calling the template object's <code>render()</code> method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
+A <code>Template</code> object is initialized with a template string. It compiles the string and stores the
+resulting node tree for future rendering. Calling the template object's <code>.render()</code> method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
 </p>
 <pre class="lang-python pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">foo</span><span class="o">=</span><span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="s1">&#39;eggs&#39;</span><span class="p">)</span>
@@ -116,29 +117,23 @@ A <code>Template</code> object is initialized with a template string. It compile
 Template Loaders
 </h3>
 <p>
-If you want to use <a href="inheritance.html">template inheritance</a> or the <code>include</code> tag you'll need to specify a <i>template loader</i> so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts one or more string arguments and either returns a corresponding template object or raises a <code>TemplateNotFound</code> exception, i.e. a template loader has a signature like the following function:
+If you want to use <a href="inheritance.html">template inheritance</a> or the <code>{% include %}</code> tag you'll
+need to specify a <i>template loader</i> so Ibis can locate the appropriate templates to include or
+extend. A template loader is a callable that accepts one or more string arguments and either returns
+a corresponding template object or raises a <code>TemplateLoadError</code> exception.
 </p>
-<pre class="lang-python pygments" data-lang="python">
-<span class="k">def</span> <span class="nf">loader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="o">...</span>
-    <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;loaded template text&quot;</span><span class="p">)</span>
-</pre>
 <p>
-You can define your own custom template loaders, but in many cases an instance of the builtin <code>FileLoader</code> class will be suitable. A <code>FileLoader</code> instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.
+You can define your own custom template loader, but in most cases an instance of the builtin <code>FileLoader</code> class will be suitable. A <code>FileLoader</code> instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.
 </p>
 <p>
 A <code>FileLoader</code> instance compiles its templates once and caches them in memory for future lookups. A <code>FileReloader</code> instance is identical but will automatically reload and recompile a template if the underlying template file changes.
 </p>
 <p>
-To specify a template loader set the <code>ibis.config.loader</code> variable to an instance of your callable:
+To specify a template loader set the <code>ibis.loader</code> variable to an instance of your callable:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="kn">import</span> <span class="nn">ibis</span>
-<span class="n">ibis</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
 </pre>
-<p>
-You may find it useful to use a single <code>FileLoader</code> object to load templates throughout your application to take full advantage of its built-in caching.
-</p>
 <h3 id="exceptions">
 Exceptions
 </h3>
@@ -156,74 +151,26 @@ Base class for all exceptions raised by the template engine.
 <ul>
 <li>
 <p>
-<code>ibis.errors.CallError</code>
-</p>
-<p>
-Raised if a callable variable throws an exception.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.FilterError</code>
-</p>
-<p>
-Raised if a filter function throws an exception.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.InvalidFilter</code>
-</p>
-<p>
-Unrecognised filter name.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.InvalidTag</code>
-</p>
-<p>
-Unrecognised syntax tag.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.LoadError</code>
-</p>
-<p>
-OS error attempting to load a template file.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.NestingError</code>
-</p>
-<p>
-Improperly nested template tags.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.TemplateNotFound</code>
-</p>
-<p>
-Raised by a template loader when no template is found.
-</p>
-</li>
-<li>
-<p>
 <code>ibis.errors.TemplateSyntaxError</code>
 </p>
 <p>
-Invalid template syntax.
+Raised if an error occurs while compiling a template.
 </p>
 </li>
 <li>
 <p>
-<code>ibis.errors.UnpackingError</code>
+<code>ibis.errors.TemplateRenderingError</code>
 </p>
 <p>
-Raised if an attempt to unpack a for-loop variable fails.
+Raised if an error occurs while rendering a template.
+</p>
+</li>
+<li>
+<p>
+<code>ibis.errors.TemplateLoadError</code>
+</p>
+<p>
+Raised if an error occurs while attempting to load a template.
 </p>
 </li>
 </ul>
@@ -238,10 +185,10 @@ The following built-in variables and functions are available in all contexts:
 <ul>
 <li>
 <p>
-<code>defined(&quot;name&quot;)</code>
+<code>is_defined(&quot;variable&quot;)</code>
 </p>
 <p>
-Returns <code>True</code> if the supplied string literal is a resolvable variable name.
+Returns <code>True</code> if the specified string literal is a resolvable variable name.
 </p>
 </li>
 <li>
@@ -265,7 +212,7 @@ Provides access to Python's builtin <code>range</code> function.
 <code>context</code>
 </p>
 <p>
-References the current context object.
+A reference to the current <code>Context</code> object.
 </p>
 </li>
 </ul>
@@ -273,13 +220,13 @@ References the current context object.
 The Undefined Type
 </h3>
 <p>
-An instance of the <code>ibis.errors.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.
+An instance of the <code>ibis.context.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.
 </p>
 <p>
-You can specify a fallback for undefined variables in template markup using the <code>undefined</code> filter:
+You can specify a fallback for undefined variables in template markup using the <code>ifundef</code> filter:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">ifundef</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>&quot;baz&quot;</code> will be used in its place.
@@ -288,17 +235,14 @@ In this case if the variable <code>foo.bar</code> is not defined in the current 
 Custom Filters
 </h3>
 <p>
-A filter is a function that accepts at least one argument - the value to be filtered - and returns the filtered result. It can optionally accept any number of additional arguments.
+A filter is a function that accepts at least one argument &mdash; the value to be filtered &mdash; and returns the filtered result. It can optionally accept any number of additional arguments.
 </p>
 <p>
-Filters are registered using the <code>@register</code> decorator:
+Filters are registered using the <code>@filters.register</code> decorator:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;filter_name&#39;</span><span class="p">)</span>
 </pre>
-<p>
-If no <code>name</code> argument is supplied, the function name will be used.
-</p>
 <p>
 As an example, we can register a filter to convert datetime objects into formatted strings:
 </p>
@@ -306,8 +250,8 @@ As an example, we can register a filter to convert datetime objects into formatt
 <span class="kn">import</span> <span class="nn">ibis</span>
 
 <span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;dtformat&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">format_str</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
 </pre>
 <p>
 This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in <code>now</code> function which returns a datetime object representing the current time:
@@ -324,19 +268,20 @@ As it happens, <code>dtformat</code> already exists as a built-in filter. Re-reg
 Custom Tags
 </h3>
 <p>
-You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of <code>Node</code> objects.
+You can register custom instruction tags to supplement or override the built-in ones. Creating custom tags is more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of <code>Node</code> objects.
 </p>
 <p>
-Every syntax tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new syntax tag, register a subclass using the <code>@register</code> decorator:
+Every instruction tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new
+instruction tag, register a subclass using the <code>@nodes.register</code> decorator:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
 </pre>
 <p>
-You can give your new tag block scope by specifying a required end tag:
+You can give your new tag block scope by specifying an end word:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="s1">&#39;endtag&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;endfoo&#39;</span><span class="p">)</span>
 </pre>
 <p>
 You'll need to turn to the source code itself for further details &mdash; see the <code>nodes.py</code> file for lots of examples to work from.

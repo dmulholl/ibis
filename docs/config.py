@@ -1,3 +1,3 @@
 title = "Ibis"
 tagline = "A lightweight template engine in Python."
-version = "Version 1.6.0"
+version = "Version 2.0.0-alpha.1"

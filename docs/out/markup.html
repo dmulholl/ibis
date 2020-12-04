@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Template Markup</title>
+        <title>Ibis &mdash; Template Markup</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 1.6.0</p>
+            <p class="version">Version 2.0.0-alpha.1</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -60,8 +60,21 @@
                 
                 <hr>
             </header>
-            <p>
-There are three kinds of template markup: comments, print statements, and syntax tags. Comments are the simplest kind; they look like this:
+            <ul class="stx-toc">
+<li>
+<a href="#print-tags">Print Tags</a>
+</li>
+<li>
+<a href="#expressions">Expressions</a>
+</li>
+<li>
+<a href="#instruction-tags">Instruction Tags</a>
+</li>
+</ul>
+<hr>
+<p>
+There are three kinds of template markup: <i>comment tags</i>, <i>print tags</i>, and <i>instruction tags</i>.
+Comment tags are the simplest kind; they look like this:
 </p>
 <pre>
 {# This is a comment. #}
@@ -69,44 +82,46 @@ There are three kinds of template markup: comments, print statements, and syntax
 <p>
 Comments can span multiple lines and can be used to comment-out sections of template code.
 </p>
-<h3 id="print-statements">
-Print Statements
+<h3 id="print-tags">
+Print Tags
 </h3>
 <p>
-Print statements evaluate and print <a href="#expressions">expressions</a>. They look like this:
+Print tags evaluate and print <a href="#expressions">expressions</a>. They look like this:
 </p>
 <pre>
 {{ post.title }}
 </pre>
 <p>
-Print statements come in two flavours: regular and escaped. Escaped print statements escape HTML syntax characters in their output before printing it. They look like this:
+Print tags come in two flavours: regular and escaped. Escaped print tags escape HTML syntax characters in their output before printing it. They look like this:
 </p>
 <pre>
 {{{ post.title }}}
 </pre>
 <p>
-Escaped print statements are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:
+Escaped print tags are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:
 </p>
 <pre>
 {{ post.title|escape }}
 </pre>
 <p>
-Print statements can make use of two other constructs. First, print statements can contain multiple expressions separated by the <code>||</code> sigil. The first expression to evaluate as 'truthy' will be printed:
+Print tags can make use of two other constructs. First, print tags can contain multiple
+expressions separated by <code>||</code>, the logical-OR operator. The first expression to evaluate as 'truthy' will be printed:
 </p>
 <pre>
-{{ post.title || &quot;Untitled Post&quot; }}
+{{ post.meta_title || post.title || &quot;Missing Title&quot; }}
 </pre>
 <p>
-Second, print statements can make use of a C-style ternary operator:
+Second, print tags can make use of a C-style ternary operator:
 </p>
 <pre>
 {{ is_homepage ?? site.title :: post.title }}
 </pre>
 <p>
-If the first (test) expression evaluates as 'truthy', the value of the second expression will be printed, otherwise the value of the third expression will be used.
+If the test expression evaluates as 'truthy', the value of the first expression will be printed,
+otherwise the value of the second expression will be printed.
 </p>
 <p>
-Note that a single print statement can make use of <code>or</code>-chaining or the ternary construct, but not both.
+Note that a single print statement can make use of <code>||</code> chaining or the ternary construct, but not both.
 </p>
 <h3 id="expressions">
 Expressions
@@ -115,7 +130,7 @@ Expressions
 An <i>expression</i> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 </p>
 <p>
-Variables use <code>.</code> syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
+Variables use dot-syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="m">42</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
@@ -146,17 +161,17 @@ Note that expressions can use simple Python literals in place of variables:
 <p>
 The following literal structures can be used in expressions as arguments to callables or in place of variables: strings, bytes, numbers, tuples, lists, dicts, sets, booleans, and <code>None</code>.
 </p>
-<h3 id="syntax-tags">
-Syntax Tags
+<h3 id="instruction-tags">
+Instruction Tags
 </h3>
 <p>
-Syntax tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
+Instruction tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">tag</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
-Some syntax tags have block scope and require a closing tag. They look like this:
+Some instruction tags have block scope and require a closing tag. They look like this:
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">tag</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endtag</span> <span class="cp">%}</span><span class="x"></span>
@@ -165,7 +180,7 @@ Some syntax tags have block scope and require a closing tag. They look like this
 Tags with block scope can contain further template markup and can be nested to any depth.
 </p>
 <p>
-You can find a list of built-in syntax tags <a href="tags.html">here</a>.
+You can find a list of built-in instruction tags <a href="tags.html">here</a>.
 </p>
         </article>
         

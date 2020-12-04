@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Quickstart</title>
+        <title>Ibis &mdash; Quickstart Tutorial</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 1.6.0</p>
+            <p class="version">Version 2.0.0-alpha.1</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -56,19 +56,21 @@
         </header>
         <article class="main">
             <header class="title">
-                <h1>Quickstart</h1>
+                <h1>Quickstart Tutorial</h1>
                 
                 <hr>
             </header>
             <p>
-A template starts life as a simple string containing <a href="markup.html">template markup</a>. We use this string to initialize a <code>Template</code> object:
+A template starts life as a simple string containing <a href="markup.html">template markup</a>.
+The <code>Template</code> class takes this string as input and compiles it into a template object:
 </p>
 <pre class="lang-python pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ibis</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{{foo}} and {{bar}}&#39;</span><span class="p">)</span>
 </pre>
 <p>
-The <code>Template</code> class takes the string and compiles it into a template object. Compilation only needs to happen once; the template can then be rendered multiple times by calling its <code>render()</code> method with a dictionary of key-value pairs:
+Compilation only needs to happen once; the template can then be rendered multiple times by calling
+its <code>.render()</code> method with a dictionary of key-value pairs:
 </p>
 <pre class="lang-python pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="s1">&#39;eggs&#39;</span><span class="p">})</span>
@@ -84,7 +86,6 @@ In practice you'll most likely store your templates in the form of text files. Y
 A <code>FileLoader</code> instance is initialized with a path to a root template directory:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="kn">import</span> <span class="nn">ibis</span>
 <span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
 </pre>
 <p>

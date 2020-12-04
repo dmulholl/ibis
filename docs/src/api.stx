@@ -1,5 +1,6 @@
 ---
 title: Template API
+meta_title: Ibis &mdash; Template API
 ---
 
 ::: insert toc
@@ -13,13 +14,15 @@ A template starts life as a simple string containing [template markup](@root/mar
     >>> import ibis
     >>> template = ibis.Template('{{foo}} and {{bar}}')
 
-Internally, a lexer transforms the string into a sequence of tokens. A parser then takes this sequence and compiles it into a tree of nodes. Each node has a `render()` method which takes a context object and returns a string. The entire compiled node tree can be rendered by calling `render()` on the root node.
+Internally, a lexer transforms the string into a sequence of tokens. A parser then takes this
+sequence and compiles it into a tree of nodes. Each node has a `.render()` method which takes a
+context object and returns a string. The entire compiled node tree can be rendered by calling `.render()` on the root node.
 
-Compiling and rendering the node tree are two distinct processes. The template only needs to be compiled once; it can then be cached and rendered multiple times with different context objects.
+Compiling and rendering the node tree are two distinct operations. The template only needs to be compiled once; it can then be cached and rendered multiple times with different context objects.
 
 The `Template` class acts as the public interface to the template engine. This is the only class the end-user needs to interact with directly.
-
-A `Template` object is initialized with a template string. It compiles the string and stores the resulting node tree for future rendering. Calling the template object's `render()` method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
+A `Template` object is initialized with a template string. It compiles the string and stores the
+resulting node tree for future rendering. Calling the template object's `.render()` method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
 
 ::: code python
     >>> template.render(foo='ham', bar='eggs')
@@ -32,24 +35,19 @@ A `Template` object is initialized with a template string. It compiles the strin
 
 ### Template Loaders
 
-If you want to use [template inheritance](@root/inheritance//) or the `include` tag you'll need to specify a *template loader* so Ibis can locate the appropriate templates to include or extend. A template loader is a callable that accepts one or more string arguments and either returns a corresponding template object or raises a `TemplateNotFound` exception, i.e. a template loader has a signature like the following function:
+If you want to use [template inheritance](@root/inheritance//) or the `{% include %}` tag you'll
+need to specify a *template loader* so Ibis can locate the appropriate templates to include or
+extend. A template loader is a callable that accepts one or more string arguments and either returns
+a corresponding template object or raises a `TemplateLoadError` exception.
 
-::: code python
-    def loader(*args):
-        ...
-        return Template("loaded template text")
-
-You can define your own custom template loaders, but in many cases an instance of the builtin `FileLoader` class will be suitable. A `FileLoader` instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.
+You can define your own custom template loader, but in most cases an instance of the builtin `FileLoader` class will be suitable. A `FileLoader` instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.
 
 A `FileLoader` instance compiles its templates once and caches them in memory for future lookups. A `FileReloader` instance is identical but will automatically reload and recompile a template if the underlying template file changes.
 
-To specify a template loader set the `ibis.config.loader` variable to an instance of your callable:
+To specify a template loader set the `ibis.loader` variable to an instance of your callable:
 
 ::: code python
-    import ibis
-    ibis.config.loader = ibis.loaders.FileLoader('/path/to/template/directory')
-
-You may find it useful to use a single `FileLoader` object to load templates throughout your application to take full advantage of its built-in caching.
+    ibis.loader = ibis.loaders.FileLoader('/path/to/template/directory')
 
 
 
@@ -58,54 +56,26 @@ You may find it useful to use a single `FileLoader` object to load templates thr
 The following exception types may be raised by the template engine:
 
 
-(*)   `ibis.errors.TemplateError`
+(*) `ibis.errors.TemplateError`
 
     Base class for all exceptions raised by the template engine.
 
 
-    (*)   `ibis.errors.CallError`
+    (*) `ibis.errors.TemplateSyntaxError`
 
-        Raised if a callable variable throws an exception.
-
-
-    (*)   `ibis.errors.FilterError`
-
-        Raised if a filter function throws an exception.
+        Raised if an error occurs while compiling a template.
 
 
-    (*)   `ibis.errors.InvalidFilter`
+    (*) `ibis.errors.TemplateRenderingError`
 
-        Unrecognised filter name.
-
-
-    (*)   `ibis.errors.InvalidTag`
-
-        Unrecognised syntax tag.
+        Raised if an error occurs while rendering a template.
 
 
-    (*)   `ibis.errors.LoadError`
+    (*) `ibis.errors.TemplateLoadError`
 
-        OS error attempting to load a template file.
-
-
-    (*)   `ibis.errors.NestingError`
-
-        Improperly nested template tags.
+        Raised if an error occurs while attempting to load a template.
 
 
-    (*)   `ibis.errors.TemplateNotFound`
-
-        Raised by a template loader when no template is found.
-
-
-    (*)   `ibis.errors.TemplateSyntaxError`
-
-        Invalid template syntax.
-
-
-    (*)   `ibis.errors.UnpackingError`
-
-        Raised if an attempt to unpack a for-loop variable fails.
 
 
 ### Builtins
@@ -113,48 +83,47 @@ The following exception types may be raised by the template engine:
 The following built-in variables and functions are available in all contexts:
 
 
-(*)   `defined("name")`
+(*) `is_defined("variable")`
 
-    Returns `True` if the supplied string literal is a resolvable variable name.
+    Returns `True` if the specified string literal is a resolvable variable name.
 
 
-(*)   `now()`
+(*) `now()`
 
     Returns a datetime object representing the instant the function is called.
 
 
-(*)   `range()`
+(*) `range()`
 
     Provides access to Python's builtin `range` function.
 
 
-(*)   `context`
+(*) `context`
 
-    References the current context object.
+    A reference to the current `Context` object.
+
 
 
 ### The Undefined Type
 
-An instance of the `ibis.errors.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
+An instance of the `ibis.context.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
 
-You can specify a fallback for undefined variables in template markup using the `undefined` filter:
+You can specify a fallback for undefined variables in template markup using the `ifundef` filter:
 
 ::: code django
-    {{ foo.bar|undefined("baz") }}
+    {{ foo.bar|ifundef("baz") }}
 
 In this case if the variable `foo.bar` is not defined in the current context, the fallback string `"baz"` will be used in its place.
 
 
 ### Custom Filters
 
-A filter is a function that accepts at least one argument - the value to be filtered - and returns the filtered result. It can optionally accept any number of additional arguments.
+A filter is a function that accepts at least one argument --- the value to be filtered --- and returns the filtered result. It can optionally accept any number of additional arguments.
 
-Filters are registered using the `@register` decorator:
+Filters are registered using the `@filters.register` decorator:
 
 ::: code python
-    @ibis.filters.register('name')
-
-If no `name` argument is supplied, the function name will be used.
+    @ibis.filters.register('filter_name')
 
 As an example, we can register a filter to convert datetime objects into formatted strings:
 
@@ -162,8 +131,8 @@ As an example, we can register a filter to convert datetime objects into formatt
     import ibis
 
     @ibis.filters.register('dtformat')
-    def datetime_formatter(dt, format='%Y-%m-%d'):
-        return dt.strftime(format)
+    def datetime_formatter(dt, format_str='%Y-%m-%d'):
+        return dt.strftime(format_str)
 
 This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in `now` function which returns a datetime object representing the current time:
 
@@ -177,16 +146,17 @@ As it happens, `dtformat` already exists as a built-in filter. Re-registering th
 
 ### Custom Tags
 
-You can register custom syntax tags to supplement or override the built-in ones. Creating custom tags is a little more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
+You can register custom instruction tags to supplement or override the built-in ones. Creating custom tags is more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
 
-Every syntax tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new syntax tag, register a subclass using the `@register` decorator:
-
-::: code python
-    @ibis.nodes.register('tag')
-
-You can give your new tag block scope by specifying a required end tag:
+Every instruction tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new
+instruction tag, register a subclass using the `@nodes.register` decorator:
 
 ::: code python
-    @ibis.nodes.register('tag', 'endtag')
+    @ibis.nodes.register('foo')
+
+You can give your new tag block scope by specifying an end word:
+
+::: code python
+    @ibis.nodes.register('foo', 'endfoo')
 
 You'll need to turn to the source code itself for further details --- see the `nodes.py` file for lots of examples to work from.

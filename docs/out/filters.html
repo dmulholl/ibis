@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Filter Reference</title>
+        <title>Ibis &mdash; Filter Reference</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 1.6.0</p>
+            <p class="version">Version 2.0.0-alpha.1</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -89,6 +89,9 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 <a href="#firstp">firstp</a>
 </li>
 <li>
+<a href="#ifundef">ifundef</a>
+</li>
+<li>
 <a href="#index">index</a>
 </li>
 <li>
@@ -146,9 +149,6 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 <a href="#truncatewords">truncatewords</a>
 </li>
 <li>
-<a href="#undefined">undefined</a>
-</li>
-<li>
 <a href="#upper">upper</a>
 </li>
 <li>
@@ -162,7 +162,7 @@ default
 default(obj, fallback)
 </pre>
 <p>
-Returns <code>obj</code> if <code>obj</code> is truthy, otherwise returns the specified fallback.
+Returns <code>obj</code> if <code>obj</code> is truthy, otherwise returns <code>fallback</code>.
 </p>
 <h3 id="dtformat">
 dtformat
@@ -180,7 +180,7 @@ endswith
 endswith(str, suffix)
 </pre>
 <p>
-Returns true if the string <code>str</code> ends with the specified suffix.
+Returns true if the string ends with the specified suffix.
 </p>
 <h3 id="escape">
 escape
@@ -226,6 +226,15 @@ firstp(str)
 </pre>
 <p>
 Returns the content of the first <code>&lt;p&gt;</code> element in a string of HTML.
+</p>
+<h3 id="ifundef">
+ifundef
+</h3>
+<pre>
+ifundef(obj, fallback)
+</pre>
+<p>
+Returns <code>obj</code> if <code>obj</code> is not an instance of the <code>Undefined</code> class, otherwise returns <code>fallback</code>.
 </p>
 <h3 id="index">
 index
@@ -354,7 +363,7 @@ startswith
 startswith(str, prefix)
 </pre>
 <p>
-Returns true if the string <code>str</code> starts with the specified prefix.
+Returns true if the string starts with the specified prefix.
 </p>
 <h3 id="str">
 str
@@ -400,15 +409,6 @@ truncatewords(str, n, ellipsis=&#x27; [...]&#x27;)
 </pre>
 <p>
 Truncates the string <code>str</code> to at most <code>n</code> words.
-</p>
-<h3 id="undefined">
-undefined
-</h3>
-<pre>
-undefined(obj, fallback)
-</pre>
-<p>
-Returns <code>obj</code> if <code>obj</code> is not an instance of the <code>Undefined</code> class, otherwise returns the specified fallback.
 </p>
 <h3 id="upper">
 upper

@@ -1,5 +1,6 @@
 ---
 title: Filter Reference
+meta_title: Ibis &mdash; Filter Reference
 ---
 
 
@@ -13,7 +14,7 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 
     default(obj, fallback)
 
-Returns `obj` if `obj` is truthy, otherwise returns the specified fallback.
+Returns `obj` if `obj` is truthy, otherwise returns `fallback`.
 
 
 ### dtformat
@@ -27,7 +28,7 @@ Formats a datetime object using the specified format string.
 
     endswith(str, suffix)
 
-Returns true if the string `str` ends with the specified suffix.
+Returns true if the string ends with the specified suffix.
 
 
 ### escape
@@ -63,6 +64,13 @@ Returns the content of the first heading element in a string of HTML.
     firstp(str)
 
 Returns the content of the first `<p>` element in a string of HTML.
+
+
+### ifundef
+
+    ifundef(obj, fallback)
+
+Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise returns `fallback`.
 
 
 ### index
@@ -163,7 +171,7 @@ Strips all whitespace between HTML/XML tags in a string.
 
     startswith(str, prefix)
 
-Returns true if the string `str` starts with the specified prefix.
+Returns true if the string starts with the specified prefix.
 
 
 ### str
@@ -199,13 +207,6 @@ Truncates the string `str` to at most `n` chars.
     truncatewords(str, n, ellipsis=' [...]')
 
 Truncates the string `str` to at most `n` words.
-
-
-### undefined
-
-    undefined(obj, fallback)
-
-Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise returns the specified fallback.
 
 
 ### upper
