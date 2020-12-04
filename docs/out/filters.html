@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-alpha.1</p>
+            <p class="version">Version 2.0.0-alpha.2</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -89,10 +89,13 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 <a href="#firstp">firstp</a>
 </li>
 <li>
-<a href="#ifundef">ifundef</a>
+<a href="#if-undefined">if_undefined</a>
 </li>
 <li>
 <a href="#index">index</a>
+</li>
+<li>
+<a href="#is-defined">is_defined</a>
 </li>
 <li>
 <a href="#join">join</a>
@@ -227,14 +230,15 @@ firstp(str)
 <p>
 Returns the content of the first <code>&lt;p&gt;</code> element in a string of HTML.
 </p>
-<h3 id="ifundef">
-ifundef
+<h3 id="if-undefined">
+if_undefined
 </h3>
 <pre>
-ifundef(obj, fallback)
+if_undefined(obj, fallback)
 </pre>
 <p>
-Returns <code>obj</code> if <code>obj</code> is not an instance of the <code>Undefined</code> class, otherwise returns <code>fallback</code>.
+Returns <code>obj</code> if <code>obj</code> is <i>defined</i>, i.e. not an instance of the <code>Undefined</code> class. If <code>obj</code> is
+undefined, returns <code>fallback</code>.
 </p>
 <h3 id="index">
 index
@@ -244,6 +248,15 @@ index(seq, i)
 </pre>
 <p>
 Returns the ith element in a sequence.
+</p>
+<h3 id="is-defined">
+is_defined
+</h3>
+<pre>
+is_defined(obj)
+</pre>
+<p>
+Returns true if <code>obj</code> is <i>defined</i>, i.e. not an instance of the <code>Undefined</code> class, otherwise returns false.
 </p>
 <h3 id="join">
 join

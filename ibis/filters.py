@@ -274,13 +274,6 @@ def truncatewords(s, n, ellipsis=' [...]'):
 
 
 @register
-@register('ifundef')
-def undefined(obj, fallback):
-    """ Returns `obj` if `obj` is defined, otherwise `fallback`. """
-    return fallback if isinstance(obj, context.Undefined) else obj
-
-
-@register
 def upper(s):
     """ Returns the string `s` converted to uppercase. """
     return s.upper()
@@ -290,3 +283,16 @@ def upper(s):
 def wrap(s, tag):
     """ Wraps a string in opening and closing tags. """
     return '<%s>%s</%s>' % (tag, str(s), tag)
+
+
+@register
+def if_undefined(obj, fallback):
+    """ Returns `obj` if `obj` is defined, otherwise `fallback`. """
+    return fallback if isinstance(obj, context.Undefined) else obj
+
+
+@register
+def is_defined(obj):
+    """ Returns true if `obj` is defined, otherwise false. """
+    return not isinstance(obj, context.Undefined)
+

@@ -270,11 +270,6 @@ class FilterFunctionTests(unittest.TestCase):
         rendered = Template(template).render(var='supercalifragilistic')
         self.assertEqual(rendered, 'lorem ipsum dolor [...]')
 
-    def test_undefined(self):
-        template = '{{var|undefined:"foo"}}'
-        rendered = Template(template).render()
-        self.assertEqual(rendered, 'foo')
-
     def test_upper(self):
         template = '{{var|upper}}'
         rendered = Template(template).render(var='Foo')
@@ -285,15 +280,28 @@ class FilterFunctionTests(unittest.TestCase):
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '<p>foo</p>')
 
-
-class BuiltinFunctionTests(unittest.TestCase):
-
-    def test_is_defined(self):
-        template = '{% if is_defined("var") %}foo{% else %}bar{% endif %}'
-        rendered = Template(template).render(var='foo')
+    def test_if_undefined_case1(self):
+        template = '{{var|if_undefined:"foo"}}'
+        rendered = Template(template).render()
         self.assertEqual(rendered, 'foo')
+
+    def test_if_undefined_case2(self):
+        template = '{{var|if_undefined:"foo"}}'
+        rendered = Template(template).render(var=123)
+        self.assertEqual(rendered, '123')
+
+    def test_is_defined_case1(self):
+        template = '{% if var|is_defined %}foo{% else %}bar{% endif %}'
         rendered = Template(template).render()
         self.assertEqual(rendered, 'bar')
+
+    def test_is_defined_case2(self):
+        template = '{% if var|is_defined %}foo{% else %}bar{% endif %}'
+        rendered = Template(template).render(var=123)
+        self.assertEqual(rendered, 'foo')
+
+
+class BuiltinFunctionTests(unittest.TestCase):
 
     def test_range(self):
         template = '{% for i in range(4) %}{{i}}.{% endfor %}'

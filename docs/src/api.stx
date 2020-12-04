@@ -77,15 +77,9 @@ The following exception types may be raised by the template engine:
 
 
 
-
 ### Builtins
 
 The following built-in variables and functions are available in all contexts:
-
-
-(*) `is_defined("variable")`
-
-    Returns `True` if the specified string literal is a resolvable variable name.
 
 
 (*) `now()`
@@ -108,12 +102,20 @@ The following built-in variables and functions are available in all contexts:
 
 An instance of the `ibis.context.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
 
-You can specify a fallback for undefined variables in template markup using the `ifundef` filter:
+You can check if a variable is defined using the boolean `is_defined` filter:
 
 ::: code django
-    {{ foo.bar|ifundef("baz") }}
+    {% if foo.bar|is_defined %}
+        do stuff with {{ foo.bar }}
+    {% endif %}
+
+You can specify a fallback value for undefined variables using the `if_undefined` filter
+
+::: code django
+    {{ foo.bar|if_undefined("baz") }}
 
 In this case if the variable `foo.bar` is not defined in the current context, the fallback string `"baz"` will be used in its place.
+
 
 
 ### Custom Filters

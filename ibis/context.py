@@ -19,7 +19,6 @@ class Context:
         # Standard builtins.
         self.stack.append({
             'context': self,
-            'is_defined': self.is_defined,
         })
 
         # User-configurable builtins.
@@ -57,22 +56,30 @@ class Context:
         for token in varstring.split('.'):
             try:
                 result = result[token]
-            except (TypeError, AttributeError, KeyError, ValueError):
+            except:
                 try:
                     result = getattr(result, token)
-                except (TypeError, AttributeError):
-                    result = Undefined()
-                    break
+                except:
+                    return Undefined()
         return result
+
+    def is_defined(self, varstring):
+        current = self
+        for token in varstring.split('.'):
+            try:
+                current = current[token]
+            except:
+                try:
+                    current = getattr(current, token)
+                except:
+                    return False
+        return True
 
     def push(self, data=None):
         self.stack.append(data or {})
 
     def pop(self):
         self.stack.pop()
-
-    def is_defined(self, varstring):
-        return not isinstance(self.resolve(varstring), Undefined)
 
     def get(self, key, default=None):
         for d in reversed(self.stack):

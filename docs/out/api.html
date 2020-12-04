@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-alpha.1</p>
+            <p class="version">Version 2.0.0-alpha.2</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -185,14 +185,6 @@ The following built-in variables and functions are available in all contexts:
 <ul>
 <li>
 <p>
-<code>is_defined(&quot;variable&quot;)</code>
-</p>
-<p>
-Returns <code>True</code> if the specified string literal is a resolvable variable name.
-</p>
-</li>
-<li>
-<p>
 <code>now()</code>
 </p>
 <p>
@@ -223,10 +215,18 @@ The Undefined Type
 An instance of the <code>ibis.context.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.
 </p>
 <p>
-You can specify a fallback for undefined variables in template markup using the <code>ifundef</code> filter:
+You can check if a variable is defined using the boolean <code>is_defined</code> filter:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">ifundef</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">is_defined</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    do stuff with </span><span class="cp">{{</span> <span class="nv">foo.bar</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<p>
+You can specify a fallback value for undefined variables using the <code>if_undefined</code> filter
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">if_undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>&quot;baz&quot;</code> will be used in its place.

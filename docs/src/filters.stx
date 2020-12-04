@@ -66,11 +66,12 @@ Returns the content of the first heading element in a string of HTML.
 Returns the content of the first `<p>` element in a string of HTML.
 
 
-### ifundef
+### if_undefined
 
-    ifundef(obj, fallback)
+    if_undefined(obj, fallback)
 
-Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise returns `fallback`.
+Returns `obj` if `obj` is *defined*, i.e. not an instance of the `Undefined` class. If `obj` is
+undefined, returns `fallback`.
 
 
 ### index
@@ -78,6 +79,13 @@ Returns `obj` if `obj` is not an instance of the `Undefined` class, otherwise re
     index(seq, i)
 
 Returns the ith element in a sequence.
+
+
+### is_defined
+
+    is_defined(obj)
+
+Returns true if `obj` is *defined*, i.e. not an instance of the `Undefined` class, otherwise returns false.
 
 
 ### join
