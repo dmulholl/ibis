@@ -83,13 +83,14 @@ its <code>.render()</code> method with a dictionary of key-value pairs:
 In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting <code>Template</code> objects yourself, or you can take advantage of the built-in <code>FileLoader</code> class to take care of the details for you.
 </p>
 <p>
-A <code>FileLoader</code> instance is initialized with a path to a root template directory:
+A <code>FileLoader</code> instance is initialized with a path to a base template directory:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/base/dir&#39;</span><span class="p">)</span>
 </pre>
 <p>
-Calling the loader with a template name (a string interpreted as a path to a text file stored in the root directory) will return the corresponding template object:
+Calling the loader with a template name (a string interpreted as a path to a text file stored in the
+base directory) will return the corresponding template object:
 </p>
 <pre class="lang-python pygments" data-lang="python">
 <span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="s1">&#39;template.txt&#39;</span><span class="p">)</span>

@@ -22,15 +22,15 @@ its `.render()` method with a dictionary of key-value pairs:
 
 In practice you'll most likely store your templates in the form of text files. You can handle the process of loading these files, compiling them into templates, and storing the resulting `Template` objects yourself, or you can take advantage of the built-in `FileLoader` class to take care of the details for you.
 
-A `FileLoader` instance is initialized with a path to a root template directory:
+A `FileLoader` instance is initialized with a path to a base template directory:
 
 ::: code python
-    loader = ibis.loaders.FileLoader('/path/to/template/directory')
+    loader = ibis.loaders.FileLoader('/path/to/base/dir')
 
-Calling the loader with a template name (a string interpreted as a path to a text file stored in the root directory) will return the corresponding template object:
+Calling the loader with a template name (a string interpreted as a path to a text file stored in the
+base directory) will return the corresponding template object:
 
 ::: code python
-
     template = loader('template.txt')
 
 The loader compiles the templates once and caches them in memory for future lookups. You can learn more about using template loaders [here](@root/api//#template-loaders).
