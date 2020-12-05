@@ -120,19 +120,31 @@ Template Loaders
 If you want to use <a href="inheritance.html">template inheritance</a> or the <code>{% include %}</code> tag you'll
 need to specify a <i>template loader</i> so Ibis can locate the appropriate templates to include or
 extend. A template loader is a callable that accepts one or more string arguments and either returns
-a corresponding template object or raises a <code>TemplateLoadError</code> exception.
+a corresponding <code>Template</code> object or raises a <code>TemplateLoadError</code> exception.
 </p>
 <p>
-You can define your own custom template loader, but in most cases an instance of the builtin <code>FileLoader</code> class will be suitable. A <code>FileLoader</code> instance is initialized with a path to a base template directory. The loader then interprets its string arguments as paths to UTF-8 encoded text files stored in this directory and returns a template object corresponding to the first file it finds.
-</p>
-<p>
-A <code>FileLoader</code> instance compiles its templates once and caches them in memory for future lookups. A <code>FileReloader</code> instance is identical but will automatically reload and recompile a template if the underlying template file changes.
-</p>
-<p>
-To specify a template loader set the <code>ibis.loader</code> variable to an instance of your callable:
+You can define your own custom template loader, but in most cases an instance of the builtin <code>FileLoader</code> class will be suitable. A <code>FileLoader</code> instance is initialized with a path to a base template directory:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="n">ibis</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/template/directory&#39;</span><span class="p">)</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/base/dir&#39;</span><span class="p">)</span>
+</pre>
+<p>
+The loader object is callable;
+you can call it with one or more string arguments which it interprets as paths to UTF-8 encoded
+template files. The loader returns the <code>Template</code> object corresponding to the first file it finds:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="s1">&#39;foo.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;subdir/bar.txt&#39;</span><span class="p">)</span>
+</pre>
+<p>
+A <code>FileLoader</code> instance compiles its templates once and caches them in memory for future lookups. A
+<code>FileReloader</code> instance is similar but will automatically reload and recompile a template if the underlying template file changes.
+</p>
+<p>
+To specify a template loader set <code>ibis.loader</code> to an instance of your callable:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">ibis</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/base/dir&#39;</span><span class="p">)</span>
 </pre>
 <h3 id="exceptions">
 Exceptions
