@@ -35,9 +35,9 @@ class FileLoader:
                 try:
                     with open(path, encoding='utf-8') as file:
                         template_string = file.read()
-                except OSError:
+                except OSError as err:
                     msg = f"FileLoader cannot load the template file '{filename}'."
-                    raise TemplateLoadError(msg)
+                    raise TemplateLoadError(msg) from err
 
                 template = Template(template_string, filename)
                 self.cache[filename] = template
@@ -69,9 +69,9 @@ class FileReloader:
                 try:
                     with open(path, encoding='utf-8') as file:
                         template_string = file.read()
-                except OSError:
+                except OSError as err:
                     msg = f"FileReloader cannot load the template file '{filename}'."
-                    raise TemplateLoadError(msg)
+                    raise TemplateLoadError(msg) from err
 
                 template = Template(template_string, filename)
                 self.cache[filename] = (mtime, template)

@@ -87,11 +87,11 @@ class Expression:
         for index, arg in enumerate(args):
             try:
                 args[index] = ast.literal_eval(arg)
-            except:
+            except Exception as e:
                 msg = f"Unparsable argument '{arg}' in template '{self.token.template_id}', "
                 msg += f"line {self.token.line_number}. "
                 msg += f"Arguments must be valid Python literals."
-                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number) from None
+                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number) from e
         return name, args
 
     def _parse_filters(self, filter_list):
@@ -108,10 +108,10 @@ class Expression:
         for name, func, args in self.filters:
             try:
                 obj = func(obj, *args)
-            except:
+            except Exception as e:
                 msg = f"Error applying filter '{name}' to literal "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number)
+                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number) from e
         return obj
 
     def eval(self, context):
@@ -125,20 +125,20 @@ class Expression:
         if callable(obj):
             try:
                 obj = obj(*self.varargs)
-            except:
+            except Exception as e:
                 msg = f"Error calling function '{self.varstr}' "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number)
+                raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number) from e
         return self._apply_filters_to_variable(obj)
 
     def _apply_filters_to_variable(self, obj):
         for name, func, args in self.filters:
             try:
                 obj = func(obj, *args)
-            except:
+            except Exception as e:
                 msg = f"Error applying filter '{name}' to variable "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number)
+                raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number) from e
         return obj
 
 
@@ -273,14 +273,12 @@ class ForNode(Node):
                 if unpack:
                     try:
                         unpacked = dict(zip(self.loopvars, item))
-                    except TypeError:
+                    except Exception as e:
                         msg = f"Unpacking error in template '{self.token.template_id}', "
                         msg += f"line {self.token.line_number}."
-                        raise TemplateRenderingError(
-                            msg,
-                            self.token.template_id,
-                            self.token.line_number
-                        )
+                        template_id = self.token.template_id
+                        line_number = self.token.line_number
+                        raise TemplateRenderingError(msg, template_id, line_number) from e
                     else:
                         context.update(unpacked)
                 else:
@@ -389,11 +387,11 @@ class IfNode(Node):
                 result = cond.op(cond.lhs.eval(context), cond.rhs.eval(context))
             else:
                 result = operator.truth(cond.lhs.eval(context))
-        except:
+        except Exception as e:
             msg = f"An exception was raised while evaluating the condition in the "
             msg += f"'{self.tag}' tag in template '{self.token.template_id}', "
             msg += f"line {self.token.line_number}."
-            raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number)
+            raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number) from e
         if cond.negated:
             result = not result
         return result
