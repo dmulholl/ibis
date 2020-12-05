@@ -308,6 +308,16 @@ class BuiltinFunctionTests(unittest.TestCase):
         rendered = Template(template).render()
         self.assertEqual(rendered, '0.1.2.3.')
 
+    def test_is_defined_func_case1(self):
+        template = '{% if is_defined("var") %}foo{% else %}bar{% endif %}'
+        rendered = Template(template).render()
+        self.assertEqual(rendered, 'bar')
+
+    def test_is_defined_func_case2(self):
+        template = '{% if is_defined("var") %}foo{% else %}bar{% endif %}'
+        rendered = Template(template).render(var=123)
+        self.assertEqual(rendered, 'foo')
+
 
 class IfTagTests(unittest.TestCase):
 
@@ -600,6 +610,29 @@ class TemplateInheritanceTests(unittest.TestCase):
         template += '{% endblock %}'
         rendered = Template(template).render()
         self.assertEqual(rendered, '1#2#3#')
+
+
+class StrictModeTests(unittest.TestCase):
+
+    def test_defined_variable(self):
+        template = '{{ var }}'
+        rendered = Template(template).render(var=123, strict_mode=True)
+        self.assertEqual(rendered, '123')
+
+    def test_undefined_variable(self):
+        template = '{{ var }}'
+        with self.assertRaises(ibis.errors.UndefinedVariable):
+            rendered = Template(template).render(strict_mode=True)
+
+    def test_is_defined_func_case1(self):
+        template = '{% if is_defined("var") %}foo{% else %}bar{% endif %}'
+        rendered = Template(template).render(strict_mode=True)
+        self.assertEqual(rendered, 'bar')
+
+    def test_is_defined_func_case2(self):
+        template = '{% if is_defined("var") %}foo{% else %}bar{% endif %}'
+        rendered = Template(template).render(var=123, strict_mode=True)
+        self.assertEqual(rendered, 'foo')
 
 
 if __name__ == '__main__':

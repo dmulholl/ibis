@@ -1,7 +1,8 @@
 import datetime
+from . import errors
 
 
-# Builtin functions and variables available in all contexts.
+# User-configurable functions and variables available in all contexts.
 builtins = {
     'now': datetime.datetime.now,
     'range': range,
@@ -9,16 +10,16 @@ builtins = {
 
 
 # A Context object is a wrapper around the user's input data. Its `.resolve()` method contains
-# the lookup-logic for resolving dotted variable names. If a variable name cannot be resolved
-# an instance of the Undefined class is returned instead.
+# the lookup-logic for resolving dotted variable names.
 class Context:
 
-    def __init__(self, data_dict, template):
+    def __init__(self, data_dict, template, strict_mode):
         self.stack = []
 
         # Standard builtins.
         self.stack.append({
             'context': self,
+            'is_defined': self.is_defined,
         })
 
         # User-configurable builtins.
@@ -32,6 +33,9 @@ class Context:
 
         # This reference gives nodes access to their parent template object.
         self.template = template
+
+        # In strict mode undefined variables raise an UndefinedVariable exception.
+        self.strict_mode = strict_mode
 
     def __setitem__(self, key, value):
         self.stack[-1][key] = value
@@ -51,15 +55,21 @@ class Context:
                 return True
         return False
 
-    def resolve(self, varstring):
+    def resolve(self, varstring, template_id, line_number):
+        tokens = []
         result = self
         for token in varstring.split('.'):
+            tokens.append(token)
             try:
                 result = result[token]
             except:
                 try:
                     result = getattr(result, token)
                 except:
+                    if self.strict_mode:
+                        msg = f"Cannot resolve the variable '{'.'.join(tokens)}' "
+                        msg += f"in template '{template_id}', line {line_number}."
+                        raise errors.UndefinedVariable(msg, template_id, line_number) from None
                     return Undefined()
         return result
 

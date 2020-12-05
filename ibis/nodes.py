@@ -121,7 +121,7 @@ class Expression:
             return self._resolve_variable(context)
 
     def _resolve_variable(self, context):
-        obj = context.resolve(self.varstr)
+        obj = context.resolve(self.varstr, self.token.template_id, self.token.line_number)
         if callable(obj):
             try:
                 obj = obj(*self.varargs)

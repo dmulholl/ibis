@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-alpha.3</p>
+            <p class="version">Version 2.0.0-alpha.4</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -77,6 +77,9 @@
 <a href="#the-undefined-type">The Undefined Type</a>
 </li>
 <li>
+<a href="#strict-mode">Strict Mode</a>
+</li>
+<li>
 <a href="#custom-filters">Custom Filters</a>
 </li>
 <li>
@@ -104,7 +107,7 @@ Compiling and rendering the node tree are two distinct operations. The template 
 <p>
 The <code>Template</code> class acts as the public interface to the template engine. This is the only class the end-user needs to interact with directly.
 A <code>Template</code> object is initialized with a template string. It compiles the string and stores the
-resulting node tree for future rendering. Calling the template object's <code>.render()</code> method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
+resulting node tree for future rendering. Calling the template object's <code>.render()</code> method with a dictionary of key-value pairs renders the template and returns the result as a string.
 </p>
 <pre class="lang-python pygments" data-lang="python">
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">foo</span><span class="o">=</span><span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="s1">&#39;eggs&#39;</span><span class="p">)</span>
@@ -185,6 +188,14 @@ Raised if an error occurs while rendering a template.
 Raised if an error occurs while attempting to load a template.
 </p>
 </li>
+<li>
+<p>
+<code>ibis.errors.UndefinedVariable</code>
+</p>
+<p>
+Raised in <a href="#strict-mode">strict mode</a> if a variable name cannot be resolved.
+</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -195,6 +206,20 @@ Builtins
 The following built-in variables and functions are available in all contexts:
 </p>
 <ul>
+<li>
+<p>
+<code>is_defined(variable)</code>
+</p>
+<p>
+Boolean function. Returns true if the specified variable is defined in the current context.
+The variable name should be supplied as a quoted string literal, e.g.
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_defined</span><span class="o">(</span><span class="s2">&quot;post.title&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"> ...</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+</li>
 <li>
 <p>
 <code>now()</code>
@@ -241,8 +266,31 @@ You can specify a fallback value for undefined variables using the <code>if_unde
 <span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">if_undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
-In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback string <code>&quot;baz&quot;</code> will be used in its place.
+In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback value <code>&quot;baz&quot;</code> will be used in its place.
 </p>
+<h3 id="strict-mode">
+Strict Mode
+</h3>
+<p>
+You can render a template in strict mode by adding a <code>strict_mode=True</code> keyword argument to the
+<code>.render()</code> method:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">output</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre>
+<p>
+In strict mode attempting to resolve an undefined variable will raise an <code>UndefinedVariable</code>
+exception instead of returning an instance of the <code>Undefined</code> type.
+</p>
+<p>
+The <code>is_defined</code> and <code>if_undefined</code> filters won't work in strict mode (the exception will already
+have been raised before the filter is called) but you can use the <code>is_defined()</code> function to check if a variable is defined:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_defined</span><span class="o">(</span><span class="s2">&quot;post.title&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    .. do something with </span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"> ...</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
 <h3 id="custom-filters">
 Custom Filters
 </h3>

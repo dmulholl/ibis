@@ -24,7 +24,9 @@ class Template:
 
     def render(self, *pargs, **kwargs):
         data_dict = pargs[0] if pargs else kwargs
-        return self.root_node.render(context.Context(data_dict, self))
+        strict_mode = kwargs.get("strict_mode", False)
+        # context = context.Context(data_dict, self, strict_mode)
+        return self.root_node.render(context.Context(data_dict, self, strict_mode))
 
     def _register_blocks(self, node, registry):
         if isinstance(node, nodes.BlockNode):

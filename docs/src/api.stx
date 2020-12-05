@@ -22,7 +22,7 @@ Compiling and rendering the node tree are two distinct operations. The template 
 
 The `Template` class acts as the public interface to the template engine. This is the only class the end-user needs to interact with directly.
 A `Template` object is initialized with a template string. It compiles the string and stores the
-resulting node tree for future rendering. Calling the template object's `.render()` method with a dictionary of key-value pairs or a set of keyword arguments renders the template and returns the result as a string.
+resulting node tree for future rendering. Calling the template object's `.render()` method with a dictionary of key-value pairs renders the template and returns the result as a string.
 
 ::: code python
     >>> template.render(foo='ham', bar='eggs')
@@ -87,10 +87,25 @@ The following exception types may be raised by the template engine:
         Raised if an error occurs while attempting to load a template.
 
 
+    (*) `ibis.errors.UndefinedVariable`
+
+        Raised in [strict mode](#strict-mode) if a variable name cannot be resolved.
+
+
 
 ### Builtins
 
 The following built-in variables and functions are available in all contexts:
+
+(*) `is_defined(variable)`
+
+    Boolean function. Returns true if the specified variable is defined in the current context.
+    The variable name should be supplied as a quoted string literal, e.g.
+
+    ::: code django
+        {% if is_defined("post.title") %}
+            ... do something with {{ post.title }} ...
+        {% endif %}
 
 
 (*) `now()`
@@ -125,7 +140,28 @@ You can specify a fallback value for undefined variables using the `if_undefined
 ::: code django
     {{ foo.bar|if_undefined("baz") }}
 
-In this case if the variable `foo.bar` is not defined in the current context, the fallback string `"baz"` will be used in its place.
+In this case if the variable `foo.bar` is not defined in the current context, the fallback value `"baz"` will be used in its place.
+
+
+
+### Strict Mode
+
+You can render a template in strict mode by adding a `strict_mode=True` keyword argument to the
+`.render()` method:
+
+::: code python
+    output = template.render(data, strict_mode=True)
+
+In strict mode attempting to resolve an undefined variable will raise an `UndefinedVariable`
+exception instead of returning an instance of the `Undefined` type.
+
+The `is_defined` and `if_undefined` filters won't work in strict mode (the exception will already
+have been raised before the filter is called) but you can use the `is_defined()` function to check if a variable is defined:
+
+::: code django
+    {% if is_defined("post.title") %}
+        .. do something with {{ post.title }} ...
+    {% endif %}
 
 
 

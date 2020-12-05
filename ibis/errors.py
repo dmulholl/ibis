@@ -21,3 +21,7 @@ class TemplateRenderingError(TemplateError):
 class TemplateLoadError(TemplateError):
     pass
 
+
+# This exception type is raised in strict mode if a variable cannot be resolved.
+class UndefinedVariable(TemplateError):
+    pass
