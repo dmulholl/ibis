@@ -27,7 +27,7 @@ Features:
 
 Install Ibis directly from the Python Package Index using `pip`:
 
-    $ pip install ibis=2.0.0a5
+    $ pip install ibis==2.0.0a5
 
 Ibis requires Python 3.8 or later.
 
