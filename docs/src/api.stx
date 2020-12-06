@@ -25,7 +25,7 @@ A `Template` object is initialized with a template string. It compiles the strin
 resulting node tree for future rendering. Calling the template object's `.render()` method with a dictionary of key-value pairs renders the template and returns the result as a string.
 
 ::: code python
-    >>> template.render(foo='ham', bar='eggs')
+    >>> template.render({'foo': 'ham', 'bar': 'eggs'})
     'ham and eggs'
 
     >>> template.render({'foo': 1, 'bar': 2})
@@ -37,7 +37,7 @@ resulting node tree for future rendering. Calling the template object's `.render
 
 If you want to use [template inheritance](@root/inheritance//) or the `{% include %}` tag you'll
 need to specify a *template loader* so Ibis can locate the appropriate templates to include or
-extend. A template loader is a callable that accepts one or more string arguments and either returns
+extend. A template loader is a callable that accepts a filename argument and either returns
 a corresponding `Template` object or raises a `TemplateLoadError` exception.
 
 You can define your own custom template loader, but in most cases an instance of the builtin `FileLoader` class will be suitable. A `FileLoader` instance is initialized with a path to a base template directory:
@@ -45,12 +45,11 @@ You can define your own custom template loader, but in most cases an instance of
 ::: code python
     loader = ibis.loaders.FileLoader('/path/to/base/dir')
 
-The loader object is callable;
-you can call it with one or more string arguments which it interprets as paths to UTF-8 encoded
-template files. The loader returns the `Template` object corresponding to the first file it finds:
+You can call the loader object with a filename argument which it interprets as a path to a UTF-8
+encoded template file stored in the base directory:
 
 ::: code python
-    template = loader('foo.txt', 'subdir/bar.txt')
+    template = loader('template.txt')
 
 A `FileLoader` instance compiles its templates once and caches them in memory for future lookups. A
 `FileReloader` instance is similar but will automatically reload and recompile a template if the underlying template file changes.
