@@ -12,38 +12,37 @@ from .errors import TemplateLoadError
 #
 #     loader = FileLoader('/path/to/base/directory')
 #
-# The loader instance can then be called with one or more path strings. The loader will return the
-# template object corresponding to the first existing template file or raise a TemplateLoadError
-# if no file can be located. Note that the path strings may include subdirectory paths:
+# The loader instance can then be called with a filename string. The loader will return the template
+# object corresponding the template file or raise a TemplateLoadError if no file can be located.
+# Note that the filename string may include subdirectory paths:
 #
 #     template = loader('foo.txt')
 #     template = loader('subdir/foo.txt')
 #
 class FileLoader:
 
-    def __init__(self, root_dir):
-        self.root_dir = root_dir
+    def __init__(self, base_dir):
+        self.base_dir = base_dir
         self.cache = {}
 
-    def __call__(self, *filenames):
-        for filename in filenames:
-            if filename in self.cache:
-                return self.cache[filename]
+    def __call__(self, filename):
+        if filename in self.cache:
+            return self.cache[filename]
 
-            path = os.path.join(self.root_dir, filename)
-            if os.path.isfile(path):
-                try:
-                    with open(path, encoding='utf-8') as file:
-                        template_string = file.read()
-                except OSError as err:
-                    msg = f"FileLoader cannot load the template file '{filename}'."
-                    raise TemplateLoadError(msg) from err
+        path = os.path.join(self.base_dir, filename)
+        if os.path.isfile(path):
+            try:
+                with open(path, encoding='utf-8') as file:
+                    template_string = file.read()
+            except OSError as err:
+                msg = f"FileLoader cannot load the template file '{filename}'."
+                raise TemplateLoadError(msg) from err
 
-                template = Template(template_string, filename)
-                self.cache[filename] = template
-                return template
+            template = Template(template_string, filename)
+            self.cache[filename] = template
+            return template
 
-        msg = f"FileLoader cannot find a template file matching the list {filenames}."
+        msg = f"FileLoader with base '{self.base_dir}' cannot locate the template file '{filename}'."
         raise TemplateLoadError(msg)
 
 
@@ -52,50 +51,47 @@ class FileLoader:
 # if the underlying template file changes.
 class FileReloader:
 
-    def __init__(self, root_dir):
-        self.root_dir = root_dir
+    def __init__(self, base_dir):
+        self.base_dir = base_dir
         self.cache = {}
 
-    def __call__(self, *filenames):
-        for filename in filenames:
+    def __call__(self, filename):
+        path = os.path.join(self.base_dir, filename)
+        if os.path.isfile(path):
+            mtime = os.path.getmtime(path)
+            if filename in self.cache:
+                if mtime == self.cache[filename][0]:
+                    return self.cache[filename][1]
 
-            path = os.path.join(self.root_dir, filename)
-            if os.path.isfile(path):
-                mtime = os.path.getmtime(path)
-                if filename in self.cache:
-                    if mtime == self.cache[filename][0]:
-                        return self.cache[filename][1]
+            try:
+                with open(path, encoding='utf-8') as file:
+                    template_string = file.read()
+            except OSError as err:
+                msg = f"FileReloader cannot load the template file '{filename}'."
+                raise TemplateLoadError(msg) from err
 
-                try:
-                    with open(path, encoding='utf-8') as file:
-                        template_string = file.read()
-                except OSError as err:
-                    msg = f"FileReloader cannot load the template file '{filename}'."
-                    raise TemplateLoadError(msg) from err
+            template = Template(template_string, filename)
+            self.cache[filename] = (mtime, template)
+            return template
 
-                template = Template(template_string, filename)
-                self.cache[filename] = (mtime, template)
-                return template
-
-        msg = f"FileReloader cannot find a template file matching the list {filenames}."
+        msg = f"FileReloader with base '{self.base_dir}' cannot locate the template file '{filename}'."
         raise TemplateLoadError(msg)
 
 
-# Loads templates from a dictionary of template strings. Templates are compiled once and
-# cached for future use.
+# Loads templates from a dictionary of template strings. Templates are compiled once and cached for
+# future use.
 class DictLoader:
 
     def __init__(self, template_strings):
         self.templates = {}
         self.template_strings = template_strings
 
-    def __call__(self, *names):
-        for name in names:
-            if name in self.templates:
-                return self.templates[name]
-            elif name in self.template_strings:
-                template = Template(self.template_strings[name], name)
-                self.templates[name] = template
-                return template
-        msg = f"DictLoader has no entry matching the list {names}."
+    def __call__(self, name):
+        if name in self.templates:
+            return self.templates[name]
+        elif name in self.template_strings:
+            template = Template(self.template_strings[name], name)
+            self.templates[name] = template
+            return template
+        msg = f"DictLoader has no entry matching the name '{name}'."
         raise TemplateLoadError(msg)
