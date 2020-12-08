@@ -62,10 +62,10 @@ class Context:
             tokens.append(token)
             try:
                 result = result[token]
-            except:
+            except (TypeError, AttributeError, KeyError, ValueError):
                 try:
                     result = getattr(result, token)
-                except:
+                except (TypeError, AttributeError):
                     if self.strict_mode:
                         msg = f"Cannot resolve the variable '{'.'.join(tokens)}' "
                         msg += f"in template '{template_id}', line {line_number}."
