@@ -56,6 +56,12 @@ class Context:
         return False
 
     def resolve(self, varstring, template_id, line_number):
+        # The lists of specific exception types below are important - these are
+        # the default access-error types that Python itself throws. We can't use
+        # a catch-all except-clause as we need to make sure that custom error types
+        # can still bubble up. (A custom error might be thrown by an attempt to access
+        # a @property attribute - if we swallow the error here it can result in a
+        # *very* difficult to diagnose bug!)
         tokens = []
         result = self
         for token in varstring.split('.'):
