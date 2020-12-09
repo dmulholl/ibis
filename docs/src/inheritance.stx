@@ -1,5 +1,6 @@
 ---
 title: Template Inheritance
+meta_title: Ibis &mdash; Template Inheritance
 ---
 
 Ibis supports Django-style template inheritance. Template inheritance allows you to create a single parent template containing common boilerplate code and then override specific sections of it in child templates.

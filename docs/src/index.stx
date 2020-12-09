@@ -3,6 +3,10 @@ title: Home
 meta_title: Ibis &mdash; a lightweight template engine in Python
 ---
 
+[jinja]: https://palletsprojects.com/p/jinja/
+[tutorial]: http://www.dmulholl.com/lets-build/a-template-language.html
+
+
 Ibis is a lightweight, Django-style template engine written in Python.
 
 Sample syntax:
@@ -33,10 +37,27 @@ Ibis requires Python 3.8 or later.
 
 
 
+### Rationale
+
+Once upon a time I was interested in how template engines worked, so I built a simple one to find out.
+Then I got carried away and kept adding features until it could do everything I wanted. The result
+was Ibis.
+
+If you're looking for a template engine for your Python application your first port of call should
+be [Jinja](https://palletsprojects.com/p/jinja/) --- it's the most optimised and battle-tested
+engine available. But if you're looking for something simpler --- maybe something you can
+fork and tinker with and customize to suit your own particular use case --- you might find Ibis worth a try.
+
+And if, like once-upon-a-time me, you're interested in how template engines work, you're in luck ---
+I've written up a detailed [tutorial][] which will walk you through the process of building one of your own.
+
+
+
 ### Links
 
 * [Github](https://github.com/dmulholl/ibis)
 * [Package Index](https://pypi.python.org/pypi/ibis/)
+* [Template Language Tutorial][tutorial]
 
 
 
