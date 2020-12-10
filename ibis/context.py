@@ -60,8 +60,8 @@ class Context:
         # the default access-error types that Python itself throws. We can't use
         # a catch-all except-clause as we need to make sure that custom error types
         # can still bubble up. (A custom error might be thrown by an attempt to access
-        # a @property attribute - if we swallow the error here it can result in a
-        # *very* difficult to diagnose bug!)
+        # a @property attribute - if we swallow the error here and return Undefined()
+        # it can result in a *very* difficult to diagnose bug!)
         tokens = []
         result = self
         for token in varstring.split('.'):
