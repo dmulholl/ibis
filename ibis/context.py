@@ -55,27 +55,27 @@ class Context:
                 return True
         return False
 
-    def resolve(self, varstring, template_id, line_number):
+    def resolve(self, varstring, token):
         # The lists of specific exception types below are important - these are
         # the default access-error types that Python itself throws. We can't use
         # a catch-all except-clause as we need to make sure that custom error types
         # can still bubble up. (A custom error might be thrown by an attempt to access
         # a @property attribute - if we swallow the error here and return Undefined()
         # it can result in a *very* difficult to diagnose bug!)
-        tokens = []
+        words = []
         result = self
-        for token in varstring.split('.'):
-            tokens.append(token)
+        for word in varstring.split('.'):
+            words.append(word)
             try:
-                result = result[token]
+                result = result[word]
             except (TypeError, AttributeError, KeyError, ValueError):
                 try:
-                    result = getattr(result, token)
+                    result = getattr(result, word)
                 except (TypeError, AttributeError):
                     if self.strict_mode:
-                        msg = f"Cannot resolve the variable '{'.'.join(tokens)}' "
-                        msg += f"in template '{template_id}', line {line_number}."
-                        raise errors.UndefinedVariable(msg, template_id, line_number) from None
+                        msg = f"Cannot resolve the variable '{'.'.join(words)}' "
+                        msg += f"in template '{token.template_id}', line {token.line_number}."
+                        raise errors.UndefinedVariable(msg, token) from None
                     return Undefined()
         return result
 

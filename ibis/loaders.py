@@ -93,5 +93,5 @@ class DictLoader:
             template = Template(self.template_strings[name], name)
             self.templates[name] = template
             return template
-        msg = f"DictLoader has no entry matching the name '{name}'."
+        msg = f"DictLoader has no entry matching the template name '{name}'."
         raise TemplateLoadError(msg)

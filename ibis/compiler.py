@@ -79,7 +79,7 @@ class Lexer:
             self.advance()
         msg = f"Unclosed comment tag in template '{self.template_id}'. "
         msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateSyntaxError(msg, self.template_id, start_line_number)
+        raise errors.TemplateLexingError(msg, self.template_id)
 
     def read_eprint_tag(self):
         self.index += len(eprint_start)
@@ -94,7 +94,7 @@ class Lexer:
             self.advance()
         msg = f"Unclosed escaped-print tag in template '{self.template_id}'. "
         msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateSyntaxError(msg, self.template_id, start_line_number)
+        raise errors.TemplateLexingError(msg, self.template_id)
 
     def read_print_tag(self):
         self.index += len(print_start)
@@ -109,7 +109,7 @@ class Lexer:
             self.advance()
         msg = f"Unclosed print tag in template '{self.template_id}'. "
         msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateSyntaxError(msg, self.template_id, start_line_number)
+        raise errors.TemplateLexingError(msg, self.template_id)
 
     def read_instruction_tag(self):
         self.index += len(instruction_start)
@@ -124,7 +124,7 @@ class Lexer:
             self.advance()
         msg = f"Unclosed instruction tag in template '{self.template_id}'. "
         msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateSyntaxError(msg, self.template_id, start_line_number)
+        raise errors.TemplateLexingError(msg, self.template_id)
 
     def read_text(self):
         start_index = self.index
@@ -173,12 +173,12 @@ class Parser:
                 if len(expecting) == 0:
                     msg = f"Unexpected '{token.keyword}' tag in template '{token.template_id}', "
                     msg += f"line {token.line_number}."
-                    raise errors.TemplateSyntaxError(msg, token.template_id, token.line_number)
+                    raise errors.TemplateParsingError(msg, token.template_id)
                 elif expecting[-1] != token.keyword:
                     msg = f"Unexpected '{token.keyword}' tag in template '{token.template_id}', "
                     msg += f"line {token.line_number}. "
                     msg += f"Ibis was expecting the following closing tag: '{expecting[-1]}'."
-                    raise errors.TemplateSyntaxError(msg, token.template_id, token.line_number)
+                    raise errors.TemplateParsingError(msg, token.template_id)
                 else:
                     stack[-1].exit_scope()
                     stack.pop()
@@ -186,12 +186,12 @@ class Parser:
             else:
                 msg = f"Unrecognised instruction tag '{token.keyword}' "
                 msg += f"in template '{token.template_id}', line {token.line_number}."
-                raise errors.TemplateSyntaxError(msg, token.template_id, token.line_number)
+                raise errors.TemplateParsingError(msg, token.template_id)
 
         if expecting:
             msg = f"Unexpected end of template '{self.template_id}'. "
             msg += f"Ibis was expecting the following closing tag: '{expecting[-1]}'."
-            raise errors.TemplateSyntaxError(msg, self.template_id)
+            raise errors.TemplateParsingError(msg, self.template_id)
 
         return stack.pop()
 

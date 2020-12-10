@@ -7,8 +7,7 @@ import ibis
 
 from . import utils
 from . import filters
-
-from .errors import TemplateSyntaxError, TemplateRenderingError, TemplateLoadError
+from . import errors
 
 
 # Dictionary of registered keywords for instruction tags.
@@ -87,11 +86,11 @@ class Expression:
         for index, arg in enumerate(args):
             try:
                 args[index] = ast.literal_eval(arg)
-            except Exception as e:
+            except Exception as err:
                 msg = f"Unparsable argument '{arg}' in template '{self.token.template_id}', "
                 msg += f"line {self.token.line_number}. "
                 msg += f"Arguments must be valid Python literals."
-                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number) from e
+                raise errors.TemplateSyntaxError(msg, self.token) from err
         return name, args
 
     def _parse_filters(self, filter_list):
@@ -102,16 +101,16 @@ class Expression:
             else:
                 msg = f"Unrecognised filter name '{name}' in template '{self.token.template_id}', "
                 msg += f"line {self.token.line_number}."
-                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number)
+                raise errors.TemplateSyntaxError(msg, self.token)
 
     def _apply_filters_to_literal(self, obj):
         for name, func, args in self.filters:
             try:
                 obj = func(obj, *args)
-            except Exception as e:
+            except Exception as err:
                 msg = f"Error applying filter '{name}' to literal "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateSyntaxError(msg, self.token.template_id, self.token.line_number) from e
+                raise errors.TemplateSyntaxError(msg, self.token) from err
         return obj
 
     def eval(self, context):
@@ -121,24 +120,24 @@ class Expression:
             return self._resolve_variable(context)
 
     def _resolve_variable(self, context):
-        obj = context.resolve(self.varstr, self.token.template_id, self.token.line_number)
+        obj = context.resolve(self.varstr, self.token)
         if callable(obj):
             try:
                 obj = obj(*self.varargs)
-            except Exception as e:
+            except Exception as err:
                 msg = f"Error calling function '{self.varstr}' "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number) from e
+                raise errors.TemplateRenderingError(msg, self.token) from err
         return self._apply_filters_to_variable(obj)
 
     def _apply_filters_to_variable(self, obj):
         for name, func, args in self.filters:
             try:
                 obj = func(obj, *args)
-            except Exception as e:
+            except Exception as err:
                 msg = f"Error applying filter '{name}' to variable "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number) from e
+                raise errors.TemplateRenderingError(msg, self.token) from err
         return obj
 
 
@@ -148,7 +147,15 @@ class Node:
     def __init__(self, token=None, children=None):
         self.token = token
         self.children = children or []
-        self.process_token(token)
+        try:
+            self.process_token(token)
+        except errors.TemplateError:
+            raise
+        except Exception as err:
+            msg = f"An unexpected error occurred while parsing the '{token.keyword}' tag "
+            msg += f"in template '{token.template_id}', line {token.line_number}: "
+            msg += f"{err.__class__.name__}: {err}"
+            raise errors.TemplateSyntaxError(msg, token) from err
 
     def __str__(self):
         return self.to_str()
@@ -257,7 +264,7 @@ class ForNode(Node):
         if match is None:
             msg = f"Malformed 'for' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number)
+            raise errors.TemplateSyntaxError(msg, token)
         self.loopvars = [var.strip() for var in match.group(1).split(',')]
         self.expr = Expression(match.group(2), token)
 
@@ -273,12 +280,10 @@ class ForNode(Node):
                 if unpack:
                     try:
                         unpacked = dict(zip(self.loopvars, item))
-                    except Exception as e:
+                    except Exception as err:
                         msg = f"Unpacking error in template '{self.token.template_id}', "
                         msg += f"line {self.token.line_number}."
-                        template_id = self.token.template_id
-                        line_number = self.token.line_number
-                        raise TemplateRenderingError(msg, template_id, line_number) from e
+                        raise errors.TemplateRenderingError(msg, self.token) from err
                     else:
                         context.update(unpacked)
                 else:
@@ -354,7 +359,7 @@ class IfNode(Node):
         except ValueError:
             msg = f"Malformed '{self.tag}' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number) from None
+            raise errors.TemplateSyntaxError(msg, token) from None
 
         self.condition_groups = [
             [
@@ -387,11 +392,11 @@ class IfNode(Node):
                 result = cond.op(cond.lhs.eval(context), cond.rhs.eval(context))
             else:
                 result = operator.truth(cond.lhs.eval(context))
-        except Exception as e:
+        except Exception as err:
             msg = f"An exception was raised while evaluating the condition in the "
             msg += f"'{self.tag}' tag in template '{self.token.template_id}', "
             msg += f"line {self.token.line_number}."
-            raise TemplateRenderingError(msg, self.token.template_id, self.token.line_number) from e
+            raise errors.TemplateRenderingError(msg, self.token) from err
         if cond.negated:
             result = not result
         return result
@@ -452,7 +457,7 @@ class CycleNode(Node):
         except ValueError:
             msg = f"Malformed 'cycle' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number) from None
+            raise errors.TemplateSyntaxError(msg, token) from None
         self.expr = Expression(arg, token)
 
     def render(self, context):
@@ -483,34 +488,47 @@ class IncludeNode(Node):
         except ValueError:
             msg = f"Malformed 'include' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number) from None
+            raise errors.TemplateSyntaxError(msg, token) from None
         expr = Expression(arg, token)
 
         if expr.is_literal:
-            if ibis.loader:
-                template = ibis.loader(expr.literal)
-                self.children.append(template.root_node)
+            if isinstance(expr.literal, str):
+                if ibis.loader:
+                    template = ibis.loader(expr.literal)
+                    self.children.append(template.root_node)
+                else:
+                    msg = f"No template loader has been specified. "
+                    msg += f"A template loader is required by the 'include' tag in "
+                    msg += f"template '{token.template_id}', line {token.line_number}."
+                    raise errors.TemplateLoadError(msg)
             else:
-                msg = "No template loader has been specified. "
-                msg += "A template loader is required by the 'include' tag in "
-                msg += "template '{token.template_id}', line {token.line_number}."
-                raise TemplateLoadError(msg)
+                msg = f"Malformed 'include' tag in template '{token.template_id}', "
+                msg += f"line {token.line_number}. The template name should be a quoted string "
+                msg += f"literal or a variable name."
+                raise errors.TemplateSyntaxError(msg, token)
         else:
             self.expr = expr
+            self.arg = arg
 
     def render(self, context):
         if self.children:
             return ''.join(child.render(context) for child in self.children)
         else:
             template_name = self.expr.eval(context)
-            if ibis.loader:
-                template = ibis.loader(template_name)
-                return template.root_node.render(context)
+            if isinstance(template_name, str):
+                if ibis.loader:
+                    template = ibis.loader(template_name)
+                    return template.root_node.render(context)
+                else:
+                    msg = f"No template loader has been specified. "
+                    msg += f"A template loader is required by the 'include' tag in "
+                    msg += f"template '{self.token.template_id}', line {self.token.line_number}."
+                    raise errors.TemplateLoadError(msg)
             else:
-                msg = "No template loader has been specified. "
-                msg += "A template loader is required by the 'include' tag in "
-                msg += "template '{self.token.template_id}', line {self.token.line_number}."
-                raise TemplateLoadError(msg)
+                msg = f"Invalid argument for the 'include' tag in template '{self.token.template_id}', "
+                msg += f"line {self.token.line_number}. The variable '{self.arg}' should evaluate "
+                msg += f"to a string. This variable has the value: {repr(template_name)}."
+                raise errors.TemplateRenderingError(msg, self.token)
 
 
 # ExtendNodes implement template inheritance. They indicate that the current template inherits
@@ -529,7 +547,7 @@ class ExtendsNode(Node):
         except ValueError:
             msg = f"Malformed 'extends' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number) from None
+            raise errors.TemplateSyntaxError(msg, token) from None
         expr = Expression(arg, token)
 
         if expr.is_literal and isinstance(expr.literal, str):
@@ -540,11 +558,11 @@ class ExtendsNode(Node):
                 msg = "No template loader has been specified. "
                 msg += "A template loader is required by the 'extends' tag in "
                 msg += "template '{token.template_id}', line {token.line_number}."
-                raise TemplateLoadError(msg)
+                raise errors.TemplateLoadError(msg)
         else:
             msg = f"Malformed 'extends' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}. The template name must be a string literal."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number)
+            raise errors.TemplateSyntaxError(msg, token)
 
 
 # BlockNodes implement template inheritance.
@@ -615,7 +633,7 @@ class WithNode(Node):
         except ValueError:
             msg = f"Malformed 'with' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
-            raise TemplateSyntaxError(msg, token.template_id, token.line_number) from None
+            raise errors.TemplateSyntaxError(msg, token) from None
         self.alias = alias.strip()
         self.expr = Expression(expr.strip(), token)
 
