@@ -253,7 +253,7 @@ class PrintNode(Node):
                     break
 
         if self.escape_content:
-            return filters.filtermap['escape'](str(content))
+            return filters.escape(str(content))
         else:
             return str(content)
 
