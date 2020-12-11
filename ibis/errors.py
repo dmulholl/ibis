@@ -16,14 +16,6 @@ class TemplateLexingError(TemplateError):
         self.template_id = template_id
 
 
-# This exception type is raised if the parser cannot parse a token stream.
-class TemplateParsingError(TemplateError):
-
-    def __init__(self, msg, token):
-        super().__init__(msg)
-        self.token = token
-
-
 # This exception type may be raised while a template is being compiled.
 class TemplateSyntaxError(TemplateError):
 
