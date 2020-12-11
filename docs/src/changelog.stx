@@ -8,8 +8,8 @@ meta_title: Ibis &mdash; Changelog
 
 * v2 is a substantial internal rewrite to improve error handling and reporting across the board.
 
-* Thanks go to [oTree-org](https://github.com/oTree-org) for their detailed feedback and suggestions
-  which have helped make Ibis v2 significantly more robust than v1.
+* Thanks go to [oTree-org](https://github.com/oTree-org) whose detailed feedback and suggestions
+  have helped make Ibis v2 significantly more robust than v1.
 
 
 
