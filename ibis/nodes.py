@@ -160,7 +160,7 @@ class Node:
                 msg += f"in template '{token.template_id}', line {token.line_number}: "
                 msg += f"{err.__class__.__name__}: {err}"
             else:
-                msg = "Unexpected syntax error: see __cause__ for details."
+                msg = f"Unexpected syntax error: {err.__class__.__name__}: {err}"
             raise errors.TemplateSyntaxError(msg, token) from err
 
     def __str__(self):
@@ -184,7 +184,7 @@ class Node:
                 msg += f"in template '{token.template_id}', line {token.line_number}: "
                 msg += f"{err.__class__.__name__}: {err}"
             else:
-                msg = "Unexpected rendering error: see __cause__ for details."
+                msg = f"Unexpected rendering error: {err.__class__.__name__}: {err}"
             raise errors.TemplateRenderingError(msg, token) from err
 
     def wrender(self, context):
