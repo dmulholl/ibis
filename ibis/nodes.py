@@ -154,7 +154,7 @@ class Node:
         except Exception as err:
             msg = f"An unexpected error occurred while parsing the '{token.keyword}' tag "
             msg += f"in template '{token.template_id}', line {token.line_number}: "
-            msg += f"{err.__class__.name__}: {err}"
+            msg += f"{err.__class__.__name__}: {err}"
             raise errors.TemplateSyntaxError(msg, token) from err
 
     def __str__(self):
@@ -356,7 +356,7 @@ class IfNode(Node):
         self.tag = token.keyword
         try:
             conditions = token.text.split(None, 1)[1]
-        except ValueError:
+        except:
             msg = f"Malformed '{self.tag}' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
             raise errors.TemplateSyntaxError(msg, token) from None
@@ -454,7 +454,7 @@ class CycleNode(Node):
     def process_token(self, token):
         try:
             tag, arg = token.text.split(None, 1)
-        except ValueError:
+        except:
             msg = f"Malformed 'cycle' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
             raise errors.TemplateSyntaxError(msg, token) from None
@@ -485,7 +485,7 @@ class IncludeNode(Node):
     def process_token(self, token):
         try:
             tag, arg = token.text.split(None, 1)
-        except ValueError:
+        except:
             msg = f"Malformed 'include' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
             raise errors.TemplateSyntaxError(msg, token) from None
@@ -544,7 +544,7 @@ class ExtendsNode(Node):
     def process_token(self, token):
         try:
             tag, arg = token.text.split(None, 1)
-        except ValueError:
+        except:
             msg = f"Malformed 'extends' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
             raise errors.TemplateSyntaxError(msg, token) from None
@@ -630,7 +630,7 @@ class WithNode(Node):
     def process_token(self, token):
         try:
             alias, expr = token.text[4:].split('=', 1)
-        except ValueError:
+        except:
             msg = f"Malformed 'with' tag in template '{token.template_id}', "
             msg += f"line {token.line_number}."
             raise errors.TemplateSyntaxError(msg, token) from None
