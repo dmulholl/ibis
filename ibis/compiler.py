@@ -171,12 +171,12 @@ class Parser:
                 if len(expecting) == 0:
                     msg = f"Unexpected '{token.keyword}' tag in template '{token.template_id}', "
                     msg += f"line {token.line_number}."
-                    raise errors.TemplateParsingError(msg, token.template_id)
+                    raise errors.TemplateParsingError(msg, token)
                 elif expecting[-1] != token.keyword:
                     msg = f"Unexpected '{token.keyword}' tag in template '{token.template_id}', "
                     msg += f"line {token.line_number}. "
                     msg += f"Ibis was expecting the following closing tag: '{expecting[-1]}'."
-                    raise errors.TemplateParsingError(msg, token.template_id)
+                    raise errors.TemplateParsingError(msg, token)
                 else:
                     stack[-1].exit_scope()
                     stack.pop()
@@ -184,16 +184,18 @@ class Parser:
             elif token.keyword == '':
                 msg = f"Empty instruction tag in template '{token.template_id}', "
                 msg += f"line {token.line_number}."
-                raise errors.TemplateParsingError(msg, token.template_id)
+                raise errors.TemplateParsingError(msg, token)
             else:
                 msg = f"Unrecognised instruction tag '{token.keyword}' "
                 msg += f"in template '{token.template_id}', line {token.line_number}."
-                raise errors.TemplateParsingError(msg, token.template_id)
+                raise errors.TemplateParsingError(msg)
 
         if expecting:
+            token = stack[-1].token
             msg = f"Unexpected end of template '{self.template_id}'. "
-            msg += f"Ibis was expecting the following closing tag: '{expecting[-1]}'."
-            raise errors.TemplateParsingError(msg, self.template_id)
+            msg += f"Ibis was expecting a closing tag '{expecting[-1]}' to close the "
+            msg += f"'{token.keyword}' tag opened in line {token.line_number}."
+            raise errors.TemplateParsingError(msg, token)
 
         return stack.pop()
 
