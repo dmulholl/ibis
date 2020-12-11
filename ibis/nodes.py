@@ -142,8 +142,8 @@ class Expression:
 
 
 # Base class for all node objects. To render a node into a string call its .render() method.
-# Subclasses should override .wrapped_render() instead of .render() to benefit from automatic
-# wrapping of uncaught exceptions.
+# Subclasses shouldn't override the base .render() method; instead they should override
+# .wrender() which ensures that any uncaught exceptions are wrapped in a TemplateRenderingError.
 class Node:
 
     def __init__(self, token=None, children=None):
@@ -154,10 +154,13 @@ class Node:
         except errors.TemplateError:
             raise
         except Exception as err:
-            tagname = f"'{token.keyword}'" if token.type == "INSTRUCTION" else token.type
-            msg = f"An unexpected error occurred while parsing the {tagname} tag "
-            msg += f"in template '{token.template_id}', line {token.line_number}: "
-            msg += f"{err.__class__.__name__}: {err}"
+            if token:
+                tagname = f"'{token.keyword}'" if token.type == "INSTRUCTION" else token.type
+                msg = f"An unexpected error occurred while parsing the {tagname} tag "
+                msg += f"in template '{token.template_id}', line {token.line_number}: "
+                msg += f"{err.__class__.__name__}: {err}"
+            else:
+                msg = "Unexpected syntax error: see __cause__ for details."
             raise errors.TemplateSyntaxError(msg, token) from err
 
     def __str__(self):
@@ -171,18 +174,20 @@ class Node:
 
     def render(self, context):
         try:
-            return self.wrapped_render(context)
+            return self.wrender(context)
         except errors.TemplateError:
             raise
         except Exception as err:
-            token = self.token
-            tagname = f"'{token.keyword}'" if token.type == "INSTRUCTION" else token.type
-            msg = f"An unexpected error occurred while rendering the {tagname} tag "
-            msg += f"in template '{token.template_id}', line {token.line_number}: "
-            msg += f"{err.__class__.__name__}: {err}"
+            if (token := self.token):
+                tagname = f"'{token.keyword}'" if token.type == "INSTRUCTION" else token.type
+                msg = f"An unexpected error occurred while rendering the {tagname} tag "
+                msg += f"in template '{token.template_id}', line {token.line_number}: "
+                msg += f"{err.__class__.__name__}: {err}"
+            else:
+                msg = "Unexpected rendering error: see __cause__ for details."
             raise errors.TemplateRenderingError(msg, token) from err
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         return ''.join(child.render(context) for child in self.children)
 
     def process_token(self, token):
@@ -201,7 +206,7 @@ class Node:
 # TextNodes represent ordinary template text, i.e. text not enclosed in tag delimiters.
 class TextNode(Node):
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         return self.token.text
 
 
@@ -239,7 +244,7 @@ class PrintNode(Node):
             exprs = utils.splitre(token.text, (r'\s+or\s+', r'\|\|'))
             self.exprs = [Expression(e, token) for e in exprs]
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         if self.is_ternary:
             if self.test_expr.eval(context):
                 content = self.true_branch_expr.eval(context)
@@ -284,7 +289,7 @@ class ForNode(Node):
         self.loopvars = [var.strip() for var in match.group(1).split(',')]
         self.expr = Expression(match.group(2), token)
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         collection = self.expr.eval(context)
         if collection and hasattr(collection, '__iter__'):
             collection = list(collection)
@@ -417,7 +422,7 @@ class IfNode(Node):
             result = not result
         return result
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         for condition_group in self.condition_groups:
             for condition in condition_group:
                 is_true = self.eval_condition(condition, context)
@@ -476,7 +481,7 @@ class CycleNode(Node):
             raise errors.TemplateSyntaxError(msg, token) from None
         self.expr = Expression(arg, token)
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         # We store our state info on the context object to avoid a threading
         # mess if the template is being simultaneously rendered by multiple
         # threads.
@@ -526,7 +531,7 @@ class IncludeNode(Node):
             self.expr = expr
             self.arg = arg
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         if self.children:
             return ''.join(child.render(context) for child in self.children)
         else:
@@ -593,7 +598,7 @@ class BlockNode(Node):
     def process_token(self, token):
         self.title = token.text[5:].strip()
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         # We only want to render the first block of any given title that we encounter
         # in the node tree, although we want to substitute the content of the last
         # block of that title in its place.
@@ -623,7 +628,7 @@ class BlockNode(Node):
 @register('spaceless', 'endspaceless')
 class SpacelessNode(Node):
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         output = ''.join(child.render(context) for child in self.children)
         return filters.filtermap['spaceless'](output).strip()
 
@@ -632,7 +637,7 @@ class SpacelessNode(Node):
 @register('trim', 'endtrim')
 class TrimNode(Node):
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         return ''.join(child.render(context) for child in self.children).strip()
 
 
@@ -653,7 +658,7 @@ class WithNode(Node):
         self.alias = alias.strip()
         self.expr = Expression(expr.strip(), token)
 
-    def wrapped_render(self, context):
+    def wrender(self, context):
         context.push()
         context[self.alias] = self.expr.eval(context)
         rendered = ''.join(child.render(context) for child in self.children)
