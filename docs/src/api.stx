@@ -71,6 +71,16 @@ The following exception types may be raised by the template engine:
     Base class for all exceptions raised by the template engine.
 
 
+    (*) `ibis.errors.TemplateLoadError`
+
+        Raised if an error occurs while attempting to load a template.
+
+
+    (*) `ibis.errors.TemplateLexingError`
+
+        Raised if the lexer cannot tokenize a template string.
+
+
     (*) `ibis.errors.TemplateSyntaxError`
 
         Raised if an error occurs while compiling a template.
@@ -79,11 +89,6 @@ The following exception types may be raised by the template engine:
     (*) `ibis.errors.TemplateRenderingError`
 
         Raised if an error occurs while rendering a template.
-
-
-    (*) `ibis.errors.TemplateLoadError`
-
-        Raised if an error occurs while attempting to load a template.
 
 
     (*) `ibis.errors.UndefinedVariable`

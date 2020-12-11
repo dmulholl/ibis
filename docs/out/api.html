@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-alpha.6</p>
+            <p class="version">Version 2.0.0-beta.1</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -168,6 +168,22 @@ Base class for all exceptions raised by the template engine.
 <ul>
 <li>
 <p>
+<code>ibis.errors.TemplateLoadError</code>
+</p>
+<p>
+Raised if an error occurs while attempting to load a template.
+</p>
+</li>
+<li>
+<p>
+<code>ibis.errors.TemplateLexingError</code>
+</p>
+<p>
+Raised if the lexer cannot tokenize a template string.
+</p>
+</li>
+<li>
+<p>
 <code>ibis.errors.TemplateSyntaxError</code>
 </p>
 <p>
@@ -180,14 +196,6 @@ Raised if an error occurs while compiling a template.
 </p>
 <p>
 Raised if an error occurs while rendering a template.
-</p>
-</li>
-<li>
-<p>
-<code>ibis.errors.TemplateLoadError</code>
-</p>
-<p>
-Raised if an error occurs while attempting to load a template.
 </p>
 </li>
 <li>
