@@ -198,7 +198,6 @@ class Node:
         return self.children, None, []
 
 
-
 # TextNodes represent ordinary template text, i.e. text not enclosed in tag delimiters.
 class TextNode(Node):
 
