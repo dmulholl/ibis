@@ -1,0 +1,19 @@
+---
+title: Changelog
+meta_title: Ibis &mdash; Changelog
+---
+
+
+### 2.0.0-beta
+
+* v2 is a substantial internal rewrite to improve error handling and reporting across the board.
+
+* Thanks go to [oTree-org](https://github.com/oTree-org) for their detailed feedback and suggestions
+  which have helped make Ibis v2 significantly more robust than v1.
+
+
+
+### 1.0.0
+
+* First stable release.
+

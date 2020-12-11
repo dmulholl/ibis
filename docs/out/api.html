@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-beta.1</p>
+            <p class="version">Version 2.0.0-beta.2</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -52,6 +52,9 @@
 <a href="license.html">License</a>
 </li>
 <li>
+<a href="changelog.html">Changelog</a>
+</li>
+<li>
 <a href="https://github.com/dmulholl/ibis">Github</a>
 </li>
 </ul>
@@ -66,6 +69,9 @@
             <ul class="stx-toc">
 <li>
 <a href="#template-objects">Template Objects</a>
+</li>
+<li>
+<a href="#template-ids">Template IDs</a>
 </li>
 <li>
 <a href="#template-loaders">Template Loaders</a>
@@ -119,6 +125,19 @@ resulting node tree for future rendering. Calling the template object's <code>.r
 <span class="o">&gt;&gt;&gt;</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 <span class="s1">&#39;1 and 2&#39;</span>
 </pre>
+<h3 id="template-ids">
+Template IDs
+</h3>
+<p>
+The <code>Template</code> constructor takes an optional <code>template_id</code> argument, an arbitrary string which is
+used to identify the template in error messages.
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">template</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">template_string</span><span class="p">,</span> <span class="s2">&quot;template.txt&quot;</span><span class="p">)</span>
+</pre>
+<p>
+If you've loaded the template from a file, the filename is the logical choice to use.
+</p>
 <h3 id="template-loaders">
 Template Loaders
 </h3>

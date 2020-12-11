@@ -33,6 +33,18 @@ resulting node tree for future rendering. Calling the template object's `.render
 
 
 
+### Template IDs
+
+The `Template` constructor takes an optional `template_id` argument, an arbitrary string which is
+used to identify the template in error messages.
+
+::: code python
+    template = ibis.Template(template_string, "template.txt")
+
+If you've loaded the template from a file, the filename is the logical choice to use.
+
+
+
 ### Template Loaders
 
 If you want to use [template inheritance](@root/inheritance//) or the `{% include %}` tag you'll
