@@ -555,10 +555,30 @@ class TrimTagTests(unittest.TestCase):
 
 class IncludeTagTests(unittest.TestCase):
 
-    def test_template_include(self):
+    def test_working_include(self):
         template = '{% include "simple" %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, 'foo')
+
+    def test_malformed_include_missing_name(self):
+        template = '{% include %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            Template(template).render()
+
+    def test_malformed_include_invalid_literal(self):
+        template = '{% include 123 %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            Template(template).render()
+
+    def test_include_invalid_variable(self):
+        template = '{% include var %}'
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
+            Template(template).render(var=None)
+
+    def test_include_undefined_variable(self):
+        template = '{% include var %}'
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
+            Template(template).render()
 
 
 class TemplateInheritanceTests(unittest.TestCase):
