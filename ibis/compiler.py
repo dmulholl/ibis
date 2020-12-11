@@ -22,6 +22,8 @@ def compile(template_string, template_id):
 class Token:
 
     def __init__(self, token_type, token_text, template_id, line_number):
+        words = token_text.split()
+        self.keyword = words[0] if words else ''
         self.type = token_type
         self.text = token_text
         self.template_id = template_id
@@ -29,10 +31,6 @@ class Token:
 
     def __str__(self):
         return f"({self.type}, {repr(self.text)}, {self.template_id}, {self.line_number})"
-
-    @property
-    def keyword(self):
-        return self.text.split()[0]
 
 
 # The Lexer takes a template string as input and chops it into a list of Tokens.
@@ -183,6 +181,10 @@ class Parser:
                     stack[-1].exit_scope()
                     stack.pop()
                     expecting.pop()
+            elif token.keyword == '':
+                msg = f"Empty instruction tag in template '{token.template_id}', "
+                msg += f"line {token.line_number}."
+                raise errors.TemplateParsingError(msg, token.template_id)
             else:
                 msg = f"Unrecognised instruction tag '{token.keyword}' "
                 msg += f"in template '{token.template_id}', line {token.line_number}."

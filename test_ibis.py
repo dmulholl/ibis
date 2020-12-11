@@ -635,5 +635,18 @@ class StrictModeTests(unittest.TestCase):
         self.assertEqual(rendered, 'foo')
 
 
+class EmptyTagTests(unittest.TestCase):
+
+    def test_empty_tag(self):
+        template = '{%%}'
+        with self.assertRaises(ibis.errors.TemplateError):
+            rendered = Template(template).render()
+
+    def test_whitespace_tag(self):
+        template = '{%    %}'
+        with self.assertRaises(ibis.errors.TemplateError):
+            rendered = Template(template).render()
+
+
 if __name__ == '__main__':
     unittest.main()
