@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-rc1</p>
+            <p class="version">Version 2.0.0-rc2</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -343,12 +343,13 @@ As an example, we can register a filter to convert datetime objects into formatt
     <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
 </pre>
 <p>
-This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in <code>now</code> function which returns a datetime object representing the current time:
+This gives us a filter with an optional format string argument that we can call on any datetime
+object, including the built-in <code>now()</code> function which returns a datetime object representing the current time:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
 
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
 As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.

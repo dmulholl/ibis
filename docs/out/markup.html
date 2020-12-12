@@ -17,7 +17,7 @@
             <p class="tagline">A lightweight template engine in Python.</p>
             
             
-            <p class="version">Version 2.0.0-rc1</p>
+            <p class="version">Version 2.0.0-rc2</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -133,22 +133,33 @@ Note that a single print statement can make use of <code>||</code> chaining or t
 Expressions
 </h3>
 <p>
-An <i>expression</i> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
+An <b>expression</b> consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 </p>
 <p>
-Variables use dot-syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
+Variables use dot-syntax to drill into nested dictionaries or objects.
+If a variable evaluates to a function you can call it using brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">some.callable</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="m">42</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">call_me</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
-Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
+(Unlike Django, Ibis doesn't call functions automatically &mdash; you have to explicitly call them using
+brackets.)
+</p>
+<p>
+You can use simple Python literals like strings and integers as arguments to functions:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{{</span> <span class="nv">call_me</span><span class="o">(</span><span class="s2">&quot;ishmael&quot;</span><span class="o">,</span> <span class="m">42</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre>
+<p>
+<b>Filters</b> are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="x"></span>
 </pre>
 <p>
-Like callables, filters accept arguments in brackets:
+Filters also accept arguments in brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{{</span> <span class="nv">post.content</span><span class="o">|</span><span class="nf">striptags</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">(</span><span class="m">50</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>

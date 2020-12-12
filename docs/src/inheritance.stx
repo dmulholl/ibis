@@ -56,4 +56,4 @@ Some points to note:
 
 (*) You can use as many levels of inheritance as you like.
 
-(*) The built-in `{{ super }}` variable gives you access to the content of the parent block.
+(*) The built-in `{{ super() }}` function gives you access to the content of the parent block.

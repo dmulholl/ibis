@@ -199,14 +199,16 @@ As an example, we can register a filter to convert datetime objects into formatt
     def datetime_formatter(dt, format_str='%Y-%m-%d'):
         return dt.strftime(format_str)
 
-This gives us a filter with an optional format string argument that we can call on any datetime object, including the built-in `now` function which returns a datetime object representing the current time:
+This gives us a filter with an optional format string argument that we can call on any datetime
+object, including the built-in `now()` function which returns a datetime object representing the current time:
 
 ::: code django
-    {{ now|dtformat }}
+    {{ now()|dtformat }}
 
-    {{ now|dtformat('%Y') }}
+    {{ now()|dtformat('%Y') }}
 
 As it happens, `dtformat` already exists as a built-in filter. Re-registering the `dtformat` name would simply override the built-in filter with our own custom version.
+
 
 
 ### Custom Tags

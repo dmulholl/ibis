@@ -48,21 +48,28 @@ Note that a single print statement can make use of `||` chaining or the ternary 
 
 ### Expressions
 
-An *expression* consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
+An **expression** consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 
-Variables use dot-syntax to drill into nested dictionaries or objects. If a variable evaluates to a callable it gets called automatically. If the callable requires arguments you can supply them in brackets:
-
-::: code django
-
-    {{ some.callable("foo", 42) }}
-
-Filters are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
+Variables use dot-syntax to drill into nested dictionaries or objects.
+If a variable evaluates to a function you can call it using brackets:
 
 ::: code django
+    {{ call_me() }}
 
+(Unlike Django, Ibis doesn't call functions automatically --- you have to explicitly call them using
+brackets.)
+
+You can use simple Python literals like strings and integers as arguments to functions:
+
+::: code django
+    {{ call_me("ishmael", 42) }}
+
+**Filters** are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
+
+::: code django
     {{ post.title|escape }}
 
-Like callables, filters accept arguments in brackets:
+Filters also accept arguments in brackets:
 
 ::: code django
 
