@@ -8,12 +8,12 @@ meta_title: Ibis &mdash; Changelog
 
 * v2 is a substantial internal rewrite to improve error handling and reporting across the board.
 
-* Thanks go to [oTree-org](https://github.com/oTree-org) whose detailed feedback and suggestions
+* Thanks go to [oTree](https://github.com/oTree-org) whose detailed feedback and suggestions
   have helped make Ibis v2 significantly more robust than v1.
 
 * The external API is mostly unchanged from v1. The most significant change for template
   authors is that variables that resolve to callables are no longer called automatically --- if you
-  want to call a function you need to do so explicitly using brackets, e.g. `{{ foo() }}`.
+  want to call a function you need to do so explicitly using brackets, e.g. `{{ some.func() }}`.
 
 * Support for Django-style colon-syntax for function and filter arguments has been removed. Only
   bracket-syntax is now supported.
