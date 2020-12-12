@@ -43,6 +43,7 @@ setup(
     version = meta['version'],
     packages =  find_packages(),
     include_package_data = True,
+    python_requires = '>=3.6',
     author = 'Darren Mulholland',
     url='https://github.com/dmulholl/ibis',
     license = 'Public Domain',
