@@ -566,7 +566,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_single_level_inheritance(self):
         template =  '{% extends "base" %}'
         template += '{% block content %}'
-        template += 'override-{{var}}'
+        template += 'override-{{ var }}'
         template += '{% endblock %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '|#|override-foo|#|')
@@ -574,7 +574,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_single_level_inheritance_with_super(self):
         template =  '{% extends "base" %}'
         template += '{% block content %}'
-        template += '{{super()}}|override-{{var}}'
+        template += '{{ super() }}|override-{{ var }}'
         template += '{% endblock %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '|#|base-foo|override-foo|#|')
@@ -582,7 +582,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_double_level_inheritance(self):
         template =  '{% extends "child" %}'
         template += '{% block content %}'
-        template += 'override-{{var}}'
+        template += 'override-{{ var }}'
         template += '{% endblock %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '|#|override-foo|#|')
@@ -598,7 +598,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_parent_block_in_loop(self):
         template =  '{% extends "loop" %}'
         template += '{% block content %}'
-        template += '{{i}}#'
+        template += '{{ i }}#'
         template += '{% endblock %}'
         rendered = Template(template).render()
         self.assertEqual(rendered, '1#2#3#')
@@ -606,7 +606,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_parent_block_in_loop_with_super(self):
         template =  '{% extends "loop" %}'
         template += '{% block content %}'
-        template += '{{super()}}#'
+        template += '{{ super() }}#'
         template += '{% endblock %}'
         rendered = Template(template).render()
         self.assertEqual(rendered, '1#2#3#')
@@ -682,6 +682,109 @@ class UnexpectedErrorTests(unittest.TestCase):
         template_string = '{% evil_renderer %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             rendered = Template(template_string).render()
+
+
+class TestObject:
+
+    def __init__(self):
+        self.int_attr = 999
+        self.str_attr = "foo"
+
+    @property
+    def prop(self):
+        return "foobar"
+
+
+test_dict = {
+    "abc": "foo",
+    "123": "bar",
+}
+
+
+test_list = ["foo", "bar"]
+
+
+class VariableLookupTests(unittest.TestCase):
+
+    def test_undefined_variable_case1(self):
+        template_string = '{{ var }}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, '')
+
+    def test_undefined_variable_case2(self):
+        template_string = '{{ var.foo }}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, '')
+
+    def test_undefined_variable_case3(self):
+        template_string = '{{ var.foo }}'
+        rendered = Template(template_string).render(var=123)
+        self.assertEqual(rendered, '')
+
+    def test_undefined_variable_case1_strict(self):
+        template_string = '{{ var }}'
+        with self.assertRaises(ibis.errors.UndefinedVariable):
+            rendered = Template(template_string).render(strict_mode=True)
+
+    def test_undefined_variable_case2_strict(self):
+        template_string = '{{ var.foo }}'
+        with self.assertRaises(ibis.errors.UndefinedVariable):
+            rendered = Template(template_string).render(strict_mode=True)
+
+    def test_undefined_variable_case3_strict(self):
+        template_string = '{{ var.foo }}'
+        with self.assertRaises(ibis.errors.UndefinedVariable):
+            rendered = Template(template_string).render(var=123, strict_mode=True)
+
+    def test_object_with_int_attribute(self):
+        template_string = '{{ obj.int_attr }}'
+        rendered = Template(template_string).render(obj=TestObject())
+        self.assertEqual(rendered, '999')
+
+    def test_object_with_str_attribute(self):
+        template_string = '{{ obj.str_attr }}'
+        rendered = Template(template_string).render(obj=TestObject())
+        self.assertEqual(rendered, 'foo')
+
+    def test_object_with_property(self):
+        template_string = '{{ obj.prop }}'
+        rendered = Template(template_string).render(obj=TestObject())
+        self.assertEqual(rendered, 'foobar')
+
+    def test_dict_with_alphabetic_key(self):
+        template_string = '{{ somedict.abc }}'
+        rendered = Template(template_string).render(somedict=test_dict)
+        self.assertEqual(rendered, 'foo')
+
+    def test_dict_with_numeric_key(self):
+        template_string = '{{ somedict.123 }}'
+        rendered = Template(template_string).render(somedict=test_dict)
+        self.assertEqual(rendered, 'bar')
+
+    def test_list_with_numeric_index_0(self):
+        template_string = '{{ somelist.0 }}'
+        rendered = Template(template_string).render(somelist=test_list)
+        self.assertEqual(rendered, 'foo')
+
+    def test_list_with_numeric_index_1(self):
+        template_string = '{{ somelist.1 }}'
+        rendered = Template(template_string).render(somelist=test_list)
+        self.assertEqual(rendered, 'bar')
+
+    def test_list_with_numeric_index_out_of_range(self):
+        template_string = '{{ somelist.99 }}'
+        rendered = Template(template_string).render(somelist=test_list)
+        self.assertEqual(rendered, '')
+
+    def test_list_with_numeric_index_out_of_range_strict(self):
+        template_string = '{{ somelist.99 }}'
+        with self.assertRaises(ibis.errors.UndefinedVariable):
+            rendered = Template(template_string).render(somelist=test_list, strict_mode=True)
+
+    def test_stacked_numeric_indices(self):
+        template_string = '{{ somelist.0.0 }}--{{ somelist.0.1 }}--{{ somelist.0.2 }}'
+        rendered = Template(template_string).render(somelist=test_list)
+        self.assertEqual(rendered, 'f--o--o')
 
 
 if __name__ == '__main__':
