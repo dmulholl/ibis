@@ -173,14 +173,14 @@ class Node:
         except errors.TemplateError:
             raise
         except Exception as err:
-            if (token := self.token):
-                tagname = f"'{token.keyword}'" if token.type == "INSTRUCTION" else token.type
+            if self.token:
+                tagname = f"'{self.token.keyword}'" if token.type == "INSTRUCTION" else token.type
                 msg = f"An unexpected error occurred while rendering the {tagname} tag "
-                msg += f"in template '{token.template_id}', line {token.line_number}: "
+                msg += f"in template '{self.token.template_id}', line {self.token.line_number}: "
                 msg += f"{err.__class__.__name__}: {err}"
             else:
                 msg = f"Unexpected rendering error: {err.__class__.__name__}: {err}"
-            raise errors.TemplateRenderingError(msg, token) from err
+            raise errors.TemplateRenderingError(msg, None) from err
 
     def wrender(self, context):
         return ''.join(child.render(context) for child in self.children)
