@@ -180,7 +180,7 @@ class Node:
                 msg += f"{err.__class__.__name__}: {err}"
             else:
                 msg = f"Unexpected rendering error: {err.__class__.__name__}: {err}"
-            raise errors.TemplateRenderingError(msg, None) from err
+            raise errors.TemplateRenderingError(msg, self.token) from err
 
     def wrender(self, context):
         return ''.join(child.render(context) for child in self.children)
