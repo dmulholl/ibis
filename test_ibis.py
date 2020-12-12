@@ -536,29 +536,29 @@ class TrimTagTests(unittest.TestCase):
 class IncludeTagTests(unittest.TestCase):
 
     def test_working_include(self):
-        template = '{% include "simple" %}'
-        rendered = Template(template).render(var='foo')
+        template_string = '{% include "simple" %}'
+        rendered = Template(template_string).render(var='foo')
         self.assertEqual(rendered, 'foo')
 
     def test_malformed_include_missing_name(self):
-        template = '{% include %}'
+        template_string = '{% include %}'
         with self.assertRaises(ibis.errors.TemplateSyntaxError):
-            Template(template).render()
+            Template(template_string).render()
 
     def test_malformed_include_invalid_literal(self):
-        template = '{% include 123 %}'
+        template_string = '{% include 123 %}'
         with self.assertRaises(ibis.errors.TemplateSyntaxError):
-            Template(template).render()
+            Template(template_string).render()
 
     def test_include_invalid_variable(self):
-        template = '{% include var %}'
+        template_string = '{% include var %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
-            Template(template).render(var=None)
+            Template(template_string).render(var=None)
 
     def test_include_undefined_variable(self):
-        template = '{% include var %}'
+        template_string = '{% include var %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
-            Template(template).render()
+            Template(template_string).render()
 
 
 class TemplateInheritanceTests(unittest.TestCase):
@@ -638,14 +638,14 @@ class StrictModeTests(unittest.TestCase):
 class EmptyTagTests(unittest.TestCase):
 
     def test_empty_tag(self):
-        template = '{%%}'
-        with self.assertRaises(ibis.errors.TemplateError):
-            rendered = Template(template).render()
+        template_string = '{%%}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
 
     def test_whitespace_tag(self):
-        template = '{%    %}'
-        with self.assertRaises(ibis.errors.TemplateError):
-            rendered = Template(template).render()
+        template_string = '{%    %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
 
 
 class ErrorThrower:
@@ -654,12 +654,34 @@ class ErrorThrower:
         raise Exception("Nobody expects an unexpected error!")
 
 
+@ibis.nodes.register('evil_parser')
+class EvilParser(ibis.nodes.Node):
+    def process_token(self, token):
+        raise Exception("Nobody expects an evil parser!")
+
+
+@ibis.nodes.register('evil_renderer')
+class EvilRenderer(ibis.nodes.Node):
+    def wrender(self, context):
+        raise Exception("Nobody expects an evil renderer!")
+
+
 class UnexpectedErrorTests(unittest.TestCase):
 
-    def test_unexpected_rendering_error(self):
-        template = '{{ obj.raises_error }}'
+    def test_unexpected_property_error(self):
+        template_string = '{{ obj.raises_error }}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
-            rendered = Template(template).render(obj=ErrorThrower())
+            rendered = Template(template_string).render(obj=ErrorThrower())
+
+    def test_unexpected_parsing_error(self):
+        template_string = '{% evil_parser %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
+
+    def test_unexpected_rendering_error(self):
+        template_string = '{% evil_renderer %}'
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
+            rendered = Template(template_string).render()
 
 
 if __name__ == '__main__':
