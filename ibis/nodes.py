@@ -44,62 +44,57 @@ def register(keyword, endword=None):
 #
 # Examples of valid expression syntax include:
 #
-#     foo.bar.baz|default:'bam'|escape
+#     foo.bar.baz|default('bam')|escape
 #     'foo', 'bar', 'baz'|random
 #
-# Arguments can be passed to callables using colon or bracket syntax:
+# Arguments can be passed to callables using bracket syntax:
 #
-#     foo.bar.baz:'bam'|filter:25:'text'
 #     foo.bar.baz('bam')|filter(25, 'text')
 #
 class Expression:
 
-    re_callable = re.compile(r'^([a-zA-Z_][a-zA-Z0-9_.]*)[(](.*)[)]$')
+    re_func_call = re.compile(r'^([a-zA-Z_][a-zA-Z0-9_.]*)[(](.*)[)]$')
 
     def __init__(self, expr, token):
-        self.expr = expr.strip()
         self.token = token
         self.filters = []
-        elements = utils.splitc(expr, '|', strip=True)
-        self._parse_expression(elements[0])
-        self._parse_filters(elements[1:])
+        pipe_split = utils.splitc(expr.strip(), '|', strip=True)
+        self._parse_primary_expr(pipe_split[0])
+        self._parse_filters(pipe_split[1:])
         if self.is_literal:
             self.literal = self._apply_filters_to_literal(self.literal)
 
-    def _parse_expression(self, expr):
+    def _parse_primary_expr(self, expr):
         try:
             self.literal = ast.literal_eval(expr)
             self.is_literal = True
         except:
-            self.varstr, self.varargs = self._parse_callable(expr)
+            self.is_func_call, self.varstring, self.func_args = self._try_parse_as_func_call(expr)
             self.is_literal = False
 
-    def _parse_callable(self, callable):
-        match = self.re_callable.match(callable)
-        if match:
-            name = match.group(1)
-            args = utils.splitc(match.group(2), ',', True, True)
-        else:
-            elements = utils.splitc(callable, ':', True)
-            name = elements[0]
-            args = elements[1:]
-        for index, arg in enumerate(args):
+    def _try_parse_as_func_call(self, expr):
+        match = self.re_func_call.match(expr)
+        if not match:
+            return False, expr, []
+        func_name = match.group(1)
+        func_args = utils.splitc(match.group(2), ',', True, True)
+        for index, arg in enumerate(func_args):
             try:
-                args[index] = ast.literal_eval(arg)
+                func_args[index] = ast.literal_eval(arg)
             except Exception as err:
                 msg = f"Unparsable argument '{arg}' in template '{self.token.template_id}', "
                 msg += f"line {self.token.line_number}. "
                 msg += f"Arguments must be valid Python literals."
                 raise errors.TemplateSyntaxError(msg, self.token) from err
-        return name, args
+        return True, func_name, func_args
 
     def _parse_filters(self, filter_list):
         for filter_expr in filter_list:
-            name, args = self._parse_callable(filter_expr)
-            if name in filters.filtermap:
-                self.filters.append((name, filters.filtermap[name], args))
+            _, filter_name, filter_args = self._try_parse_as_func_call(filter_expr)
+            if filter_name in filters.filtermap:
+                self.filters.append((filter_name, filters.filtermap[filter_name], filter_args))
             else:
-                msg = f"Unrecognised filter name '{name}' in template '{self.token.template_id}', "
+                msg = f"Unrecognised filter name '{filter_name}' in template '{self.token.template_id}', "
                 msg += f"line {self.token.line_number}."
                 raise errors.TemplateSyntaxError(msg, self.token)
 
@@ -120,12 +115,12 @@ class Expression:
             return self._resolve_variable(context)
 
     def _resolve_variable(self, context):
-        obj = context.resolve(self.varstr, self.token)
-        if callable(obj):
+        obj = context.resolve(self.varstring, self.token)
+        if self.is_func_call:
             try:
-                obj = obj(*self.varargs)
+                obj = obj(*self.func_args)
             except Exception as err:
-                msg = f"Error calling function '{self.varstr}' "
+                msg = f"Error calling function '{self.varstring}' "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
                 raise errors.TemplateRenderingError(msg, self.token) from err
         return self._apply_filters_to_variable(obj)

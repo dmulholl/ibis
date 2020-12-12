@@ -17,24 +17,24 @@ from ibis import Template
 
 # Loadable templates for testing the 'include' and 'extends' tags.
 ibis.loader = ibis.loaders.DictLoader({
-    'simple': '{{var}}',
+    'simple': '{{ var }}',
     'base': (
         '|#|'
         '{% block content %}'
-        'base-{{var}}'
+        'base-{{ var }}'
         '{% endblock %}'
         '|#|'
     ),
     'child': (
         '{% extends "base" %}'
         '{% block content %}'
-        '{{super}}|child-{{var}}'
+        '{{ super() }}|child-{{ var }}'
         '{% endblock %}'
-    ),
+        ),
     'loop': (
         '{% for i in [1, 2, 3] %}'
         '{% block content %}'
-        '{{i}}'
+        '{{ i }}'
         '{% endblock %}'
         '{% endfor %}'
     ),
@@ -77,21 +77,11 @@ class PrintStatementTests(unittest.TestCase):
         self.assertEqual(rendered, '&lt;div&gt;')
 
     def test_callable(self):
-        template = '{{func}}'
-        rendered = Template(template).render(func=lambda: 'foo')
-        self.assertEqual(rendered, 'foo')
-
-    def test_callable_with_brackets(self):
         template = '{{func()}}'
         rendered = Template(template).render(func=lambda: 'foo')
         self.assertEqual(rendered, 'foo')
 
     def test_callable_with_arg(self):
-        template = '{{func:"foo"}}'
-        rendered = Template(template).render(func=lambda arg: arg)
-        self.assertEqual(rendered, 'foo')
-
-    def test_callable_with_bracketed_arg(self):
         template = '{{func("foo")}}'
         rendered = Template(template).render(func=lambda arg: arg)
         self.assertEqual(rendered, 'foo')
@@ -124,27 +114,17 @@ class FilterMechanismTests(unittest.TestCase):
         rendered = Template(template).render(var='<div>')
         self.assertEqual(rendered, '&lt;div&gt;')
 
-    def test_filter_with_unquoted_arg(self):
-        template = '{{var|default:5}}'
+    def test_filter_with_int_arg(self):
+        template = '{{var|default(5)}}'
         rendered = Template(template).render(var=None)
         self.assertEqual(rendered, '5')
 
-    def test_filter_with_quoted_arg(self):
-        template = '{{var|default:"foo"}}'
-        rendered = Template(template).render(var=None)
-        self.assertEqual(rendered, 'foo')
-
-    def test_filter_with_bracketed_arg(self):
+    def test_filter_with_string_arg(self):
         template = '{{var|default("foo")}}'
         rendered = Template(template).render(var=None)
         self.assertEqual(rendered, 'foo')
 
     def test_filter_with_multiple_args(self):
-        template = '{{var|argtest:"bar":42}}'
-        rendered = Template(template).render(var='foo')
-        self.assertEqual(rendered, 'foo|bar|42')
-
-    def test_filter_with_multiple_bracketed_args(self):
         template = '{{var|argtest("bar", 42)}}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, 'foo|bar|42')
@@ -155,7 +135,7 @@ class FilterMechanismTests(unittest.TestCase):
         self.assertEqual(rendered, '&lt;div&gt;')
 
     def test_chained_filters(self):
-        template = '{{var|default:"foo"|upper}}'
+        template = '{{var|default("foo")|upper}}'
         rendered = Template(template).render(var=None)
         self.assertEqual(rendered, 'FOO')
 
@@ -168,17 +148,17 @@ class FilterMechanismTests(unittest.TestCase):
 class FilterFunctionTests(unittest.TestCase):
 
     def test_default(self):
-        template = '{{var|default:101}}'
+        template = '{{var|default(101)}}'
         rendered = Template(template).render(var=None)
         self.assertEqual(rendered, '101')
 
     def test_dtformat(self):
-        template = '{{var|dtformat:"%Y"}}'
+        template = '{{var|dtformat("%Y")}}'
         rendered = Template(template).render(var=datetime.datetime(2000, 1, 1))
         self.assertEqual(rendered, '2000')
 
     def test_endswith(self):
-        template = '{{var|endswith:"bar"}}'
+        template = '{{var|endswith("bar")}}'
         rendered = Template(template).render(var='foobar')
         self.assertEqual(rendered, 'True')
 
@@ -216,12 +196,12 @@ class FilterFunctionTests(unittest.TestCase):
         self.assertEqual(rendered, 'bar\nbar')
 
     def test_index(self):
-        template = '{{var|index:1}}'
+        template = '{{var|index(1)}}'
         rendered = Template(template).render(var=('foo', 'bar'))
         self.assertEqual(rendered, 'bar')
 
     def test_join(self):
-        template = '{{var|join:", "}}'
+        template = '{{var|join(", ")}}'
         rendered = Template(template).render(var=('foo', 'bar'))
         self.assertEqual(rendered, 'foo, bar')
 
@@ -256,17 +236,17 @@ class FilterFunctionTests(unittest.TestCase):
         self.assertEqual(rendered, 'foo bar baz')
 
     def test_startswith(self):
-        template = '{{var|startswith:"foo"}}'
+        template = '{{var|startswith("foo")}}'
         rendered = Template(template).render(var='foobar')
         self.assertEqual(rendered, 'True')
 
     def test_truncatechars(self):
-        template = '{{"supercalifragilisticexpialidocious"|truncatechars:12}}'
+        template = '{{"supercalifragilisticexpialidocious"|truncatechars(12)}}'
         rendered = Template(template).render()
         self.assertEqual(rendered, 'supercali...')
 
     def test_truncatewords(self):
-        template = '{{"lorem ipsum dolor sit amet"|truncatewords:3}}'
+        template = '{{"lorem ipsum dolor sit amet"|truncatewords(3)}}'
         rendered = Template(template).render(var='supercalifragilistic')
         self.assertEqual(rendered, 'lorem ipsum dolor [...]')
 
@@ -276,17 +256,17 @@ class FilterFunctionTests(unittest.TestCase):
         self.assertEqual(rendered, 'FOO')
 
     def test_wrap(self):
-        template = '{{var|wrap:"p"}}'
+        template = '{{var|wrap("p")}}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '<p>foo</p>')
 
     def test_if_undefined_case1(self):
-        template = '{{var|if_undefined:"foo"}}'
+        template = '{{var|if_undefined("foo")}}'
         rendered = Template(template).render()
         self.assertEqual(rendered, 'foo')
 
     def test_if_undefined_case2(self):
-        template = '{{var|if_undefined:"foo"}}'
+        template = '{{var|if_undefined("foo")}}'
         rendered = Template(template).render(var=123)
         self.assertEqual(rendered, '123')
 
@@ -594,7 +574,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_single_level_inheritance_with_super(self):
         template =  '{% extends "base" %}'
         template += '{% block content %}'
-        template += '{{super}}|override-{{var}}'
+        template += '{{super()}}|override-{{var}}'
         template += '{% endblock %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '|#|base-foo|override-foo|#|')
@@ -610,7 +590,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_double_level_inheritance_with_super(self):
         template =  '{% extends "child" %}'
         template += '{% block content %}'
-        template += '{{super}}|override-{{var}}'
+        template += '{{ super() }}|override-{{var}}'
         template += '{% endblock %}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, '|#|base-foo|child-foo|override-foo|#|')
@@ -626,7 +606,7 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_parent_block_in_loop_with_super(self):
         template =  '{% extends "loop" %}'
         template += '{% block content %}'
-        template += '{{super}}#'
+        template += '{{super()}}#'
         template += '{% endblock %}'
         rendered = Template(template).render()
         self.assertEqual(rendered, '1#2#3#')
