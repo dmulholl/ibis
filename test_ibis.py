@@ -648,5 +648,19 @@ class EmptyTagTests(unittest.TestCase):
             rendered = Template(template).render()
 
 
+class ErrorThrower:
+    @property
+    def raises_error(self):
+        raise Exception("Nobody expects an unexpected error!")
+
+
+class UnexpectedErrorTests(unittest.TestCase):
+
+    def test_unexpected_rendering_error(self):
+        template = '{{ obj.raises_error }}'
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
+            rendered = Template(template).render(obj=ErrorThrower())
+
+
 if __name__ == '__main__':
     unittest.main()
