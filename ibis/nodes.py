@@ -174,7 +174,7 @@ class Node:
             raise
         except Exception as err:
             if self.token:
-                tagname = f"'{self.token.keyword}'" if token.type == "INSTRUCTION" else token.type
+                tagname = f"'{self.token.keyword}'" if self.token.type == "INSTRUCTION" else self.token.type
                 msg = f"An unexpected error occurred while rendering the {tagname} tag "
                 msg += f"in template '{self.token.template_id}', line {self.token.line_number}: "
                 msg += f"{err.__class__.__name__}: {err}"
