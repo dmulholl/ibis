@@ -46,18 +46,24 @@ Note that a single print statement can make use of `||` chaining or the ternary 
 
 
 
-### Expressions
+### Expressions and Filters
 
 An **expression** consists of a variable name or a Python literal, optionally followed by a chain of pipe-separated filters.
 
-Variables use dot-syntax to drill into nested dictionaries or objects.
-If a variable evaluates to a function you can call it using brackets:
+Variables use dot-syntax to drill into nested objects or dictionaries:
 
 ::: code django
-    {{ call_me() }}
+    {{ post.title }}
 
-(Unlike Django, Ibis doesn't call functions automatically --- you have to explicitly call them using
-brackets.)
+You can use integers to index into sequences like tuples or lists:
+
+::: code django
+    {{ posts.0.title }}
+
+If the final variable in a chain evaluates to a function you can call it using brackets:
+
+::: code django
+    {{ post.get_title() }}
 
 You can use simple Python literals like strings and integers as arguments to functions:
 
