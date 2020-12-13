@@ -30,7 +30,7 @@ Features:
 
 Install Ibis directly from the Python Package Index using `pip`:
 
-    $ pip install ibis==2.0.0rc4
+    $ pip install ibis
 
 Ibis requires Python 3.6 or later.
 
@@ -38,7 +38,7 @@ Ibis requires Python 3.6 or later.
 
 ### Rationale
 
-Once upon a time I was interested in how template engines worked, so I built a simple one to find out.
+Once upon a time I was interested in how template engines worked so I built a simple one to find out.
 Then I got carried away and kept adding features until it could do everything I wanted. The result
 was Ibis.
 
