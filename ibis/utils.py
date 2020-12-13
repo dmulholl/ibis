@@ -67,7 +67,7 @@ def splitws(s, maxsplit=-1):
     return tokens
 
 
-# Splits a string using a list of regular expression patterns. Igores quoted delimiter matches.
+# Splits a string using a list of regular expression patterns. Ignores quoted delimiter matches.
 def splitre(s, delimiters, keepdels=False):
 
     tokens, buf = [], []
