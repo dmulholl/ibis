@@ -787,5 +787,23 @@ class VariableLookupTests(unittest.TestCase):
         self.assertEqual(rendered, 'f--o--o')
 
 
+class ContextShadowingTests(unittest.TestCase):
+
+    def test_variable_name_template(self):
+        template_string = '{{ template }}'
+        rendered = Template(template_string).render(template="foo")
+        self.assertEqual(rendered, 'foo')
+
+    def test_variable_name_data(self):
+        template_string = '{{ data }}'
+        rendered = Template(template_string).render(data="foo")
+        self.assertEqual(rendered, 'foo')
+
+    def test_variable_name_resolve(self):
+        template_string = '{{ resolve }}'
+        rendered = Template(template_string).render(resolve="foo")
+        self.assertEqual(rendered, 'foo')
+
+
 if __name__ == '__main__':
     unittest.main()

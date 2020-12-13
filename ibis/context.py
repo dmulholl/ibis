@@ -9,24 +9,39 @@ builtins = {
 }
 
 
+# A wrapper around a stack of dictionaries.
+class DataStack:
+
+    def __init__(self):
+       self.stack = []
+
+    def __getitem__(self, key):
+        for d in reversed(self.stack):
+            if key in d:
+                return d[key]
+        raise KeyError(key)
+
+
 # A Context object is a wrapper around the user's input data. Its `.resolve()` method contains
 # the lookup-logic for resolving dotted variable names.
 class Context:
 
     def __init__(self, data_dict, template, strict_mode):
-        self.stack = []
+
+        # Data store of resolvable variable names for the .resolve() method.
+        self.data = DataStack()
 
         # Standard builtins.
-        self.stack.append({
+        self.data.stack.append({
             'context': self,
             'is_defined': self.is_defined,
         })
 
         # User-configurable builtins.
-        self.stack.append(builtins)
+        self.data.stack.append(builtins)
 
         # Instance-specific data.
-        self.stack.append(data_dict)
+        self.data.stack.append(data_dict)
 
         # Nodes can store state information here to avoid threading issues.
         self.stash = {}
@@ -38,26 +53,29 @@ class Context:
         self.strict_mode = strict_mode
 
     def __setitem__(self, key, value):
-        self.stack[-1][key] = value
+        self.data.stack[-1][key] = value
 
     def __getitem__(self, key):
-        for d in reversed(self.stack):
+        return self.data[key]
+
+    def push(self, data=None):
+        self.data.stack.append(data or {})
+
+    def pop(self):
+        self.data.stack.pop()
+
+    def get(self, key, default=None):
+        for d in reversed(self.data.stack):
             if key in d:
                 return d[key]
-        raise KeyError(key)
+        return default
 
-    def __delitem__(self, key):
-        del self.stack[-1][key]
-
-    def __contains__(self, key):
-        for d in self.stack:
-            if key in d:
-                return True
-        return False
+    def update(self, data_dict):
+        self.data.stack[-1].update(data_dict)
 
     def resolve(self, varstring, token):
         words = []
-        result = self
+        result = self.data
         for word in varstring.split('.'):
             words.append(word)
             if hasattr(result, word):
@@ -77,31 +95,19 @@ class Context:
         return result
 
     def is_defined(self, varstring):
-        current = self
-        for token in varstring.split('.'):
-            try:
-                current = current[token]
-            except:
+        current = self.data
+        for word in varstring.split('.'):
+            if hasattr(current, word):
+                current = getattr(current, word)
+            else:
                 try:
-                    current = getattr(current, token)
+                    current = current[word]
                 except:
-                    return False
+                    try:
+                        current = current[int(word)]
+                    except:
+                        return False
         return True
-
-    def push(self, data=None):
-        self.stack.append(data or {})
-
-    def pop(self):
-        self.stack.pop()
-
-    def get(self, key, default=None):
-        for d in reversed(self.stack):
-            if key in d:
-                return d[key]
-        return default
-
-    def update(self, data):
-        self.stack[-1].update(data)
 
 
 # Null type returned when a context lookup fails.
