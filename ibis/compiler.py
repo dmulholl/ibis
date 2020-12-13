@@ -188,7 +188,7 @@ class Parser:
             else:
                 msg = f"Unrecognised instruction tag '{token.keyword}' "
                 msg += f"in template '{token.template_id}', line {token.line_number}."
-                raise errors.TemplateSyntaxError(msg)
+                raise errors.TemplateSyntaxError(msg, token)
 
         if expecting:
             token = stack[-1].token
