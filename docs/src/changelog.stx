@@ -18,6 +18,9 @@ meta_title: Ibis &mdash; Changelog
 * Support for Django-style colon-syntax for function and filter arguments has been removed. Only
   bracket-syntax is now supported.
 
+* You can now use integer variable names to index into sequences like lists or tuples, e.g.
+  `some_list.1`.
+
 
 
 ### 1.0.0
