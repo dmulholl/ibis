@@ -805,5 +805,28 @@ class ContextShadowingTests(unittest.TestCase):
         self.assertEqual(rendered, 'foo')
 
 
+class ParsingErrorTests(unittest.TestCase):
+
+    def test_unrecognised_tag(self):
+        template_string = '{% foobar %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
+
+    def test_unexpected_closing_tag(self):
+        template_string = '{% endif %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
+
+    def test_wrong_closing_tag(self):
+        template_string = '{% if var %}{% endfor %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
+
+    def test_missing_closing_tag(self):
+        template_string = '{% if var %}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            template = Template(template_string)
+
+
 if __name__ == '__main__':
     unittest.main()
