@@ -828,5 +828,28 @@ class ParsingErrorTests(unittest.TestCase):
             template = Template(template_string)
 
 
+class LexingErrorTests(unittest.TestCase):
+
+    def test_unclosed_comment_tag(self):
+        template_string = '{# foobar '
+        with self.assertRaises(ibis.errors.TemplateLexingError):
+            template = Template(template_string)
+
+    def test_unclosed_eprint_tag(self):
+        template_string = '{{{ foobar '
+        with self.assertRaises(ibis.errors.TemplateLexingError):
+            template = Template(template_string)
+
+    def test_unclosed_print_tag(self):
+        template_string = '{{ foobar '
+        with self.assertRaises(ibis.errors.TemplateLexingError):
+            template = Template(template_string)
+
+    def test_unclosed_instruction_tag(self):
+        template_string = '{% foobar '
+        with self.assertRaises(ibis.errors.TemplateLexingError):
+            template = Template(template_string)
+
+
 if __name__ == '__main__':
     unittest.main()
