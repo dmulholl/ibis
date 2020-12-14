@@ -14,7 +14,7 @@
         <header class="masthead">
             <h1><a href="index.html">Ibis</a></h1>
             
-            <p class="tagline">A lightweight template engine in Python.</p>
+            <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
             <p class="version">Version 2.0.0</p>
@@ -49,6 +49,9 @@
 <a href="api.html">Template API</a>
 </li>
 <li>
+<a href="extensions.html">Extensions</a>
+</li>
+<li>
 <a href="license.html">License</a>
 </li>
 <li>
@@ -67,7 +70,7 @@
                 <hr>
             </header>
             <p>
-Ibis is a lightweight, Django-style template engine written in Python.
+Ibis is a Django-style template engine for Python.
 </p>
 <p>
 Sample syntax:
@@ -97,6 +100,10 @@ Self-contained, no dependencies.
 Public domain code.
 </li>
 </ul>
+<p>
+Ibis isn't intended to be <a href="https://palletsprojects.com/p/jinja/">comprehensive</a> or to handle every possible use case for a template
+engine &mdash; instead it's intended to be simple, robust, and pleasant to use.
+</p>
 <h3 id="installation">
 Installation
 </h3>
@@ -113,20 +120,27 @@ Ibis requires Python 3.6 or later.
 Rationale
 </h3>
 <p>
-Once upon a time I was interested in how template engines worked so I built a simple one to find out.
-Then I got carried away and kept adding features until it could do everything I wanted. The result
-was Ibis.
+Once upon a time I was interested in how template engines worked so I built a simple one to find
+out.  Then I got carried away and kept adding features until it could do everything I wanted. The
+result was Ibis.
 </p>
 <p>
 If you're looking for a template engine for your Python application your first port of call should
-be <a href="https://palletsprojects.com/p/jinja/">Jinja</a> &mdash; it's the most optimised and battle-tested
-engine available. But if you're looking for something simpler &mdash; maybe something you can
-fork and tinker with and customize to suit your own particular use case &mdash; you might find Ibis to
-your liking.
+be <a href="https://palletsprojects.com/p/jinja/">Jinja</a> &mdash; it's the most comprehensive, optimised, and battle-tested engine available. But if
+you're looking for something simpler &mdash; maybe something you can fork and tinker with and customize
+to suit your own particular use case &mdash; you might find Ibis to your liking.
 </p>
 <p>
 And if, like once-upon-a-time me, you're interested in how template engines work, you're in luck &mdash;
-I've written up a detailed <a href="http://www.dmulholl.com/lets-build/a-template-language.html">tutorial</a> which will walk you through the process of building one of your own.
+I've written up a detailed <a href="http://www.dmulholl.com/lets-build/a-template-language.html">tutorial</a> which will walk you through the process of building one of
+your own.
+</p>
+<h3 id="contributing">
+Contributing
+</h3>
+<p>
+My goal is to keep Ibis as small and simple as possible so I almost certainly won't accept pull
+requests that add new features. Bug reports are always welcome!
 </p>
 <h3 id="links">
 Links

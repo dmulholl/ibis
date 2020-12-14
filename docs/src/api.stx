@@ -73,73 +73,6 @@ To specify a template loader set `ibis.loader` to an instance of your callable:
 
 
 
-### Exceptions
-
-The following exception types may be raised by the template engine:
-
-
-(*) `ibis.errors.TemplateError`
-
-    Base class for all exceptions raised by the template engine.
-
-
-    (*) `ibis.errors.TemplateLoadError`
-
-        Raised if an error occurs while attempting to load a template.
-
-
-    (*) `ibis.errors.TemplateLexingError`
-
-        Raised if the lexer cannot tokenize a template string.
-
-
-    (*) `ibis.errors.TemplateSyntaxError`
-
-        Raised if an error occurs while compiling a template.
-
-
-    (*) `ibis.errors.TemplateRenderingError`
-
-        Raised if an error occurs while rendering a template.
-
-
-    (*) `ibis.errors.UndefinedVariable`
-
-        Raised in [strict mode](#strict-mode) if a variable name cannot be resolved.
-
-
-
-### Builtins
-
-The following built-in variables and functions are available in all contexts:
-
-(*) `is_defined(variable)`
-
-    Boolean function. Returns true if the specified variable is defined in the current context.
-    The variable name should be supplied as a quoted string literal, e.g.
-
-    ::: code django
-        {% if is_defined("post.title") %}
-            ... do something with {{ post.title }} ...
-        {% endif %}
-
-
-(*) `now()`
-
-    Returns a datetime object representing the instant the function is called.
-
-
-(*) `range()`
-
-    Provides access to Python's builtin `range` function.
-
-
-(*) `context`
-
-    A reference to the current `Context` object.
-
-
-
 ### The Undefined Type
 
 An instance of the `ibis.context.Undefined` type is returned whenever an attempt to resolve a variable name against a particular context fails. `Undefined` is a null type that renders as an empty string, evaluates as the boolean `False`, behaves like an empty sequence, etc.
@@ -181,49 +114,67 @@ have been raised before the filter is called) but you can use the `is_defined()`
 
 
 
-### Custom Filters
+### Builtins
 
-A filter is a function that accepts at least one argument --- the value to be filtered --- and returns the filtered result. It can optionally accept any number of additional arguments.
+The following built-in variables and functions are available in all contexts:
 
-Filters are registered using the `@filters.register` decorator:
+(*) `is_defined(variable)`
 
-::: code python
-    @ibis.filters.register('filter_name')
+    Boolean function. Returns true if the specified variable is defined in the current context.
+    The variable name should be supplied as a quoted string literal, e.g.
 
-As an example, we can register a filter to convert datetime objects into formatted strings:
-
-::: code python
-    import ibis
-
-    @ibis.filters.register('dtformat')
-    def datetime_formatter(dt, format_str='%Y-%m-%d'):
-        return dt.strftime(format_str)
-
-This gives us a filter with an optional format string argument that we can call on any datetime
-object, including the built-in `now()` function which returns a datetime object representing the current time:
-
-::: code django
-    {{ now()|dtformat }}
-
-    {{ now()|dtformat('%Y') }}
-
-As it happens, `dtformat` already exists as a built-in filter. Re-registering the `dtformat` name would simply override the built-in filter with our own custom version.
+    ::: code django
+        {% if is_defined("post.title") %}
+            ... do something with {{ post.title }} ...
+        {% endif %}
 
 
+(*) `now()`
 
-### Custom Tags
+    Returns a datetime object representing the instant the function is called.
 
-You can register custom instruction tags to supplement or override the built-in ones. Creating custom tags is more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
 
-Every instruction tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new
-instruction tag, register a subclass using the `@nodes.register` decorator:
+(*) `range()`
 
-::: code python
-    @ibis.nodes.register('foo')
+    Provides access to Python's builtin `range` function.
 
-You can give your new tag block scope by specifying an end word:
 
-::: code python
-    @ibis.nodes.register('foo', 'endfoo')
+(*) `context`
 
-You'll need to turn to the source code itself for further details --- see the `nodes.py` file for lots of examples to work from.
+    A reference to the current `Context` object.
+
+
+
+### Exceptions
+
+The following exception types may be raised by the template engine:
+
+
+(*) `ibis.errors.TemplateError`
+
+    Base class for all exceptions raised by the template engine.
+
+
+    (*) `ibis.errors.TemplateLoadError`
+
+        Raised if an error occurs while attempting to load a template.
+
+
+    (*) `ibis.errors.TemplateLexingError`
+
+        Raised if the lexer cannot tokenize a template string.
+
+
+    (*) `ibis.errors.TemplateSyntaxError`
+
+        Raised if an error occurs while compiling a template.
+
+
+    (*) `ibis.errors.TemplateRenderingError`
+
+        Raised if an error occurs while rendering a template.
+
+
+    (*) `ibis.errors.UndefinedVariable`
+
+        Raised in [strict mode](#strict-mode) if a variable name cannot be resolved.

@@ -14,7 +14,7 @@
         <header class="masthead">
             <h1><a href="index.html">Ibis</a></h1>
             
-            <p class="tagline">A lightweight template engine in Python.</p>
+            <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
             <p class="version">Version 2.0.0</p>
@@ -49,6 +49,9 @@
 <a href="api.html">Template API</a>
 </li>
 <li>
+<a href="extensions.html">Extensions</a>
+</li>
+<li>
 <a href="license.html">License</a>
 </li>
 <li>
@@ -77,22 +80,16 @@
 <a href="#template-loaders">Template Loaders</a>
 </li>
 <li>
-<a href="#exceptions">Exceptions</a>
-</li>
-<li>
-<a href="#builtins">Builtins</a>
-</li>
-<li>
 <a href="#the-undefined-type">The Undefined Type</a>
 </li>
 <li>
 <a href="#strict-mode">Strict Mode</a>
 </li>
 <li>
-<a href="#custom-filters">Custom Filters</a>
+<a href="#builtins">Builtins</a>
 </li>
 <li>
-<a href="#custom-tags">Custom Tags</a>
+<a href="#exceptions">Exceptions</a>
 </li>
 </ul>
 <h3 id="template-objects">
@@ -170,6 +167,98 @@ To specify a template loader set <code>ibis.loader</code> to an instance of your
 <pre class="lang-python pygments" data-lang="python">
 <span class="n">ibis</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/base/dir&#39;</span><span class="p">)</span>
 </pre>
+<h3 id="the-undefined-type">
+The Undefined Type
+</h3>
+<p>
+An instance of the <code>ibis.context.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.
+</p>
+<p>
+You can check if a variable is defined using the boolean <code>is_defined</code> filter:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">is_defined</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    do stuff with </span><span class="cp">{{</span> <span class="nv">foo.bar</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<p>
+You can specify a fallback value for undefined variables using the <code>if_undefined</code> filter
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">if_undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre>
+<p>
+In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback value <code>&quot;baz&quot;</code> will be used in its place.
+</p>
+<h3 id="strict-mode">
+Strict Mode
+</h3>
+<p>
+You can render a template in strict mode by adding a <code>strict_mode=True</code> keyword argument to the
+<code>.render()</code> method:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">output</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre>
+<p>
+In strict mode attempting to resolve an undefined variable will raise an <code>UndefinedVariable</code>
+exception instead of returning an instance of the <code>Undefined</code> type.
+</p>
+<p>
+The <code>is_defined</code> and <code>if_undefined</code> filters won't work in strict mode (the exception will already
+have been raised before the filter is called) but you can use the <code>is_defined()</code> function to check if a variable is defined:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_defined</span><span class="o">(</span><span class="s2">&quot;post.title&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    .. do something with </span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"> ...</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<h3 id="builtins">
+Builtins
+</h3>
+<p>
+The following built-in variables and functions are available in all contexts:
+</p>
+<ul>
+<li>
+<p>
+<code>is_defined(variable)</code>
+</p>
+<p>
+Boolean function. Returns true if the specified variable is defined in the current context.
+The variable name should be supplied as a quoted string literal, e.g.
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_defined</span><span class="o">(</span><span class="s2">&quot;post.title&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"> ...</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+</li>
+<li>
+<p>
+<code>now()</code>
+</p>
+<p>
+Returns a datetime object representing the instant the function is called.
+</p>
+</li>
+<li>
+<p>
+<code>range()</code>
+</p>
+<p>
+Provides access to Python's builtin <code>range</code> function.
+</p>
+</li>
+<li>
+<p>
+<code>context</code>
+</p>
+<p>
+A reference to the current <code>Context</code> object.
+</p>
+</li>
+</ul>
 <h3 id="exceptions">
 Exceptions
 </h3>
@@ -228,154 +317,6 @@ Raised in <a href="#strict-mode">strict mode</a> if a variable name cannot be re
 </ul>
 </li>
 </ul>
-<h3 id="builtins">
-Builtins
-</h3>
-<p>
-The following built-in variables and functions are available in all contexts:
-</p>
-<ul>
-<li>
-<p>
-<code>is_defined(variable)</code>
-</p>
-<p>
-Boolean function. Returns true if the specified variable is defined in the current context.
-The variable name should be supplied as a quoted string literal, e.g.
-</p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_defined</span><span class="o">(</span><span class="s2">&quot;post.title&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"> ...</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-</pre>
-</li>
-<li>
-<p>
-<code>now()</code>
-</p>
-<p>
-Returns a datetime object representing the instant the function is called.
-</p>
-</li>
-<li>
-<p>
-<code>range()</code>
-</p>
-<p>
-Provides access to Python's builtin <code>range</code> function.
-</p>
-</li>
-<li>
-<p>
-<code>context</code>
-</p>
-<p>
-A reference to the current <code>Context</code> object.
-</p>
-</li>
-</ul>
-<h3 id="the-undefined-type">
-The Undefined Type
-</h3>
-<p>
-An instance of the <code>ibis.context.Undefined</code> type is returned whenever an attempt to resolve a variable name against a particular context fails. <code>Undefined</code> is a null type that renders as an empty string, evaluates as the boolean <code>False</code>, behaves like an empty sequence, etc.
-</p>
-<p>
-You can check if a variable is defined using the boolean <code>is_defined</code> filter:
-</p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">is_defined</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    do stuff with </span><span class="cp">{{</span> <span class="nv">foo.bar</span> <span class="cp">}}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-</pre>
-<p>
-You can specify a fallback value for undefined variables using the <code>if_undefined</code> filter
-</p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">foo.bar</span><span class="o">|</span><span class="nf">if_undefined</span><span class="o">(</span><span class="s2">&quot;baz&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
-</pre>
-<p>
-In this case if the variable <code>foo.bar</code> is not defined in the current context, the fallback value <code>&quot;baz&quot;</code> will be used in its place.
-</p>
-<h3 id="strict-mode">
-Strict Mode
-</h3>
-<p>
-You can render a template in strict mode by adding a <code>strict_mode=True</code> keyword argument to the
-<code>.render()</code> method:
-</p>
-<pre class="lang-python pygments" data-lang="python">
-<span class="n">output</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre>
-<p>
-In strict mode attempting to resolve an undefined variable will raise an <code>UndefinedVariable</code>
-exception instead of returning an instance of the <code>Undefined</code> type.
-</p>
-<p>
-The <code>is_defined</code> and <code>if_undefined</code> filters won't work in strict mode (the exception will already
-have been raised before the filter is called) but you can use the <code>is_defined()</code> function to check if a variable is defined:
-</p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_defined</span><span class="o">(</span><span class="s2">&quot;post.title&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    .. do something with </span><span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"> ...</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-</pre>
-<h3 id="custom-filters">
-Custom Filters
-</h3>
-<p>
-A filter is a function that accepts at least one argument &mdash; the value to be filtered &mdash; and returns the filtered result. It can optionally accept any number of additional arguments.
-</p>
-<p>
-Filters are registered using the <code>@filters.register</code> decorator:
-</p>
-<pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;filter_name&#39;</span><span class="p">)</span>
-</pre>
-<p>
-As an example, we can register a filter to convert datetime objects into formatted strings:
-</p>
-<pre class="lang-python pygments" data-lang="python">
-<span class="kn">import</span> <span class="nn">ibis</span>
-
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;dtformat&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">format_str</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
-</pre>
-<p>
-This gives us a filter with an optional format string argument that we can call on any datetime
-object, including the built-in <code>now()</code> function which returns a datetime object representing the current time:
-</p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
-
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
-</pre>
-<p>
-As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.
-</p>
-<h3 id="custom-tags">
-Custom Tags
-</h3>
-<p>
-You can register custom instruction tags to supplement or override the built-in ones. Creating custom tags is more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of <code>Node</code> objects.
-</p>
-<p>
-Every instruction tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new
-instruction tag, register a subclass using the <code>@nodes.register</code> decorator:
-</p>
-<pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
-</pre>
-<p>
-You can give your new tag block scope by specifying an end word:
-</p>
-<pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;endfoo&#39;</span><span class="p">)</span>
-</pre>
-<p>
-You'll need to turn to the source code itself for further details &mdash; see the <code>nodes.py</code> file for lots of examples to work from.
-</p>
         </article>
         
     </body>

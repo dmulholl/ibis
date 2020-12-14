@@ -21,6 +21,8 @@ meta_title: Ibis &mdash; Changelog
 * You can now use integer variable names to index into sequences like lists or tuples, e.g.
   `some_list.1`.
 
+* The builtin file loaders now take a single filename argument.
+
 
 
 ### 1.0.0

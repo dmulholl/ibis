@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ibis &mdash; Extensions</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="assets/fonts.css">
+        <link rel="stylesheet" href="assets/graphite.css">
+        <link rel="stylesheet" href="assets/pygments.css">
+        
+        
+    </head>
+    <body class="node-extensions node">
+        <header class="masthead">
+            <h1><a href="index.html">Ibis</a></h1>
+            
+            <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
+            
+            
+            <p class="version">Version 2.0.0</p>
+            
+            <nav class="menu">
+                <input id="menu-check" type="checkbox"/>
+                <label id="menu-label" for="menu-check" class="unselectable">
+                    <span class="icon close-icon">✕</span>
+                    <span class="icon open-icon">☰</span>
+                    <span class="text">Menu</span>
+                </label>
+                <ul>
+<li>
+<a href="index.html">Home</a>
+</li>
+<li>
+<a href="quickstart.html">Quickstart</a>
+</li>
+<li>
+<a href="markup.html">Template Markup</a>
+</li>
+<li>
+<a href="tags.html">Tag Reference</a>
+</li>
+<li>
+<a href="filters.html">Filter Reference</a>
+</li>
+<li>
+<a href="inheritance.html">Template Inheritance</a>
+</li>
+<li>
+<a href="api.html">Template API</a>
+</li>
+<li>
+<a href="extensions.html">Extensions</a>
+</li>
+<li>
+<a href="license.html">License</a>
+</li>
+<li>
+<a href="changelog.html">Changelog</a>
+</li>
+<li>
+<a href="https://github.com/dmulholl/ibis">Github</a>
+</li>
+</ul>
+            </nav>
+        </header>
+        <article class="main">
+            <header class="title">
+                <h1>Extensions</h1>
+                
+                <hr>
+            </header>
+            <ul class="stx-toc">
+<li>
+<a href="#custom-filters">Custom Filters</a>
+</li>
+<li>
+<a href="#custom-instruction-tags">Custom Instruction Tags</a>
+</li>
+<li>
+<a href="#custom-builtins">Custom Builtins</a>
+</li>
+<li>
+<a href="#custom-tag-syntax">Custom Tag Syntax</a>
+</li>
+</ul>
+<h3 id="custom-filters">
+Custom Filters
+</h3>
+<p>
+A filter is a function that accepts at least one argument &mdash; the value to be filtered &mdash; and returns the filtered result. It can optionally accept any number of additional arguments.
+</p>
+<p>
+Filters are registered using the <code>@filters.register</code> decorator:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;filter_name&#39;</span><span class="p">)</span>
+</pre>
+<p>
+As an example, we can register a filter to convert datetime objects into formatted strings:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="kn">import</span> <span class="nn">ibis</span>
+
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;dtformat&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">format_str</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
+</pre>
+<p>
+This gives us a filter with an optional format string argument that we can call on any datetime
+object, including the built-in <code>now()</code> function which returns a datetime object representing the current time:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre>
+<p>
+As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.
+</p>
+<h3 id="custom-instruction-tags">
+Custom Instruction Tags
+</h3>
+<p>
+You can register custom instruction tags to supplement or override the built-in ones. Creating custom tags is more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of <code>Node</code> objects.
+</p>
+<p>
+Every instruction tag corresponds to a subclass of the <code>ibis.nodes.Node</code> type. To create a new
+instruction tag, register a subclass using the <code>@nodes.register</code> decorator:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</pre>
+<p>
+You can give your new tag block scope by specifying an end word:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;endfoo&#39;</span><span class="p">)</span>
+</pre>
+<p>
+You'll need to turn to the source code itself for further details &mdash; see the <code>ibis/nodes.py</code> file for lots of examples to work from.
+</p>
+<h3 id="custom-builtins">
+Custom Builtins
+</h3>
+<p>
+You can assign custom variables and functions to the <code>ibis.context.builtins</code> dictionary to make them
+available in all templates.
+</p>
+<h3 id="custom-tag-syntax">
+Custom Tag Syntax
+</h3>
+<p>
+You can customize Ibis's tag delimiter syntax to suit your own taste. The default tag delimiters are
+shown below:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">comment_start</span> <span class="o">=</span> <span class="s1">&#39;{#&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">comment_end</span> <span class="o">=</span> <span class="s1">&#39;#}&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">print_start</span> <span class="o">=</span> <span class="s1">&#39;{{&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">print_end</span> <span class="o">=</span> <span class="s1">&#39;}}&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">eprint_start</span> <span class="o">=</span> <span class="s1">&#39;{{{&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">eprint_end</span> <span class="o">=</span> <span class="s1">&#39;}}}&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">instruction_start</span> <span class="o">=</span> <span class="s1">&#39;{%&#39;</span>
+<span class="n">ibis</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">instruction_end</span> <span class="o">=</span> <span class="s1">&#39;%}&#39;</span>
+</pre>
+<p>
+All you need to do is assign new delimiter strings to the above variables.
+</p>
+        </article>
+        
+    </body>
+</html>

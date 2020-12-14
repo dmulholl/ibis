@@ -1,0 +1,82 @@
+---
+title: Extensions
+meta_title: Ibis &mdash; Extensions
+---
+
+::: insert toc
+
+
+
+### Custom Filters
+
+A filter is a function that accepts at least one argument --- the value to be filtered --- and returns the filtered result. It can optionally accept any number of additional arguments.
+
+Filters are registered using the `@filters.register` decorator:
+
+::: code python
+    @ibis.filters.register('filter_name')
+
+As an example, we can register a filter to convert datetime objects into formatted strings:
+
+::: code python
+    import ibis
+
+    @ibis.filters.register('dtformat')
+    def datetime_formatter(dt, format_str='%Y-%m-%d'):
+        return dt.strftime(format_str)
+
+This gives us a filter with an optional format string argument that we can call on any datetime
+object, including the built-in `now()` function which returns a datetime object representing the current time:
+
+::: code django
+    {{ now()|dtformat }}
+
+    {{ now()|dtformat('%Y') }}
+
+As it happens, `dtformat` already exists as a built-in filter. Re-registering the `dtformat` name would simply override the built-in filter with our own custom version.
+
+
+
+### Custom Instruction Tags
+
+You can register custom instruction tags to supplement or override the built-in ones. Creating custom tags is more complicated than creating custom filters as you'll need to understand some of the internal details of how Ibis compiles template strings into trees of `Node` objects.
+
+Every instruction tag corresponds to a subclass of the `ibis.nodes.Node` type. To create a new
+instruction tag, register a subclass using the `@nodes.register` decorator:
+
+::: code python
+    @ibis.nodes.register('foo')
+
+You can give your new tag block scope by specifying an end word:
+
+::: code python
+    @ibis.nodes.register('foo', 'endfoo')
+
+You'll need to turn to the source code itself for further details --- see the `ibis/nodes.py` file for lots of examples to work from.
+
+
+
+### Custom Builtins
+
+You can assign custom variables and functions to the `ibis.context.builtins` dictionary to make them
+available in all templates.
+
+
+
+### Custom Tag Syntax
+
+You can customize Ibis's tag delimiter syntax to suit your own taste. The default tag delimiters are
+shown below:
+
+::: code python
+    ibis.compiler.comment_start = '{#'
+    ibis.compiler.comment_end = '#}'
+    ibis.compiler.print_start = '{{'
+    ibis.compiler.print_end = '}}'
+    ibis.compiler.eprint_start = '{{{'
+    ibis.compiler.eprint_end = '}}}'
+    ibis.compiler.instruction_start = '{%'
+    ibis.compiler.instruction_end = '%}'
+
+All you need to do is assign new delimiter strings to the above variables.
+

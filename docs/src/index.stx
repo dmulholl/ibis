@@ -7,7 +7,7 @@ meta_title: Ibis &mdash; a lightweight template engine in Python
 [tutorial]: http://www.dmulholl.com/lets-build/a-template-language.html
 
 
-Ibis is a lightweight, Django-style template engine written in Python.
+Ibis is a Django-style template engine for Python.
 
 Sample syntax:
 
@@ -24,6 +24,9 @@ Features:
 * Self-contained, no dependencies.
 * Public domain code.
 
+Ibis isn't intended to be [comprehensive][jinja] or to handle every possible use case for a template
+engine --- instead it's intended to be simple, robust, and pleasant to use.
+
 
 
 ### Installation
@@ -38,18 +41,25 @@ Ibis requires Python 3.6 or later.
 
 ### Rationale
 
-Once upon a time I was interested in how template engines worked so I built a simple one to find out.
-Then I got carried away and kept adding features until it could do everything I wanted. The result
-was Ibis.
+Once upon a time I was interested in how template engines worked so I built a simple one to find
+out.  Then I got carried away and kept adding features until it could do everything I wanted. The
+result was Ibis.
 
 If you're looking for a template engine for your Python application your first port of call should
-be [Jinja](https://palletsprojects.com/p/jinja/) --- it's the most optimised and battle-tested
-engine available. But if you're looking for something simpler --- maybe something you can
-fork and tinker with and customize to suit your own particular use case --- you might find Ibis to
-your liking.
+be [Jinja][] --- it's the most comprehensive, optimised, and battle-tested engine available. But if
+you're looking for something simpler --- maybe something you can fork and tinker with and customize
+to suit your own particular use case --- you might find Ibis to your liking.
 
 And if, like once-upon-a-time me, you're interested in how template engines work, you're in luck ---
-I've written up a detailed [tutorial][] which will walk you through the process of building one of your own.
+I've written up a detailed [tutorial][] which will walk you through the process of building one of
+your own.
+
+
+
+### Contributing
+
+My goal is to keep Ibis as small and simple as possible so I almost certainly won't accept pull
+requests that add new features. Bug reports are always welcome!
 
 
 
