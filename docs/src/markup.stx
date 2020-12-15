@@ -128,5 +128,5 @@ function. Ibis never calls functions automatically --- if you want to call a fun
 do so explicitly using brackets.
 
 Also, you should note that Ibis only supports calling functions at the end of a variable chain ---
-it doesn't support chaining function calls within expressions.
+it doesn't support chaining function calls within an expression.
 
