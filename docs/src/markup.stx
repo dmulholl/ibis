@@ -3,6 +3,9 @@ title: Template Markup
 meta_title: Ibis &mdash; Template Markup
 ---
 
+[django]: https://docs.djangoproject.com/en/3.1/ref/templates/language/
+
+
 ::: insert toc
 ::: hr
 
@@ -112,3 +115,18 @@ Some instruction tags have block scope and require a closing tag. They look like
 Tags with block scope can contain further template markup and can be nested to any depth.
 
 You can find a list of built-in instruction tags [here](@root/tags//).
+
+
+
+### Differences from Django
+
+Ibis's syntax is inspired by [Django's][django] but they aren't identical and templates written for Django are
+unlikely to work with Ibis.
+
+In particular, Django's variable resolver automatically calls all variables that resolve to a
+function. Ibis never calls functions automatically --- if you want to call a function you need to
+do so explicitly using brackets.
+
+Also, you should note that Ibis only supports calling functions at the end of a variable chain ---
+it doesn't support chaining function calls within expressions.
+

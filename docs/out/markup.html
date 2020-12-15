@@ -79,6 +79,9 @@
 <li>
 <a href="#instruction-tags">Instruction Tags</a>
 </li>
+<li>
+<a href="#differences-from-django">Differences from Django</a>
+</li>
 </ul>
 <hr>
 <p>
@@ -208,6 +211,22 @@ Tags with block scope can contain further template markup and can be nested to a
 </p>
 <p>
 You can find a list of built-in instruction tags <a href="tags.html">here</a>.
+</p>
+<h3 id="differences-from-django">
+Differences from Django
+</h3>
+<p>
+Ibis's syntax is inspired by <a href="https://docs.djangoproject.com/en/3.1/ref/templates/language/">Django's</a> but they aren't identical and templates written for Django are
+unlikely to work with Ibis.
+</p>
+<p>
+In particular, Django's variable resolver automatically calls all variables that resolve to a
+function. Ibis never calls functions automatically &mdash; if you want to call a function you need to
+do so explicitly using brackets.
+</p>
+<p>
+Also, you should note that Ibis only supports calling functions at the end of a variable chain &mdash;
+it doesn't support chaining function calls within expressions.
 </p>
         </article>
         
