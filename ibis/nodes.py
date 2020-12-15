@@ -53,7 +53,8 @@ def register(keyword, endword=None):
 #
 class Expression:
 
-    re_func_call = re.compile(r'^([a-zA-Z_][a-zA-Z0-9_.]*)[(](.*)[)]$')
+    re_func_call = re.compile(r'^([\w.]+)\((.*)\)$')
+    re_varstring = re.compile(r'^[\w.]+$')
 
     def __init__(self, expr, token):
         self.token = token
@@ -69,8 +70,12 @@ class Expression:
             self.literal = ast.literal_eval(expr)
             self.is_literal = True
         except:
-            self.is_func_call, self.varstring, self.func_args = self._try_parse_as_func_call(expr)
             self.is_literal = False
+            self.is_func_call, self.varstring, self.func_args = self._try_parse_as_func_call(expr)
+            if not self.is_func_call and not self.re_varstring.match(expr):
+                msg = f"Unparsable expression '{expr}' in template '{self.token.template_id}', "
+                msg += f"line {self.token.line_number}."
+                raise errors.TemplateSyntaxError(msg, self.token)
 
     def _try_parse_as_func_call(self, expr):
         match = self.re_func_call.match(expr)

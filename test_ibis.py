@@ -67,42 +67,42 @@ class BasicInputTests(unittest.TestCase):
 class PrintStatementTests(unittest.TestCase):
 
     def test_print_statement(self):
-        template = '{{var}}'
+        template = '{{ var }}'
         rendered = Template(template).render(var='foo')
         self.assertEqual(rendered, 'foo')
 
     def test_escaped_print_statement(self):
-        template = '{{{var}}}'
+        template = '{{{ var }}}'
         rendered = Template(template).render(var='<div>')
         self.assertEqual(rendered, '&lt;div&gt;')
 
     def test_callable(self):
-        template = '{{func()}}'
+        template = '{{ func() }}'
         rendered = Template(template).render(func=lambda: 'foo')
         self.assertEqual(rendered, 'foo')
 
     def test_callable_with_arg(self):
-        template = '{{func("foo")}}'
+        template = '{{ func("foo") }}'
         rendered = Template(template).render(func=lambda arg: arg)
         self.assertEqual(rendered, 'foo')
 
     def test_multiple_vars_with_or(self):
-        template = '{{var1 or var2}}'
+        template = '{{ var1 or var2 }}'
         rendered = Template(template).render(var1=None, var2='foo')
         self.assertEqual(rendered, 'foo')
 
     def test_multiple_vars_with_pipes(self):
-        template = '{{var1 || var2}}'
+        template = '{{ var1 || var2 }}'
         rendered = Template(template).render(var1=None, var2='foo')
         self.assertEqual(rendered, 'foo')
 
     def test_ternary_operator_true(self):
-        template = '{{test ?? var1 :: var2}}'
+        template = '{{ test ?? var1 :: var2 }}'
         rendered = Template(template).render(test=True, var1='foo', var2='bar')
         self.assertEqual(rendered, 'foo')
 
     def test_ternary_operator_false(self):
-        template = '{{test ?? var1 :: var2}}'
+        template = '{{ test ?? var1 :: var2 }}'
         rendered = Template(template).render(test=False, var1='foo', var2='bar')
         self.assertEqual(rendered, 'bar')
 
@@ -694,6 +694,12 @@ class TestObject:
     def prop(self):
         return "foobar"
 
+    def method(self):
+        return "foobar"
+
+    def method_with_arg(self, arg):
+        return arg
+
 
 test_dict = {
     "abc": "foo",
@@ -750,6 +756,16 @@ class VariableLookupTests(unittest.TestCase):
         template_string = '{{ obj.prop }}'
         rendered = Template(template_string).render(obj=TestObject())
         self.assertEqual(rendered, 'foobar')
+
+    def test_object_with_method_call(self):
+        template_string = '{{ obj.method() }}'
+        rendered = Template(template_string).render(obj=TestObject())
+        self.assertEqual(rendered, 'foobar')
+
+    def test_object_with_method_call_with_arg(self):
+        template_string = '{{ obj.method_with_arg("foo") }}'
+        rendered = Template(template_string).render(obj=TestObject())
+        self.assertEqual(rendered, 'foo')
 
     def test_dict_with_alphabetic_key(self):
         template_string = '{{ somedict.abc }}'
