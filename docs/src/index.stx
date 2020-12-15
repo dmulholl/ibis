@@ -1,13 +1,13 @@
 ---
 title: Home
-meta_title: Ibis &mdash; a lightweight template engine in Python
+meta_title: Ibis &mdash; a lightweight template engine for Python
 ---
 
 [jinja]: https://palletsprojects.com/p/jinja/
 [tutorial]: http://www.dmulholl.com/lets-build/a-template-language.html
 
 
-Ibis is a Django-style template engine for Python.
+Ibis is a lightweight template engine for Python.
 
 Sample syntax:
 
