@@ -3,6 +3,8 @@
 Ibis
 ====
 
+A template engine for people who enjoy the simpler things in life.
+
 Features:
 
 * Django/Jinja-style syntax.
@@ -47,7 +49,7 @@ setup(
     author = 'Darren Mulholland',
     url='https://github.com/dmulholl/ibis',
     license = 'Public Domain',
-    description = 'A lightweight template engine.',
+    description = 'A template engine for people who enjoy the simpler things in life.',
     long_description = __doc__,
     classifiers = [
         'Programming Language :: Python :: 3',
