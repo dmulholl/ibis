@@ -88,8 +88,7 @@ class Context:
                         result = result[int(word)]
                     except:
                         if self.strict_mode:
-                            msg = f"Cannot resolve the variable '{'.'.join(words)}' in template "
-                            msg += f"'{token.template_id}', line {token.line_number}."
+                            msg = f"Cannot resolve the variable '{'.'.join(words)}'"
                             raise errors.UndefinedVariable(msg, token) from None
                         return Undefined()
         return result

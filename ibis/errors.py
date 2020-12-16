@@ -16,26 +16,27 @@ class TemplateLexingError(TemplateError):
         self.template_id = template_id
 
 
-# This exception type may be raised while a template is being compiled.
-class TemplateSyntaxError(TemplateError):
-
+class TemplateErrorWithToken(TemplateError):
     def __init__(self, msg, token):
         super().__init__(msg)
+        self.msg = msg
         self.token = token
+
+    def __str__(self):
+        token = self.token
+        return f'{self.msg} ({token.template_id}, line {token.line_number}, in "{token.keyword}")'
+
+
+# This exception type may be raised while a template is being compiled.
+class TemplateSyntaxError(TemplateErrorWithToken):
+    pass
 
 
 # This exception type may be raised while a template is being rendered.
-class TemplateRenderingError(TemplateError):
-
-    def __init__(self, msg, token):
-        super().__init__(msg)
-        self.token = token
+class TemplateRenderingError(TemplateErrorWithToken):
+    pass
 
 
 # This exception type is raised in strict mode if a variable cannot be resolved.
-class UndefinedVariable(TemplateError):
-
-    def __init__(self, msg, token):
-        super().__init__(msg)
-        self.token = token
-
+class UndefinedVariable(TemplateErrorWithToken):
+    pass

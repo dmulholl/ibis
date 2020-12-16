@@ -73,8 +73,7 @@ class Expression:
             self.is_literal = False
             self.is_func_call, self.varstring, self.func_args = self._try_parse_as_func_call(expr)
             if not self.is_func_call and not self.re_varstring.match(expr):
-                msg = f"Unparsable expression '{expr}' in template '{self.token.template_id}', "
-                msg += f"line {self.token.line_number}."
+                msg = f"Unparsable expression '{expr}'"
                 raise errors.TemplateSyntaxError(msg, self.token)
 
     def _try_parse_as_func_call(self, expr):
@@ -87,8 +86,7 @@ class Expression:
             try:
                 func_args[index] = ast.literal_eval(arg)
             except Exception as err:
-                msg = f"Unparsable argument '{arg}' in template '{self.token.template_id}', "
-                msg += f"line {self.token.line_number}. "
+                msg = f"Unparsable argument '{arg}'. "
                 msg += f"Arguments must be valid Python literals."
                 raise errors.TemplateSyntaxError(msg, self.token) from err
         return True, func_name, func_args
@@ -99,8 +97,7 @@ class Expression:
             if filter_name in filters.filtermap:
                 self.filters.append((filter_name, filters.filtermap[filter_name], filter_args))
             else:
-                msg = f"Unrecognised filter name '{filter_name}' in template '{self.token.template_id}', "
-                msg += f"line {self.token.line_number}."
+                msg = f"Unrecognised filter name '{filter_name}'"
                 raise errors.TemplateSyntaxError(msg, self.token)
 
     def _apply_filters_to_literal(self, obj):
@@ -108,8 +105,7 @@ class Expression:
             try:
                 obj = func(obj, *args)
             except Exception as err:
-                msg = f"Error applying filter '{name}' to literal "
-                msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
+                msg = f"Error applying filter '{name}' to literal."
                 raise errors.TemplateSyntaxError(msg, self.token) from err
         return obj
 
@@ -125,8 +121,7 @@ class Expression:
             try:
                 obj = obj(*self.func_args)
             except Exception as err:
-                msg = f"Error calling function '{self.varstring}' "
-                msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
+                msg = f"Error calling function '{self.varstring}'"
                 raise errors.TemplateRenderingError(msg, self.token) from err
         return self._apply_filters_to_variable(obj)
 
@@ -135,8 +130,7 @@ class Expression:
             try:
                 obj = func(obj, *args)
             except Exception as err:
-                msg = f"Error applying filter '{name}' to variable "
-                msg += f"in template '{self.token.template_id}', line {self.token.line_number}."
+                msg = f"Error applying filter '{name}' to variable"
                 raise errors.TemplateRenderingError(msg, self.token) from err
         return obj
 
@@ -156,11 +150,10 @@ class Node:
         except Exception as err:
             if token:
                 tagname = f"'{token.keyword}'" if token.type == "INSTRUCTION" else token.type
-                msg = f"An unexpected error occurred while parsing the {tagname} tag "
-                msg += f"in template '{token.template_id}', line {token.line_number}: "
+                msg = f"Error while parsing the {tagname} tag "
                 msg += f"{err.__class__.__name__}: {err}"
             else:
-                msg = f"Unexpected syntax error: {err.__class__.__name__}: {err}"
+                msg = f"Syntax error: {err.__class__.__name__}: {err}"
             raise errors.TemplateSyntaxError(msg, token) from err
 
     def __str__(self):
@@ -180,8 +173,7 @@ class Node:
         except Exception as err:
             if self.token:
                 tagname = f"'{self.token.keyword}'" if self.token.type == "INSTRUCTION" else self.token.type
-                msg = f"An unexpected error occurred while rendering the {tagname} tag "
-                msg += f"in template '{self.token.template_id}', line {self.token.line_number}: "
+                msg = f"Error while rendering the {tagname} tag: "
                 msg += f"{err.__class__.__name__}: {err}"
             else:
                 msg = f"Unexpected rendering error: {err.__class__.__name__}: {err}"
@@ -283,8 +275,7 @@ class ForNode(Node):
     def process_token(self, token):
         match = self.regex.match(token.text)
         if match is None:
-            msg = f"Malformed 'for' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}."
+            msg = f"Malformed tag"
             raise errors.TemplateSyntaxError(msg, token)
         self.loopvars = [var.strip() for var in match.group(1).split(',')]
         self.expr = Expression(match.group(2), token)
@@ -302,8 +293,7 @@ class ForNode(Node):
                     try:
                         unpacked = dict(zip(self.loopvars, item))
                     except Exception as err:
-                        msg = f"Unpacking error in template '{self.token.template_id}', "
-                        msg += f"line {self.token.line_number}."
+                        msg = f"Unpacking error"
                         raise errors.TemplateRenderingError(msg, self.token) from err
                     else:
                         context.update(unpacked)
@@ -378,8 +368,7 @@ class IfNode(Node):
         try:
             conditions = token.text.split(None, 1)[1]
         except:
-            msg = f"Malformed '{self.tag}' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}."
+            msg = f"Malformed tag"
             raise errors.TemplateSyntaxError(msg, token) from None
 
         self.condition_groups = [
@@ -415,8 +404,7 @@ class IfNode(Node):
                 result = operator.truth(cond.lhs.eval(context))
         except Exception as err:
             msg = f"An exception was raised while evaluating the condition in the "
-            msg += f"'{self.tag}' tag in template '{self.token.template_id}', "
-            msg += f"line {self.token.line_number}."
+            msg += f"'{self.tag}' tag"
             raise errors.TemplateRenderingError(msg, self.token) from err
         if cond.negated:
             result = not result
@@ -476,8 +464,7 @@ class CycleNode(Node):
         try:
             tag, arg = token.text.split(None, 1)
         except:
-            msg = f"Malformed 'cycle' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}."
+            msg = f"Malformed tag"
             raise errors.TemplateSyntaxError(msg, token) from None
         self.expr = Expression(arg, token)
 
@@ -507,8 +494,7 @@ class IncludeNode(Node):
         try:
             tag, arg = token.text.split(None, 1)
         except:
-            msg = f"Malformed 'include' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}."
+            msg = f"Malformed tag"
             raise errors.TemplateSyntaxError(msg, token) from None
         expr = Expression(arg, token)
 
@@ -523,8 +509,8 @@ class IncludeNode(Node):
                     msg += f"template '{token.template_id}', line {token.line_number}."
                     raise errors.TemplateLoadError(msg)
             else:
-                msg = f"Malformed 'include' tag in template '{token.template_id}', "
-                msg += f"line {token.line_number}. The template name should be a quoted string "
+                msg = f"Malformed 'include' tag. "
+                msg += f"The template name should be a quoted string "
                 msg += f"literal or a variable name."
                 raise errors.TemplateSyntaxError(msg, token)
         else:
@@ -546,8 +532,8 @@ class IncludeNode(Node):
                     msg += f"template '{self.token.template_id}', line {self.token.line_number}."
                     raise errors.TemplateLoadError(msg)
             else:
-                msg = f"Invalid argument for the 'include' tag in template '{self.token.template_id}', "
-                msg += f"line {self.token.line_number}. The variable '{self.arg}' should evaluate "
+                msg = f"Invalid argument for the 'include' tag. "
+                msg += f"The variable '{self.arg}' should evaluate "
                 msg += f"to a string. This variable has the value: {repr(template_name)}."
                 raise errors.TemplateRenderingError(msg, self.token)
 
@@ -566,8 +552,7 @@ class ExtendsNode(Node):
         try:
             tag, arg = token.text.split(None, 1)
         except:
-            msg = f"Malformed 'extends' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}."
+            msg = f"Malformed tag"
             raise errors.TemplateSyntaxError(msg, token) from None
         expr = Expression(arg, token)
 
@@ -581,8 +566,7 @@ class ExtendsNode(Node):
                 msg += "template '{token.template_id}', line {token.line_number}."
                 raise errors.TemplateLoadError(msg)
         else:
-            msg = f"Malformed 'extends' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}. The template name must be a string literal."
+            msg = f"Malformed 'extends' tag. The template name must be a string literal."
             raise errors.TemplateSyntaxError(msg, token)
 
 
@@ -652,8 +636,7 @@ class WithNode(Node):
         try:
             alias, expr = token.text[4:].split('=', 1)
         except:
-            msg = f"Malformed 'with' tag in template '{token.template_id}', "
-            msg += f"line {token.line_number}."
+            msg = f"Malformed tag"
             raise errors.TemplateSyntaxError(msg, token) from None
         self.alias = alias.strip()
         self.expr = Expression(expr.strip(), token)
