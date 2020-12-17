@@ -16,7 +16,7 @@ class TemplateLexingError(TemplateError):
         self.template_id = template_id
 
 
-class TemplateErrorWithToken(TemplateError):
+class ErrorWithToken(TemplateError):
     def __init__(self, msg, token):
         super().__init__(msg)
         self.msg = msg
@@ -28,15 +28,15 @@ class TemplateErrorWithToken(TemplateError):
 
 
 # This exception type may be raised while a template is being compiled.
-class TemplateSyntaxError(TemplateErrorWithToken):
+class TemplateSyntaxError(ErrorWithToken):
     pass
 
 
 # This exception type may be raised while a template is being rendered.
-class TemplateRenderingError(TemplateErrorWithToken):
+class TemplateRenderingError(ErrorWithToken):
     pass
 
 
 # This exception type is raised in strict mode if a variable cannot be resolved.
-class UndefinedVariable(TemplateErrorWithToken):
+class UndefinedVariable(ErrorWithToken):
     pass
