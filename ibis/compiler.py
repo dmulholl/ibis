@@ -75,9 +75,8 @@ class Lexer:
                 self.index += len(comment_end)
                 return
             self.advance()
-        msg = f"Unclosed comment tag in template '{self.template_id}'. "
-        msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateLexingError(msg, self.template_id)
+        msg = "Unclosed comment tag."
+        raise errors.TemplateLexingError(msg, self.template_id, start_line_number)
 
     def read_eprint_tag(self):
         self.index += len(eprint_start)
@@ -90,9 +89,8 @@ class Lexer:
                 self.index += len(eprint_end)
                 return
             self.advance()
-        msg = f"Unclosed escaped-print tag in template '{self.template_id}'. "
-        msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateLexingError(msg, self.template_id)
+        msg = "Unclosed escaped-print tag."
+        raise errors.TemplateLexingError(msg, self.template_id, start_line_number)
 
     def read_print_tag(self):
         self.index += len(print_start)
@@ -105,9 +103,8 @@ class Lexer:
                 self.index += len(print_end)
                 return
             self.advance()
-        msg = f"Unclosed print tag in template '{self.template_id}'. "
-        msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateLexingError(msg, self.template_id)
+        msg = "Unclosed print tag."
+        raise errors.TemplateLexingError(msg, self.template_id, start_line_number)
 
     def read_instruction_tag(self):
         self.index += len(instruction_start)
@@ -120,9 +117,8 @@ class Lexer:
                 self.index += len(instruction_end)
                 return
             self.advance()
-        msg = f"Unclosed instruction tag in template '{self.template_id}'. "
-        msg += f"The tag was opened in line {start_line_number}."
-        raise errors.TemplateLexingError(msg, self.template_id)
+        msg = f"Unclosed instruction tag."
+        raise errors.TemplateLexingError(msg, self.template_id, start_line_number)
 
     def read_text(self):
         start_index = self.index
@@ -169,12 +165,10 @@ class Parser:
                     expecting.append(endword)
             elif token.keyword in nodes.instruction_endwords:
                 if len(expecting) == 0:
-                    msg = f"Unexpected '{token.keyword}' tag in template '{token.template_id}', "
-                    msg += f"line {token.line_number}."
+                    msg = f"Unexpected '{token.keyword}' tag."
                     raise errors.TemplateSyntaxError(msg, token)
                 elif expecting[-1] != token.keyword:
-                    msg = f"Unexpected '{token.keyword}' tag in template '{token.template_id}', "
-                    msg += f"line {token.line_number}. "
+                    msg = f"Unexpected '{token.keyword}' tag. "
                     msg += f"Ibis was expecting the following closing tag: '{expecting[-1]}'."
                     raise errors.TemplateSyntaxError(msg, token)
                 else:
@@ -182,18 +176,16 @@ class Parser:
                     stack.pop()
                     expecting.pop()
             elif token.keyword == '':
-                msg = f"Empty instruction tag in template '{token.template_id}', "
-                msg += f"line {token.line_number}."
+                msg = f"Empty instruction tag."
                 raise errors.TemplateSyntaxError(msg, token)
             else:
-                msg = f"Unrecognised instruction tag '{token.keyword}' "
-                msg += f"in template '{token.template_id}', line {token.line_number}."
+                msg = f"Unrecognised instruction tag '{token.keyword}'."
                 raise errors.TemplateSyntaxError(msg, token)
 
         if expecting:
             token = stack[-1].token
-            msg = f"Unexpected end of template '{self.template_id}'. "
-            msg += f"Ibis was expecting a closing tag '{expecting[-1]}' to close the "
+            msg = f"Unexpected end of template. "
+            msg += f"Ibis was expecting a closing '{expecting[-1]}' tag to close the "
             msg += f"'{token.keyword}' tag opened in line {token.line_number}."
             raise errors.TemplateSyntaxError(msg, token)
 

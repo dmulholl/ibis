@@ -1,6 +1,13 @@
 # Base class for all exception types raised by the template engine.
 class TemplateError(Exception):
-    pass
+
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        if hasattr(self, "token") and self.token is not None:
+            return f"Template '{self.token.template_id}', line {self.token.line_number}: {self.msg}"
+        return self.msg
 
 
 # This exception type may be raised while attempting to load a template file.
@@ -11,9 +18,13 @@ class TemplateLoadError(TemplateError):
 # This exception type is raised if the lexer cannot tokenize a template string.
 class TemplateLexingError(TemplateError):
 
-    def __init__(self, msg, template_id):
+    def __init__(self, msg, template_id, line_number):
         super().__init__(msg)
         self.template_id = template_id
+        self.line_number = line_number
+
+    def __str__(self):
+        return f"Template '{self.template_id}', line {self.line_number}: {self.msg}"
 
 
 # This exception type may be raised while a template is being compiled.
