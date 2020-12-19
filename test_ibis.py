@@ -762,10 +762,15 @@ class VariableLookupTests(unittest.TestCase):
         rendered = Template(template_string).render(obj=TestObject())
         self.assertEqual(rendered, 'foobar')
 
-    def test_object_with_method_call_with_arg(self):
+    def test_object_with_method_call_with_str_arg(self):
         template_string = '{{ obj.method_with_arg("foo") }}'
         rendered = Template(template_string).render(obj=TestObject())
         self.assertEqual(rendered, 'foo')
+
+    def test_object_with_method_call_with_int_arg(self):
+        template_string = '{{ obj.method_with_arg(123) }}'
+        rendered = Template(template_string).render(obj=TestObject())
+        self.assertEqual(rendered, '123')
 
     def test_dict_with_alphabetic_key(self):
         template_string = '{{ somedict.abc }}'
@@ -865,6 +870,58 @@ class LexingErrorTests(unittest.TestCase):
         template_string = '{% foobar '
         with self.assertRaises(ibis.errors.TemplateLexingError):
             template = Template(template_string)
+
+
+@ibis.filters.register('evil_filter')
+def evil_filter(arg):
+    raise Exception()
+
+
+def evil_func():
+    raise Exception()
+
+
+class ExpressionTests(unittest.TestCase):
+
+    def test_str_literal(self):
+        template_string = '{{ "foo" }}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, 'foo')
+
+    def test_int_literal(self):
+        template_string = '{{ 123 }}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, '123')
+
+    def test_unparsable_expression(self):
+        template_string = '{{ ab^cd }}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            rendered = Template(template_string).render()
+
+    def test_unparsable_argument(self):
+        template_string = '{{ foo(ab^cd) }}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            rendered = Template(template_string).render(foo=lambda arg: arg)
+
+    def test_unrecognised_filter_name(self):
+        template_string = '{{ "foo"|foobar }}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            rendered = Template(template_string).render()
+
+    def test_error_applying_filter_to_literal(self):
+        template_string = '{{ "foo"|evil_filter }}'
+        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+            rendered = Template(template_string).render()
+
+    def test_error_applying_filter_to_variable(self):
+        template_string = '{{ var|evil_filter }}'
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
+            rendered = Template(template_string).render(var="foo")
+
+    def test_error_calling_function(self):
+        template_string = '{{ func() }}'
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
+            rendered = Template(template_string).render(func=evil_func)
 
 
 if __name__ == '__main__':
