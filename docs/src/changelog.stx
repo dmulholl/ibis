@@ -6,7 +6,8 @@ meta_title: Ibis &mdash; Changelog
 
 ### 2.1.0
 
-* Error messages now automatically include the template ID and line number.
+* The default format for error messages now automatically includes the template ID and line number
+  when available.
 
 
 
