@@ -4,6 +4,12 @@ meta_title: Ibis &mdash; Changelog
 ---
 
 
+### 2.1.0
+
+* Error messages now automatically include the template ID and line number.
+
+
+
 ### 2.0.0
 
 * v2 is a substantial internal rewrite to improve error handling and reporting across the board.
