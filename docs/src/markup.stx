@@ -27,7 +27,7 @@ Print tags evaluate and print [expressions](#expressions). They look like this:
 
 Print tags come in two flavours: regular and escaped. Escaped print tags escape HTML syntax characters in their output before printing it. They look like this:
 
-    {{{ post.title }}}
+    {$ post.title $}
 
 Escaped print tags are simply a shortcut for applying the built-in `escape` filter to their content. The example above is equivalent to:
 

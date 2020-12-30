@@ -4,6 +4,18 @@ meta_title: Ibis &mdash; Changelog
 ---
 
 
+### 3.0.0.dev
+
+* This release contains a single breaking change --- the default syntax for escaped print tags
+  has been changed to `{$ varname $}`. Think of the `$` as standing for *safe*.
+
+* If you liked the old style better, don't worry --- tag delimiter
+  syntax is [customizable][delimiters].
+
+[delimiters]: @root/extensions//#custom-tag-syntax
+
+
+
 ### 2.1.0
 
 * The default format for error messages now automatically includes the template ID and line number

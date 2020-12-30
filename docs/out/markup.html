@@ -17,7 +17,7 @@
             <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-            <p class="version">Version 2.1.0</p>
+            <p class="version">Version 3.0.0.dev</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -107,7 +107,7 @@ Print tags evaluate and print <a href="#expressions">expressions</a>. They look 
 Print tags come in two flavours: regular and escaped. Escaped print tags escape HTML syntax characters in their output before printing it. They look like this:
 </p>
 <pre>
-{{{ post.title }}}
+{$ post.title $}
 </pre>
 <p>
 Escaped print tags are simply a shortcut for applying the built-in <code>escape</code> filter to their content. The example above is equivalent to:

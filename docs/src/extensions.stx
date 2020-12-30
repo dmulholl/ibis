@@ -73,8 +73,8 @@ shown below:
     ibis.compiler.comment_end = '#}'
     ibis.compiler.print_start = '{{'
     ibis.compiler.print_end = '}}'
-    ibis.compiler.eprint_start = '{{{'
-    ibis.compiler.eprint_end = '}}}'
+    ibis.compiler.eprint_start = '{$'
+    ibis.compiler.eprint_end = '$}'
     ibis.compiler.instruction_start = '{%'
     ibis.compiler.instruction_end = '%}'
 
