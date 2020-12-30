@@ -17,7 +17,7 @@
             <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-            <p class="version">Version 3.0.0.dev</p>
+            <p class="version">Version 3.0.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -197,14 +197,14 @@ Instruction Tags
 <p>
 Instruction tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
 </p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">tag</span> <span class="cp">%}</span><span class="x"></span>
+<pre>
+{% tag %}
 </pre>
 <p>
 Some instruction tags have block scope and require a closing tag. They look like this:
 </p>
-<pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">tag</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endtag</span> <span class="cp">%}</span><span class="x"></span>
+<pre>
+{% tag %} ... {% endtag %}
 </pre>
 <p>
 Tags with block scope can contain further template markup and can be nested to any depth.

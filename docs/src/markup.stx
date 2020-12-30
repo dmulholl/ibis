@@ -81,7 +81,6 @@ You can use simple Python literals like strings and integers as arguments to fun
 Filters also accept arguments in brackets:
 
 ::: code django
-
     {{ post.content|striptags|truncatewords(50) }}
 
 You can find a list of built-in filters [here](@root/filters//).
@@ -89,7 +88,6 @@ You can find a list of built-in filters [here](@root/filters//).
 Note that expressions can use simple Python literals in place of variables:
 
 ::: code django
-
     {% if day|lower in ("saturday", "sunday") %}
         It's the weekend!
     {% endif %}
@@ -102,13 +100,9 @@ The following literal structures can be used in expressions as arguments to call
 
 Instruction tags implement a broad range of behaviours like looping, conditional branching, and template inheritance. They look like this:
 
-::: code django
-
     {% tag %}
 
 Some instruction tags have block scope and require a closing tag. They look like this:
-
-::: code django
 
     {% tag %} ... {% endtag %}
 

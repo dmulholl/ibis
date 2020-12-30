@@ -4,10 +4,10 @@ meta_title: Ibis &mdash; Changelog
 ---
 
 
-### 3.0.0.dev
+### 3.0.0
 
 * This release contains a single breaking change --- the default syntax for escaped print tags
-  has been changed to `{$ varname $}`. Think of the `$` as standing for *safe*.
+  has been changed to `{$ varname $}`. Think of the `$` symbols as standing for *safe*.
 
 * If you liked the old style better, don't worry --- tag delimiter
   syntax is [customizable][delimiters].

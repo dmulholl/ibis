@@ -41,7 +41,7 @@ Ibis requires Python 3.6 or later.
 
 ### Rationale
 
-Once upon a time I was interested in how template engines worked so I built a simple one to find
+Once upon a time I was interested in how template engines worked, so I built a simple one to find
 out.  Then I got carried away and kept adding features until it could do everything I wanted. The
 result was Ibis.
 
