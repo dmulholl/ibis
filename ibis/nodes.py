@@ -74,7 +74,7 @@ class Expression:
             self.is_func_call, self.varstring, self.func_args = self._try_parse_as_func_call(expr)
             if not self.is_func_call and not self.re_varstring.match(expr):
                 msg = f"Unparsable expression '{expr}'."
-                raise errors.TemplateSyntaxError(msg, self.token)
+                raise errors.TemplateSyntaxError(msg, self.token) from None
 
     def _try_parse_as_func_call(self, expr):
         match = self.re_func_call.match(expr)
