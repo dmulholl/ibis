@@ -72,7 +72,7 @@ class PrintStatementTests(unittest.TestCase):
         self.assertEqual(rendered, 'foo')
 
     def test_escaped_print_statement(self):
-        template_string = '{{{ var }}}'
+        template_string = '{$ var $}'
         rendered = Template(template_string).render(var='<div>')
         self.assertEqual(rendered, '&lt;div&gt;')
 
@@ -857,7 +857,7 @@ class LexingErrorTests(unittest.TestCase):
             template = Template(template_string)
 
     def test_unclosed_eprint_tag(self):
-        template_string = '{{{ foobar '
+        template_string = '{$ foobar '
         with self.assertRaises(ibis.errors.TemplateLexingError):
             template = Template(template_string)
 
