@@ -25,7 +25,7 @@ Features:
 * Public domain code.
 
 Ibis isn't intended to be [comprehensive][jinja] or to handle every possible use case for a template
-engine --- instead it's intended to be simple, robust, and pleasant to use.
+engine --- instead its aim is to be simple, robust, and pleasant to use.
 
 
 
