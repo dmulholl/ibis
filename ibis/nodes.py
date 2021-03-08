@@ -515,7 +515,7 @@ class IncludeNode(Node):
             raise errors.TemplateRenderingError(msg, self.token)
 
 
-# ExtendNodes implement template inheritance. They indicate that the current template inherits
+# ExtendsNodes implement template inheritance. They indicate that the current template inherits
 # from or 'extends' the specified parent template.
 #
 #     {% extends "parent.txt" %}
