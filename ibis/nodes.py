@@ -494,45 +494,25 @@ class IncludeNode(Node):
             tag, arg = token.text.split(None, 1)
         except:
             raise errors.TemplateSyntaxError("Malformed 'include' tag.", token) from None
-        expr = Expression(arg, token)
-
-        if expr.is_literal:
-            if isinstance(expr.literal, str):
-                if ibis.loader:
-                    template = ibis.loader(expr.literal)
-                    self.children.append(template.root_node)
-                else:
-                    msg = f"No template loader has been specified. "
-                    msg += f"A template loader is required by the 'include' tag in "
-                    msg += f"template '{token.template_id}', line {token.line_number}."
-                    raise errors.TemplateLoadError(msg)
-            else:
-                msg = f"Malformed 'include' tag. "
-                msg += f"The template name should be a quoted string literal or a variable name."
-                raise errors.TemplateSyntaxError(msg, token)
-        else:
-            self.expr = expr
-            self.arg = arg
+        self.expr = Expression(arg, token)
+        self.arg = arg
 
     def wrender(self, context):
-        if self.children:
-            return ''.join(child.render(context) for child in self.children)
-        else:
-            template_name = self.expr.eval(context)
-            if isinstance(template_name, str):
-                if ibis.loader:
-                    template = ibis.loader(template_name)
-                    return template.root_node.render(context)
-                else:
-                    msg = f"No template loader has been specified. "
-                    msg += f"A template loader is required by the 'include' tag in "
-                    msg += f"template '{self.token.template_id}', line {self.token.line_number}."
-                    raise errors.TemplateLoadError(msg)
+        template_name = self.expr.eval(context)
+        if isinstance(template_name, str):
+            if ibis.loader:
+                template = ibis.loader(template_name)
+                return template.root_node.render(context)
             else:
-                msg = f"Invalid argument for the 'include' tag. "
-                msg += f"The variable '{self.arg}' should evaluate to a string. "
-                msg += f"This variable has the value: {repr(template_name)}."
-                raise errors.TemplateRenderingError(msg, self.token)
+                msg = f"No template loader has been specified. "
+                msg += f"A template loader is required by the 'include' tag in "
+                msg += f"template '{self.token.template_id}', line {self.token.line_number}."
+                raise errors.TemplateLoadError(msg)
+        else:
+            msg = f"Invalid argument for the 'include' tag. "
+            msg += f"The variable '{self.arg}' should evaluate to a string. "
+            msg += f"This variable has the value: {repr(template_name)}."
+            raise errors.TemplateRenderingError(msg, self.token)
 
 
 # ExtendNodes implement template inheritance. They indicate that the current template inherits

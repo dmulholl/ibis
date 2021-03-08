@@ -8,7 +8,7 @@ from .template import Template
 
 
 # Library version.
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 
 
 # Assign a template-loading callable here to enable the {% include %} and {% extends %} tags.

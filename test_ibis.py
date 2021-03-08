@@ -540,14 +540,14 @@ class IncludeTagTests(unittest.TestCase):
         rendered = Template(template_string).render(var='foo')
         self.assertEqual(rendered, 'foo')
 
-    def test_malformed_include_missing_name(self):
+    def test_include_missing_name(self):
         template_string = '{% include %}'
         with self.assertRaises(ibis.errors.TemplateSyntaxError):
             Template(template_string).render()
 
-    def test_malformed_include_invalid_literal(self):
+    def test_include_invalid_literal(self):
         template_string = '{% include 123 %}'
-        with self.assertRaises(ibis.errors.TemplateSyntaxError):
+        with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render()
 
     def test_include_invalid_variable(self):
