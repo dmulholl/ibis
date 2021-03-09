@@ -4,15 +4,19 @@ meta_title: Ibis &mdash; Changelog
 ---
 
 
+### 3.1.0
+
+* The builtin `FileReloader` class now works properly with the `{% include %}` and `{% extends %}` tags.
+
+
+
 ### 3.0.0
 
 * This release contains a single breaking change --- the default syntax for escaped print tags
   has been changed to `{$ varname $}`. Think of the `$` symbols as standing for *safe*.
 
 * If you liked the old style better, don't worry --- tag delimiter
-  syntax is [customizable][delimiters].
-
-[delimiters]: @root/extensions//#custom-tag-syntax
+  syntax is [customizable](@root/extensions//#custom-tag-syntax).
 
 
 
