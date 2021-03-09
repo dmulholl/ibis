@@ -465,9 +465,8 @@ class CycleNode(Node):
         self.expr = Expression(arg, token)
 
     def wrender(self, context):
-        # We store our state info on the context object to avoid a threading
-        # mess if the template is being simultaneously rendered by multiple
-        # threads.
+        # We store our state info on the context object to avoid a threading mess if
+        # the template is being simultaneously rendered by multiple threads.
         if not self in context.stash:
             items = self.expr.eval(context)
             if not hasattr(items, '__iter__'):
