@@ -8,10 +8,10 @@ from .template import Template
 
 
 # Library version.
-__version__ = "3.0.1"
+__version__ = "3.1.0"
 
 
 # Assign a template-loading callable here to enable the {% include %} and {% extends %} tags.
-# The callable should accept one or more string arguments and either return an instance of the
-# Template class or raise a TemplateLoadError exception.
+# The callable should accept a single string argument and either return an instance of the
+# corresponding Template class or raise a TemplateLoadError exception.
 loader = None

@@ -520,8 +520,6 @@ class IncludeNode(Node):
 #
 #     {% extends "parent.txt" %}
 #
-# Requires a template name to pass to the registered template loader. This must be supplied as a
-# string literal (not a variable) as the parent template must be loaded at compile-time.
 @register('extends')
 class ExtendsNode(Node):
 
@@ -530,17 +528,10 @@ class ExtendsNode(Node):
             tag, arg = token.text.split(None, 1)
         except:
             raise errors.TemplateSyntaxError("Malformed 'extends' tag.", token) from None
-        expr = Expression(arg, token)
 
+        expr = Expression(arg, token)
         if expr.is_literal and isinstance(expr.literal, str):
-            if ibis.loader:
-                template = ibis.loader(expr.literal)
-                self.children.append(template.root_node)
-            else:
-                msg = "No template loader has been specified. "
-                msg += "A template loader is required by the 'extends' tag in "
-                msg += "template '{token.template_id}', line {token.line_number}."
-                raise errors.TemplateLoadError(msg)
+            self.parent_name = expr.literal
         else:
             msg ="Malformed 'extends' tag. The template name must be a string literal."
             raise errors.TemplateSyntaxError(msg, token)
@@ -559,25 +550,18 @@ class BlockNode(Node):
         self.title = token.text[5:].strip()
 
     def wrender(self, context):
-        # We only want to render the first block of any given title that we encounter
-        # in the node tree, although we want to substitute the content of the last
-        # block of that title in its place.
-        block_list = context.template.block_registry[self.title]
-        if block_list[0] is self:
-            return self.render_block(context, block_list[:])
-        else:
-            return ''
+        block_list = []
+        for template in context.templates:
+            if block_node := template.blocks.get(self.title):
+                block_list.append(block_node)
+        return self.render_block(context, block_list)
 
     def render_block(self, context, block_list):
-        # A call to {{ super }} inside a block renders and returns the content of the
-        # block's immediate ancestor. That ancestor may itself contain a {{ super }}
-        # call, so we start at the end of the list and recursively work our way
-        # backwards, popping off nodes as we go.
         if block_list:
-            last_block = block_list.pop()
+            current_block = block_list.pop(0)
             context.push()
             context['super'] = lambda: self.render_block(context, block_list)
-            output = ''.join(child.render(context) for child in last_block.children)
+            output = ''.join(child.render(context) for child in current_block.children)
             context.pop()
             return output
         else:

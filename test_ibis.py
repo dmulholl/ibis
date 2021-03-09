@@ -38,6 +38,15 @@ ibis.loader = ibis.loaders.DictLoader({
         '{% endblock %}'
         '{% endfor %}'
     ),
+    'nested': (
+        '|#|'
+        '{% block outer %}'
+        'outer-{{ var }}'
+        '{% block inner %}|inner-{{ var }}|{% endblock %}'
+        'outer-{{ var }}'
+        '{% endblock %}'
+        '|#|'
+    ),
 })
 
 
@@ -336,7 +345,7 @@ class IfTagTests(unittest.TestCase):
         rendered = Template(template_string).render(num=7)
         self.assertEqual(rendered, '')
 
-    def test_if_not_falsy(self):
+    def test_if_not_falsey(self):
         template_string = '{% if not num %}foo{% endif %}'
         rendered = Template(template_string).render(num=0)
         self.assertEqual(rendered, 'foo')
@@ -535,27 +544,32 @@ class TrimTagTests(unittest.TestCase):
 
 class IncludeTagTests(unittest.TestCase):
 
-    def test_working_include(self):
+    def test_include_tag_with_literal(self):
         template_string = '{% include "simple" %}'
         rendered = Template(template_string).render(var='foo')
         self.assertEqual(rendered, 'foo')
 
-    def test_include_missing_name(self):
+    def test_include_tag_with_variable(self):
+        template_string = '{% include name %}'
+        rendered = Template(template_string).render(var='foo', name='simple')
+        self.assertEqual(rendered, 'foo')
+
+    def test_include_tag_with_missing_name(self):
         template_string = '{% include %}'
         with self.assertRaises(ibis.errors.TemplateSyntaxError):
             Template(template_string).render()
 
-    def test_include_invalid_literal(self):
+    def test_include_tag_with_invalid_literal(self):
         template_string = '{% include 123 %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render()
 
-    def test_include_invalid_variable(self):
+    def test_include_tag_with_invalid_variable(self):
         template_string = '{% include var %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render(var=None)
 
-    def test_include_undefined_variable(self):
+    def test_include_tag_with_undefined_variable(self):
         template_string = '{% include var %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render()
@@ -598,18 +612,55 @@ class TemplateInheritanceTests(unittest.TestCase):
     def test_parent_block_in_loop(self):
         template_string =  '{% extends "loop" %}'
         template_string += '{% block content %}'
-        template_string += '{{ i }}#'
+        template_string += '{{ i }}-'
         template_string += '{% endblock %}'
         rendered = Template(template_string).render()
-        self.assertEqual(rendered, '1#2#3#')
+        self.assertEqual(rendered, '1-2-3-')
 
     def test_parent_block_in_loop_with_super(self):
         template_string =  '{% extends "loop" %}'
         template_string += '{% block content %}'
-        template_string += '{{ super() }}#'
+        template_string += '{{ super() }}='
         template_string += '{% endblock %}'
         rendered = Template(template_string).render()
-        self.assertEqual(rendered, '1#2#3#')
+        self.assertEqual(rendered, '1=2=3=')
+
+    def test_nested_no_overrides(self):
+        template_string =  '{% extends "nested" %}'
+        rendered = Template(template_string).render(var='foo')
+        self.assertEqual(rendered, '|#|outer-foo|inner-foo|outer-foo|#|')
+
+    def test_nested_override_outer(self):
+        template_string =  '{% extends "nested" %}'
+        template_string += '{% block outer %}'
+        template_string += 'override-{{ var }}'
+        template_string += '{% endblock %}'
+        rendered = Template(template_string).render(var='foo')
+        self.assertEqual(rendered, '|#|override-foo|#|')
+
+    def test_nested_override_outer_with_super(self):
+        template_string =  '{% extends "nested" %}'
+        template_string += '{% block outer %}'
+        template_string += '{{ super() }}|override-{{ var }}'
+        template_string += '{% endblock %}'
+        rendered = Template(template_string).render(var='foo')
+        self.assertEqual(rendered, '|#|outer-foo|inner-foo|outer-foo|override-foo|#|')
+
+    def test_nested_override_inner(self):
+        template_string =  '{% extends "nested" %}'
+        template_string += '{% block inner %}'
+        template_string += '|override-{{ var }}|'
+        template_string += '{% endblock %}'
+        rendered = Template(template_string).render(var='foo')
+        self.assertEqual(rendered, '|#|outer-foo|override-foo|outer-foo|#|')
+
+    def test_nested_override_inner_with_super(self):
+        template_string =  '{% extends "nested" %}'
+        template_string += '{% block inner %}'
+        template_string += '{{ super() }}override-{{ var }}|'
+        template_string += '{% endblock %}'
+        rendered = Template(template_string).render(var='foo')
+        self.assertEqual(rendered, '|#|outer-foo|inner-foo|override-foo|outer-foo|#|')
 
 
 class StrictModeTests(unittest.TestCase):

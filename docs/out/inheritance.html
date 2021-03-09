@@ -17,7 +17,7 @@
                 <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-                <p class="version">Version 3.0.1</p>
+                <p class="version">Version 3.1.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -125,7 +125,12 @@ The <code>extends</code> tag should be the first tag in a child template.
 </li>
 <li>
 <p>
-The <code>extends</code> tag requires a string literal argument specifying the name of the parent template.
+Apart from the <code>extends</code> tag, the child template should contain only <code>block</code> tags and their content.
+</p>
+</li>
+<li>
+<p>
+The <code>extends</code> tag takes a string-literal argument specifying the name of the parent template.
 </p>
 </li>
 <li>
@@ -140,7 +145,7 @@ You can use as many levels of inheritance as you like.
 </li>
 <li>
 <p>
-The built-in <code>{{ super() }}</code> function gives you access to the content of the parent block.
+Within a child block, the built-in <code>{{ super() }}</code> function gives you access to the content of the parent block.
 </p>
 </li>
 </ul>

@@ -26,9 +26,8 @@ class DataStack:
 # the lookup-logic for resolving dotted variable names.
 class Context:
 
-    def __init__(self, data_dict, template, strict_mode):
-
-        # Data store of resolvable variable names for the .resolve() method.
+    def __init__(self, data_dict, strict_mode):
+        # Stack of data dictionaries for the .resolve() method.
         self.data = DataStack()
 
         # Standard builtins.
@@ -46,8 +45,8 @@ class Context:
         # Nodes can store state information here to avoid threading issues.
         self.stash = {}
 
-        # This reference gives nodes access to their parent template object.
-        self.template = template
+        # Chain of ancestor templates.
+        self.templates = []
 
         # In strict mode undefined variables raise an UndefinedVariable exception.
         self.strict_mode = strict_mode

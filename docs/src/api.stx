@@ -64,6 +64,7 @@ encoded template file stored in the base directory:
     template = loader('template.txt')
 
 A `FileLoader` instance compiles its templates once and caches them in memory for future lookups.
+A `FileReloader` instance is similar but will automatically reload and recompile a template if the underlying template file changes.
 
 To specify a template loader set `ibis.loader` to an instance of your callable:
 

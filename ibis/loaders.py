@@ -46,10 +46,8 @@ class FileLoader:
         raise TemplateLoadError(msg)
 
 
-# Loads templates from the file system. Assumes files are utf-8 encoded. Compiled templates are
-# cached in memory, so they only need to be compiled once. Templates are automatically recompiled
-# if the underlying template file changes. (Doesn't work in the case of template inheritance as the
-# composite template is assembled at compile-time.)
+# Like FileLoader but templates are automatically recompiled if the underlying template file
+# is modified.
 class FileReloader:
 
     def __init__(self, base_dir):

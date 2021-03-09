@@ -8,7 +8,6 @@ Ibis supports Django-style template inheritance. Template inheritance allows you
 Template inheritance is best explained with an example. Let's start with a skeleton HTML template which we'll call `base.html`:
 
 ::: code django
-
     <!DOCTYPE html>
     <html>
         <head>
@@ -34,7 +33,6 @@ Template inheritance is best explained with an example. Let's start with a skele
 This template uses `block` tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the `extends` tag to declare that they inherit from a particular base template:
 
 ::: code django
-
     {% extends "base.html" %}
 
     {% block title %}My Homepage{% endblock %}
@@ -50,10 +48,12 @@ Some points to note:
 
 (*) The `extends` tag should be the first tag in a child template.
 
-(*) The `extends` tag requires a string literal argument specifying the name of the parent template.
+(*) Apart from the `extends` tag, the child template should contain only `block` tags and their content.
+
+(*) The `extends` tag takes a string-literal argument specifying the name of the parent template.
 
 (*) You need to configure a [template loader](@root/api//#template-loaders) so Ibis can locate the appropriate parent template.
 
 (*) You can use as many levels of inheritance as you like.
 
-(*) The built-in `{{ super() }}` function gives you access to the content of the parent block.
+(*) Within a child block, the built-in `{{ super() }}` function gives you access to the content of the parent block.
