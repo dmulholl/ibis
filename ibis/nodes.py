@@ -218,20 +218,13 @@ class TextNode(Node):
 class PrintNode(Node):
 
     def process_token(self, token):
-        if token.type == "EPRINT":
-            self.escape_content = True
-        else:
-            self.escape_content = False
-
-        # Check for a ternary operator.
+        # Check for a ternary operator or a sequence of OR-separated expressions.
         chunks = utils.splitre(token.text, (r'\?\?', r'\:\:'), True)
         if len(chunks) == 5 and chunks[1] == '??' and chunks[3] == '::':
             self.is_ternary = True
             self.test_expr = Expression(chunks[0], token)
             self.true_branch_expr = Expression(chunks[2], token)
             self.false_branch_expr = Expression(chunks[4], token)
-
-        # Look for a list of 'or' separated expressions.
         else:
             self.is_ternary = False
             exprs = utils.splitre(token.text, (r'\s+or\s+', r'\|\|'))
@@ -248,11 +241,7 @@ class PrintNode(Node):
                 content = expr.eval(context)
                 if content:
                     break
-
-        if self.escape_content:
-            return filters.escape(str(content))
-        else:
-            return str(content)
+        return filters.escape(str(content)) if self.token.type == "EPRINT" else str(content)
 
 
 # ForNodes implement `for ... in ...` looping over iterables.
