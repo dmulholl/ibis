@@ -14,8 +14,8 @@ from . import errors
 instruction_keywords = {}
 
 
-# List of registered endwords for instruction tags with block scope.
-instruction_endwords = []
+# Set of registered endwords for instruction tags with block scope.
+instruction_endwords = set()
 
 
 # Decorator function for registering handler classes for instruction tags.
@@ -25,7 +25,7 @@ def register(keyword, endword=None):
     def register_node_class(node_class):
         instruction_keywords[keyword] = (node_class, endword)
         if endword:
-            instruction_endwords.append(endword)
+            instruction_endwords.add(endword)
         return node_class
 
     return register_node_class
