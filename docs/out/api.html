@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Ibis &mdash; Template API</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ibis &mdash; Template API</title>
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
         <link rel="stylesheet" href="assets/pygments.css">
@@ -14,10 +14,10 @@
         <header class="masthead">
             <h1><a href="index.html">Ibis</a></h1>
             
-            <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
+                <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-            <p class="version">Version 3.0.0</p>
+                <p class="version">Version 3.0.1</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -158,8 +158,7 @@ encoded template file stored in the base directory:
 <span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="s1">&#39;template.txt&#39;</span><span class="p">)</span>
 </pre>
 <p>
-A <code>FileLoader</code> instance compiles its templates once and caches them in memory for future lookups. A
-<code>FileReloader</code> instance is similar but will automatically reload and recompile a template if the underlying template file changes.
+A <code>FileLoader</code> instance compiles its templates once and caches them in memory for future lookups.
 </p>
 <p>
 To specify a template loader set <code>ibis.loader</code> to an instance of your callable:
