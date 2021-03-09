@@ -217,9 +217,11 @@ class TextNode(Node):
 # but not both.
 class PrintNode(Node):
 
-    escape_content = False
-
     def process_token(self, token):
+        if token.type == "EPRINT":
+            self.escape_content = True
+        else:
+            self.escape_content = False
 
         # Check for a ternary operator.
         chunks = utils.splitre(token.text, (r'\?\?', r'\:\:'), True)
@@ -251,11 +253,6 @@ class PrintNode(Node):
             return filters.escape(str(content))
         else:
             return str(content)
-
-
-# PrintNode with automatic escaping for content.
-class EscapedPrintNode(PrintNode):
-    escape_content = True
 
 
 # ForNodes implement `for ... in ...` looping over iterables.

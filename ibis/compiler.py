@@ -152,10 +152,8 @@ class Parser:
         for token in Lexer(self.template_string, self.template_id).tokenize():
             if token.type == "TEXT":
                 stack[-1].children.append(nodes.TextNode(token))
-            elif token.type == "PRINT":
+            elif token.type in ("PRINT", "EPRINT"):
                 stack[-1].children.append(nodes.PrintNode(token))
-            elif token.type == "EPRINT":
-                stack[-1].children.append(nodes.EscapedPrintNode(token))
             elif token.keyword in nodes.instruction_keywords:
                 node_class, endword = nodes.instruction_keywords[token.keyword]
                 node = node_class(token)
