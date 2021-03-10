@@ -213,12 +213,11 @@ class TextNode(Node):
 #
 # If <test-expr> is truthy, <expr1> will be printed, otherwise <expr2> will be printed.
 #
-# Note that *either* 'or'-chaining or the ternary operator can be used in a single print statement,
+# Note that either OR-chaining or the ternary operator can be used in a single print statement,
 # but not both.
 class PrintNode(Node):
 
     def process_token(self, token):
-        # Check for a ternary operator or a sequence of OR-separated expressions.
         chunks = utils.splitre(token.text, (r'\?\?', r'\:\:'), True)
         if len(chunks) == 5 and chunks[1] == '??' and chunks[3] == '::':
             self.is_ternary = True
@@ -505,6 +504,7 @@ class IncludeNode(Node):
 #
 #     {% extends "parent.txt" %}
 #
+# Requires the parent name as a string literal to pass to the registered template loader.
 @register('extends')
 class ExtendsNode(Node):
 
@@ -526,8 +526,7 @@ class ExtendsNode(Node):
 #
 #    {% block title %} ... {% endblock %}
 #
-# A block tag defines a titled block of content that can be overridden by similarly titled blocks
-# in child templates.
+# A block tag defines a titled block of content that can be overridden in child templates.
 @register('block', 'endblock')
 class BlockNode(Node):
 
@@ -553,13 +552,13 @@ class BlockNode(Node):
             return ''
 
 
-# Strips all whitespace between HTML tags.
+# Strips leading and trailing whitespace along with all whitespace between HTML tags.
 @register('spaceless', 'endspaceless')
 class SpacelessNode(Node):
 
     def wrender(self, context):
         output = ''.join(child.render(context) for child in self.children)
-        return filters.filtermap['spaceless'](output).strip()
+        return filters.spaceless(output).strip()
 
 
 # Trims leading and trailing whitespace.
