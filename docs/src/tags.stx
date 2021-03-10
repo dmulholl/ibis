@@ -155,6 +155,8 @@ would be rendered as:
 
     <ul><li>List item.</li></ul>
 
+Note that leading and trailing whitespace is also stripped.
+
 
 
 ### trim
