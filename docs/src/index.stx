@@ -35,7 +35,7 @@ Install Ibis directly from the Python Package Index using `pip`:
 
     $ pip install ibis
 
-Ibis requires Python 3.6 or later.
+Ibis requires Python 3.8 or later.
 
 
 
