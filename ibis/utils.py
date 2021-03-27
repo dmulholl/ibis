@@ -38,7 +38,6 @@ def splitc(s, delimiter, strip=False, discard_empty=False, maxsplit=-1):
 # Splits a string on blocks of whitespace. Strips leading and trailing whitespace.
 # Ignores quoted whitespace.
 def splitws(s, maxsplit=-1):
-
     tokens, buf, expecting, escaped, wsrun = [], [], None, False, False
 
     for index, char in enumerate(s.strip()):
@@ -68,8 +67,7 @@ def splitws(s, maxsplit=-1):
 
 
 # Splits a string using a list of regular expression patterns. Ignores quoted delimiter matches.
-def splitre(s, delimiters, keepdels=False):
-
+def splitre(s, delimiters, keep_delimiters=False):
     tokens, buf = [], []
     end_last_match = 0
 
@@ -85,7 +83,7 @@ def splitre(s, delimiters, keepdels=False):
         tokens.append(''.join(buf))
         buf = []
         end_last_match = match.end()
-        if keepdels:
+        if keep_delimiters:
             tokens.append(match.group())
 
     buf.append(s[end_last_match:])

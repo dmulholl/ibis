@@ -512,14 +512,19 @@ class CycleTagTests(unittest.TestCase):
 class WithTagTests(unittest.TestCase):
 
     def test_with_block_with_literal(self):
-        template_string = '{% with var = "foo" %}{{var}}{% endwith %}'
+        template_string = '{% with var = "foo" %}{{ var }}{% endwith %}'
         rendered = Template(template_string).render()
         self.assertEqual(rendered, 'foo')
 
     def test_with_block_with_variable(self):
-        template_string = '{% with var = foo.bar("baz") %}{{var}}{% endwith %}'
+        template_string = '{% with var = foo.bar("baz") %}{{ var }}{% endwith %}'
         rendered = Template(template_string).render(foo={'bar': lambda x: x})
         self.assertEqual(rendered, 'baz')
+
+    def test_with_block_with_multiple_aliases(self):
+        template_string = '{% with var1 = "foo" & var2 = 123 %}{{ var1 }}--{{ var2 }}{% endwith %}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, 'foo--123')
 
 
 class SpacelessTagTests(unittest.TestCase):

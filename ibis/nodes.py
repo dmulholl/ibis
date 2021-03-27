@@ -524,7 +524,7 @@ class ExtendsNode(Node):
 
 # BlockNodes implement template inheritance.
 #
-#    {% block title %} ... {% endblock %}
+#    {% block <title> %} ... {% endblock %}
 #
 # A block tag defines a titled block of content that can be overridden in child templates.
 @register('block', 'endblock')
@@ -573,20 +573,25 @@ class TrimNode(Node):
 #
 #    {% with <alias> = <expr> %} ... {% endwith %}
 #
+#    {% with <alias1> = <expr> & <alias2> = <expr> %} ... {% endwith %}
+#
 @register('with', 'endwith')
 class WithNode(Node):
 
     def process_token(self, token):
-        try:
-            alias, expr = token.text[4:].split('=', 1)
-        except:
-            raise errors.TemplateSyntaxError("Malformed 'with' tag.", token) from None
-        self.alias = alias.strip()
-        self.expr = Expression(expr.strip(), token)
+        self.aliases = {}
+        chunks = utils.splitc(token.text[4:], "&", strip=True, discard_empty=True)
+        for chunk in chunks:
+            try:
+                alias, expr = chunk.split('=', 1)
+                self.aliases[alias.strip()] = Expression(expr.strip(), token)
+            except:
+                raise errors.TemplateSyntaxError("Malformed 'with' tag.", token) from None
 
     def wrender(self, context):
         context.push()
-        context[self.alias] = self.expr.eval(context)
+        for alias, expr in self.aliases.items():
+            context[alias] = expr.eval(context)
         rendered = ''.join(child.render(context) for child in self.children)
         context.pop()
         return rendered
