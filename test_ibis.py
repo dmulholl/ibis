@@ -17,7 +17,8 @@ from ibis import Template
 
 # Loadable templates for testing the 'include' and 'extends' tags.
 ibis.loader = ibis.loaders.DictLoader({
-    'simple': '{{ var }}',
+    'one-var': '{{ var }}',
+    'two-vars': '{{ var1 }}--{{ var2 }}',
     'base': (
         '|#|'
         '{% block content %}'
@@ -549,35 +550,45 @@ class TrimTagTests(unittest.TestCase):
 
 class IncludeTagTests(unittest.TestCase):
 
-    def test_include_tag_with_literal(self):
-        template_string = '{% include "simple" %}'
+    def test_include_tag_with_template_literal(self):
+        template_string = '{% include "one-var" %}'
         rendered = Template(template_string).render(var='foo')
         self.assertEqual(rendered, 'foo')
 
-    def test_include_tag_with_variable(self):
+    def test_include_tag_with_template_variable(self):
         template_string = '{% include name %}'
-        rendered = Template(template_string).render(var='foo', name='simple')
+        rendered = Template(template_string).render(var='foo', name='one-var')
         self.assertEqual(rendered, 'foo')
 
-    def test_include_tag_with_missing_name(self):
+    def test_include_tag_with_missing_template_name(self):
         template_string = '{% include %}'
         with self.assertRaises(ibis.errors.TemplateSyntaxError):
             Template(template_string).render()
 
-    def test_include_tag_with_invalid_literal(self):
+    def test_include_tag_with_invalid_template_literal(self):
         template_string = '{% include 123 %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render()
 
-    def test_include_tag_with_invalid_variable(self):
+    def test_include_tag_with_invalid_template_variable(self):
         template_string = '{% include var %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render(var=None)
 
-    def test_include_tag_with_undefined_variable(self):
+    def test_include_tag_with_undefined_template_variable(self):
         template_string = '{% include var %}'
         with self.assertRaises(ibis.errors.TemplateRenderingError):
             Template(template_string).render()
+
+    def test_include_tag_with_single_variable(self):
+        template_string = '{% include "one-var" with var = "foo" %}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, 'foo')
+
+    def test_include_tag_with_multiple_variables(self):
+        template_string = '{% include "two-vars" with var1 = "foo" & var2 = 123 & var3 = True %}'
+        rendered = Template(template_string).render()
+        self.assertEqual(rendered, 'foo--123')
 
 
 class TemplateInheritanceTests(unittest.TestCase):

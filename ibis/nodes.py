@@ -468,25 +468,45 @@ class CycleNode(Node):
 #
 #     {% include <expr> %}
 #
+#     {% include <expr> with <name> = <expr> %}
+#
+#     {% include <expr> with <name1> = <expr> & <name2> = <expr> %}
+#
 # Requires a template name which can be supplied as either a string literal or a variable
 # resolving to a string. This name will be passed to the registered template loader.
 @register('include')
 class IncludeNode(Node):
 
     def process_token(self, token):
-        try:
-            tag, arg = token.text.split(None, 1)
-        except:
-            raise errors.TemplateSyntaxError("Malformed 'include' tag.", token) from None
-        self.expr = Expression(arg, token)
-        self.arg = arg
+        self.variables = {}
+        parts = utils.splitre(token.text[7:], ["with"])
+        if len(parts) == 1:
+            self.template_arg = parts[0]
+            self.template_expr = Expression(parts[0], token)
+        elif len(parts) == 2:
+            self.template_arg = parts[0]
+            self.template_expr = Expression(parts[0], token)
+            chunks = utils.splitc(parts[1], "&", strip=True, discard_empty=True)
+            for chunk in chunks:
+                try:
+                    name, expr = chunk.split('=', 1)
+                    self.variables[name.strip()] = Expression(expr.strip(), token)
+                except:
+                    raise errors.TemplateSyntaxError("Malformed 'include' tag.", token) from None
+        else:
+            raise errors.TemplateSyntaxError("Malformed 'include' tag.", token)
 
     def wrender(self, context):
-        template_name = self.expr.eval(context)
+        template_name = self.template_expr.eval(context)
         if isinstance(template_name, str):
             if ibis.loader:
                 template = ibis.loader(template_name)
-                return template.root_node.render(context)
+                context.push()
+                for name, expr in self.variables.items():
+                    context[name] = expr.eval(context)
+                rendered = template.root_node.render(context)
+                context.pop()
+                return rendered
             else:
                 msg = f"No template loader has been specified. "
                 msg += f"A template loader is required by the 'include' tag in "
@@ -494,7 +514,7 @@ class IncludeNode(Node):
                 raise errors.TemplateLoadError(msg)
         else:
             msg = f"Invalid argument for the 'include' tag. "
-            msg += f"The variable '{self.arg}' should evaluate to a string. "
+            msg += f"The variable '{self.template_arg}' should evaluate to a string. "
             msg += f"This variable has the value: {repr(template_name)}."
             raise errors.TemplateRenderingError(msg, self.token)
 
@@ -571,27 +591,27 @@ class TrimNode(Node):
 
 # Caches a complex expression under a simpler alias.
 #
-#    {% with <alias> = <expr> %} ... {% endwith %}
+#    {% with <name> = <expr> %} ... {% endwith %}
 #
-#    {% with <alias1> = <expr> & <alias2> = <expr> %} ... {% endwith %}
+#    {% with <name1> = <expr> & <name2> = <expr> %} ... {% endwith %}
 #
 @register('with', 'endwith')
 class WithNode(Node):
 
     def process_token(self, token):
-        self.aliases = {}
+        self.variables = {}
         chunks = utils.splitc(token.text[4:], "&", strip=True, discard_empty=True)
         for chunk in chunks:
             try:
-                alias, expr = chunk.split('=', 1)
-                self.aliases[alias.strip()] = Expression(expr.strip(), token)
+                name, expr = chunk.split('=', 1)
+                self.variables[name.strip()] = Expression(expr.strip(), token)
             except:
                 raise errors.TemplateSyntaxError("Malformed 'with' tag.", token) from None
 
     def wrender(self, context):
         context.push()
-        for alias, expr in self.aliases.items():
-            context[alias] = expr.eval(context)
+        for name, expr in self.variables.items():
+            context[name] = expr.eval(context)
         rendered = ''.join(child.render(context) for child in self.children)
         context.pop()
         return rendered
