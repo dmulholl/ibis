@@ -4,6 +4,14 @@ meta_title: Ibis &mdash; Changelog
 ---
 
 
+### 3.2.0
+
+* Add support for declaring variables to the `{% include %}` tag.
+
+* Add support for multiple variable declarations to the `{% with %}` tag.
+
+
+
 ### 3.1.0
 
 * The builtin `FileReloader` class now works properly with the `{% include %}` and `{% extends %}` tags.

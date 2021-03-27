@@ -9,7 +9,6 @@ meta_title: Ibis &mdash; Instruction Tag Reference
 ### block
 
 ::: code django
-
     {% block <title> %} ... {% endblock %}
 
 The `block` tag is used with the `extends` tag to implement [template inheritance](@root/inheritance//). The `title` argument is an arbitrary alphanumeric identifier for the block.
@@ -19,7 +18,6 @@ The `block` tag is used with the `extends` tag to implement [template inheritanc
 ### cycle
 
 ::: code django
-
     {% cycle <expr> %}
 
 The `cycle` tag can be used within a loop to cycle over the values of an iterable expression. Each time the tag is encountered it prints the next value in the sequence.
@@ -27,7 +25,6 @@ The `cycle` tag can be used within a loop to cycle over the values of an iterabl
 A typical use case might be to add alternating CSS classes to elements in a list:
 
 ::: code django
-
     <ul>
         {% for item in somelist %}
             <li class="{% cycle 'odd', 'even' %}">{{ item }}</li>
@@ -39,7 +36,6 @@ A typical use case might be to add alternating CSS classes to elements in a list
 ### extends
 
 ::: code django
-
     {% extends <parent> %}
 
 The `extends` tag is used with the `block` tag to implement [template inheritance](@root/inheritance//). The `parent` argument should be a quoted string literal specifying the name of the parent template.
@@ -49,23 +45,32 @@ The `extends` tag is used with the `block` tag to implement [template inheritanc
 ### include
 
 ::: code django
-
     {% include <name> %}
 
-The `include` tag incorporates a sub-template into the current template. The `name` argument should be a quoted string literal or an expression evaluating to a string specifying the name of the sub-template to include. Note that you need to configure a [template loader](@root/api//#template-loaders) to use this tag.
+The `include` tag incorporates a sub-template into the current template. The `name` argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a [template loader](@root/api//#template-loaders) to use this tag.)
+
+You can specify variables for the included template using the `with` keyword:
+
+::: code django
+    {% include "gallery.html" with size = "large" %}
+
+Use `&` symbols to separate multiple variable declarations:
+
+::: code django
+    {% include "gallery.html" with size = "large" & max = 25 %}
+
+A variable's value can be any valid [expression](@root/markup//#expressions-and-filters).
 
 
 
 ### for
 
 ::: code django
-
     {% for <varname> in <expr> %} ... [ {% empty %} ... ] {% endfor %}
 
 The `for` tag implements looping over an iterable expression. `for` tags support variable unpacking and an optional `empty` clause that gets rendered if the sequence is empty:
 
 ::: code django
-
     {% for key, value in somedict.items() %}
         {{ key }}: {{ value }}
     {% empty %}
@@ -75,7 +80,6 @@ The `for` tag implements looping over an iterable expression. `for` tags support
 The automatic `loop` variable gives access to some useful data within the body of the loop:
 
 ::: table
-
     `loop.index`     | The current iteration of the loop (0-indexed).
     `loop.count`     | The current iteration of the loop (1-indexed).
     `loop.length`    | The number of items in the sequence.
@@ -88,7 +92,6 @@ The automatic `loop` variable gives access to some useful data within the body o
 ### if
 
 ::: code django
-
     {% if <expr> %} ... {% endif %}
 
     {% if <expr> <operator> <expr> %} ... {% endif %}
@@ -96,7 +99,6 @@ The automatic `loop` variable gives access to some useful data within the body o
 The `if` tag implements conditional branching. You can test the 'truthiness' of an expression or use any of the standard `==, !=, <, >, <=, >=, in, not in` operators to compare pairs of expressions:
 
 ::: code django
-
     {% if author %}
         By {{ author }}.
     {% endif %}
@@ -108,7 +110,6 @@ The `if` tag implements conditional branching. You can test the 'truthiness' of 
 The `if` tag supports multiple `elif` clauses, along with an optional `else` clause:
 
 ::: code django
-
     {% if balance > 100 %}
         We have lots of money.
     {% elif balance > 50 %}
@@ -120,13 +121,11 @@ The `if` tag supports multiple `elif` clauses, along with an optional `else` cla
 The `if` tag also supports negation with the `not` keyword and combination with the `and` and `or` keywords; `and` has higher precedence than `or` so the condition:
 
 ::: code django
-
     {% if a and b or c and d %}
 
 is evaluated as:
 
 ::: code django
-
     {% if (a and b) or (c and d) %}
 
 Note that explicit brackets are not supported by the syntax.
@@ -136,13 +135,11 @@ Note that explicit brackets are not supported by the syntax.
 ### spaceless
 
 ::: code django
-
     {% spaceless %} ... {% endspaceless %}
 
 The `spaceless` tag strips all whitespace from between HTML tags. For example, the HTML string:
 
 ::: code django
-
     {% spaceless %}
         <ul>
             <li>List item.</li>
@@ -152,7 +149,6 @@ The `spaceless` tag strips all whitespace from between HTML tags. For example, t
 would be rendered as:
 
 ::: code html
-
     <ul><li>List item.</li></ul>
 
 Note that leading and trailing whitespace is also stripped.
@@ -162,7 +158,6 @@ Note that leading and trailing whitespace is also stripped.
 ### trim
 
 ::: code django
-
     {% trim %} ... {% endtrim %}
 
 The `trim` tag strips all leading and trailing whitespace from its content.
@@ -172,15 +167,21 @@ The `trim` tag strips all leading and trailing whitespace from its content.
 ### with
 
 ::: code django
-
-    {% with <alias> = <expr> %} ... {% endwith %}
+    {% with <name> = <expr> %} ... {% endwith %}
 
 The `with` tag caches a complex expression under a simpler alias. It's particularly useful for caching expensive method calls, e.g. database lookups:
 
 ::: code django
-
     {% with foo = expensive.database.lookup("arg") %}
-        ... do someting with {{ foo }} here ...
+        ... do something with {{ foo }} ...
     {% endwith %}
 
-Note that the alias is only available within the scope of the tag.
+Use `&` symbols to separate multiple variable declarations:
+
+::: code django
+    {% with foo = get_foo() & bar = get_bar() %}
+        ... do something with {{ foo }} and {{ bar }} ...
+    {% endwith %}
+
+A variable's value can be any valid [expression](@root/markup//#expressions-and-filters).
+

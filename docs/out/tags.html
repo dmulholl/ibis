@@ -17,7 +17,7 @@
                 <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-                <p class="version">Version 3.1.0</p>
+                <p class="version">Version 3.2.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -142,7 +142,22 @@ include
 <span class="cp">{%</span> <span class="k">include</span> <span class="o">&lt;</span><span class="nv">name</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
-The <code>include</code> tag incorporates a sub-template into the current template. The <code>name</code> argument should be a quoted string literal or an expression evaluating to a string specifying the name of the sub-template to include. Note that you need to configure a <a href="api.html#template-loaders">template loader</a> to use this tag.
+The <code>include</code> tag incorporates a sub-template into the current template. The <code>name</code> argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a <a href="api.html#template-loaders">template loader</a> to use this tag.)
+</p>
+<p>
+You can specify variables for the included template using the <code>with</code> keyword:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;gallery.html&quot;</span> <span class="k">with</span> <span class="nv">size</span> <span class="o">=</span> <span class="s2">&quot;large&quot;</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<p>
+Use <code>&amp;</code> symbols to separate multiple variable declarations:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;gallery.html&quot;</span> <span class="k">with</span> <span class="nv">size</span> <span class="o">=</span> <span class="s2">&quot;large&quot;</span> <span class="p">&amp;</span> <span class="nv">max</span> <span class="o">=</span> <span class="m">25</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<p>
+A variable's value can be any valid <a href="markup.html#expressions-and-filters">expression</a>.
 </p>
 <h3 id="for">
 for
@@ -300,18 +315,26 @@ The <code>trim</code> tag strips all leading and trailing whitespace from its co
 with
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">with</span> <span class="o">&lt;</span><span class="nv">alias</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">with</span> <span class="o">&lt;</span><span class="nv">name</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
 The <code>with</code> tag caches a complex expression under a simpler alias. It's particularly useful for caching expensive method calls, e.g. database lookups:
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="cp">{%</span> <span class="k">with</span> <span class="nv">foo</span> <span class="o">=</span> <span class="nv">expensive.database.lookup</span><span class="o">(</span><span class="s2">&quot;arg&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    ... do someting with </span><span class="cp">{{</span> <span class="nv">foo</span> <span class="cp">}}</span><span class="x"> here ...</span>
+<span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">foo</span> <span class="cp">}}</span><span class="x"> ...</span>
 <span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
-Note that the alias is only available within the scope of the tag.
+Use <code>&amp;</code> symbols to separate multiple variable declarations:
+</p>
+<pre class="lang-django pygments" data-lang="django">
+<span class="cp">{%</span> <span class="k">with</span> <span class="nv">foo</span> <span class="o">=</span> <span class="nv">get_foo</span><span class="o">()</span> <span class="p">&amp;</span> <span class="nv">bar</span> <span class="o">=</span> <span class="nv">get_bar</span><span class="o">()</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">foo</span> <span class="cp">}}</span><span class="x"> and </span><span class="cp">{{</span> <span class="nv">bar</span> <span class="cp">}}</span><span class="x"> ...</span>
+<span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
+</pre>
+<p>
+A variable's value can be any valid <a href="markup.html#expressions-and-filters">expression</a>.
 </p>
         </article>
         
