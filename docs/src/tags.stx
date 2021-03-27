@@ -36,18 +36,18 @@ A typical use case might be to add alternating CSS classes to elements in a list
 ### extends
 
 ::: code django
-    {% extends <parent> %}
+    {% extends <parent-template> %}
 
-The `extends` tag is used with the `block` tag to implement [template inheritance](@root/inheritance//). The `parent` argument should be a quoted string literal specifying the name of the parent template.
+The `extends` tag is used with the `block` tag to implement [template inheritance](@root/inheritance//). The `parent-template` argument should be a quoted string literal specifying the name of the parent template.
 
 
 
 ### include
 
 ::: code django
-    {% include <name> %}
+    {% include <template-name> %}
 
-The `include` tag incorporates a sub-template into the current template. The `name` argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a [template loader](@root/api//#template-loaders) to use this tag.)
+The `include` tag incorporates a sub-template into the current template. The `template-name` argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a [template loader](@root/api//#template-loaders) to use this tag.)
 
 You can specify variables for the included template using the `with` keyword:
 

@@ -130,19 +130,19 @@ A typical use case might be to add alternating CSS classes to elements in a list
 extends
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">extends</span> <span class="o">&lt;</span><span class="nv">parent</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">extends</span> <span class="o">&lt;</span><span class="nv">parent-template</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
-The <code>extends</code> tag is used with the <code>block</code> tag to implement <a href="inheritance.html">template inheritance</a>. The <code>parent</code> argument should be a quoted string literal specifying the name of the parent template.
+The <code>extends</code> tag is used with the <code>block</code> tag to implement <a href="inheritance.html">template inheritance</a>. The <code>parent-template</code> argument should be a quoted string literal specifying the name of the parent template.
 </p>
 <h3 id="include">
 include
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">include</span> <span class="o">&lt;</span><span class="nv">name</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">include</span> <span class="o">&lt;</span><span class="nv">template-name</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
 </pre>
 <p>
-The <code>include</code> tag incorporates a sub-template into the current template. The <code>name</code> argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a <a href="api.html#template-loaders">template loader</a> to use this tag.)
+The <code>include</code> tag incorporates a sub-template into the current template. The <code>template-name</code> argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a <a href="api.html#template-loaders">template loader</a> to use this tag.)
 </p>
 <p>
 You can specify variables for the included template using the <code>with</code> keyword:
