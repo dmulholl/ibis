@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ------------------------------------------------------------------------------
-# Unit tests for the Ibis package.
+# Unit tests for the Ibis package. To run the tests, execute this file.
 # ------------------------------------------------------------------------------
 
 import unittest
