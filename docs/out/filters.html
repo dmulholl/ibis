@@ -72,6 +72,13 @@
             <p>
 Filters are chainable functions that modify the value of an expression. Ibis's builtin filters are listed below in function form; in each case, the first argument of the function is the expression the filter operates on.
 </p>
+<p>
+Note that the filters listed here are simply the default filters built into Ibis.
+</p>
+<p>
+You can define your own filter functions &mdash; custom filters are both extremely powerful and extremely easy to implement.
+You can find instructions for implementing your own custom filters <a href="extensions.html#custom-filters">here</a>.
+</p>
 <ul class="stx-toc">
 <li>
 <a href="#default">default</a>
@@ -168,7 +175,7 @@ Filters are chainable functions that modify the value of an expression. Ibis's b
 </li>
 </ul>
 <h3 id="default">
-default
+<code>default</code>
 </h3>
 <pre>
 default(obj, fallback)
@@ -177,7 +184,7 @@ default(obj, fallback)
 Returns <code>obj</code> if <code>obj</code> is truthy, otherwise returns <code>fallback</code>.
 </p>
 <h3 id="dtformat">
-dtformat
+<code>dtformat</code>
 </h3>
 <pre>
 dtformat(datetime, format='%Y-%m-%d %H:%M')
@@ -186,7 +193,7 @@ dtformat(datetime, format='%Y-%m-%d %H:%M')
 Formats a datetime object using the specified format string.
 </p>
 <h3 id="endswith">
-endswith
+<code>endswith</code>
 </h3>
 <pre>
 endswith(str, suffix)
@@ -195,7 +202,7 @@ endswith(str, suffix)
 Returns true if the string ends with the specified suffix.
 </p>
 <h3 id="escape">
-escape
+<code>escape</code>
 </h3>
 <pre>
 escape(str, quotes=True)
@@ -204,7 +211,7 @@ escape(str, quotes=True)
 Replaces the following HTML syntax characters with their corresponding character entities: <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>&#x27;</code>, and <code>&quot;</code>. This filter is also available under the aliases <code>esc</code> and <code>e</code>.
 </p>
 <h3 id="even">
-even
+<code>even</code>
 </h3>
 <pre>
 even(i)
@@ -213,7 +220,7 @@ even(i)
 Returns true if the integer <code>i</code> is even.
 </p>
 <h3 id="first">
-first
+<code>first</code>
 </h3>
 <pre>
 first(seq)
@@ -222,7 +229,7 @@ first(seq)
 Returns the first element in a sequence.
 </p>
 <h3 id="firsth">
-firsth
+<code>firsth</code>
 </h3>
 <pre>
 firsth(str)
@@ -231,7 +238,7 @@ firsth(str)
 Returns the content of the first heading element in a string of HTML.
 </p>
 <h3 id="firstp">
-firstp
+<code>firstp</code>
 </h3>
 <pre>
 firstp(str)
@@ -240,7 +247,7 @@ firstp(str)
 Returns the content of the first <code>&lt;p&gt;</code> element in a string of HTML.
 </p>
 <h3 id="if-undefined">
-if_undefined
+<code>if_undefined</code>
 </h3>
 <pre>
 if_undefined(obj, fallback)
@@ -250,7 +257,7 @@ Returns <code>obj</code> if <code>obj</code> is <i>defined</i>, i.e. not an inst
 undefined, returns <code>fallback</code>.
 </p>
 <h3 id="index">
-index
+<code>index</code>
 </h3>
 <pre>
 index(seq, i)
@@ -259,7 +266,7 @@ index(seq, i)
 Returns the ith element in a sequence.
 </p>
 <h3 id="is-defined">
-is_defined
+<code>is_defined</code>
 </h3>
 <pre>
 is_defined(obj)
@@ -268,7 +275,7 @@ is_defined(obj)
 Returns true if <code>obj</code> is <i>defined</i>, i.e. not an instance of the <code>Undefined</code> class, otherwise returns false.
 </p>
 <h3 id="join">
-join
+<code>join</code>
 </h3>
 <pre>
 join(seq, sep='')
@@ -277,7 +284,7 @@ join(seq, sep='')
 Joins elements of a sequence with the specified separator string.
 </p>
 <h3 id="last">
-last
+<code>last</code>
 </h3>
 <pre>
 last(seq)
@@ -286,7 +293,7 @@ last(seq)
 Returns the last element in a sequence.
 </p>
 <h3 id="len">
-len
+<code>len</code>
 </h3>
 <pre>
 len(seq)
@@ -295,7 +302,7 @@ len(seq)
 Returns the length of a sequence.
 </p>
 <h3 id="lower">
-lower
+<code>lower</code>
 </h3>
 <pre>
 lower(str)
@@ -304,7 +311,7 @@ lower(str)
 Converts the string <code>str</code> to lowercase.
 </p>
 <h3 id="odd">
-odd
+<code>odd</code>
 </h3>
 <pre>
 odd(i)
@@ -313,7 +320,7 @@ odd(i)
 Returns true if the integer <code>i</code> is odd.
 </p>
 <h3 id="pprint">
-pprint
+<code>pprint</code>
 </h3>
 <pre>
 pprint(obj)
@@ -322,7 +329,7 @@ pprint(obj)
 Pretty prints an object.
 </p>
 <h3 id="pygmentize">
-pygmentize
+<code>pygmentize</code>
 </h3>
 <pre>
 pygmentize(text, lang=None)
@@ -334,7 +341,7 @@ Applies syntax-highlighting to a string using <a href="http://pygments.org">Pygm
 If Pygments is not installed or if an appropriate lexer cannot be found this filter will return the input text with any HTML special characters escaped.
 </p>
 <h3 id="random">
-random
+<code>random</code>
 </h3>
 <pre>
 random(seq)
@@ -343,7 +350,7 @@ random(seq)
 Returns a random element from a sequence.
 </p>
 <h3 id="repr">
-repr
+<code>repr</code>
 </h3>
 <pre>
 repr(obj)
@@ -352,7 +359,7 @@ repr(obj)
 Returns the result of calling <code>repr()</code> on an object.
 </p>
 <h3 id="reversed">
-reversed
+<code>reversed</code>
 </h3>
 <pre>
 reversed(seq)
@@ -361,7 +368,7 @@ reversed(seq)
 Returns a reverse iterator over a sequence.
 </p>
 <h3 id="slice">
-slice
+<code>slice</code>
 </h3>
 <pre>
 slice(seq, start, stop=None, step=None)
@@ -370,7 +377,7 @@ slice(seq, start, stop=None, step=None)
 Returns the <code>[start:stop:step]</code> slice of a sequence.
 </p>
 <h3 id="spaceless">
-spaceless
+<code>spaceless</code>
 </h3>
 <pre>
 spaceless(str)
@@ -379,7 +386,7 @@ spaceless(str)
 Strips all whitespace between HTML/XML tags in a string.
 </p>
 <h3 id="startswith">
-startswith
+<code>startswith</code>
 </h3>
 <pre>
 startswith(str, prefix)
@@ -388,7 +395,7 @@ startswith(str, prefix)
 Returns true if the string starts with the specified prefix.
 </p>
 <h3 id="str">
-str
+<code>str</code>
 </h3>
 <pre>
 str(obj)
@@ -397,7 +404,7 @@ str(obj)
 Returns the result of calling <code>str()</code> on an object.
 </p>
 <h3 id="striptags">
-striptags
+<code>striptags</code>
 </h3>
 <pre>
 striptags(str)
@@ -406,7 +413,7 @@ striptags(str)
 Strips all HTML/XML tags from a string.
 </p>
 <h3 id="titlecase">
-titlecase
+<code>titlecase</code>
 </h3>
 <pre>
 titlecase(str)
@@ -415,7 +422,7 @@ titlecase(str)
 Converts the string <code>str</code> to titlecase.
 </p>
 <h3 id="truncatechars">
-truncatechars
+<code>truncatechars</code>
 </h3>
 <pre>
 truncatechars(str, n, ellipsis='...')
@@ -424,7 +431,7 @@ truncatechars(str, n, ellipsis='...')
 Truncates the string <code>str</code> to at most <code>n</code> chars.
 </p>
 <h3 id="truncatewords">
-truncatewords
+<code>truncatewords</code>
 </h3>
 <pre>
 truncatewords(str, n, ellipsis=' [...]')
@@ -433,7 +440,7 @@ truncatewords(str, n, ellipsis=' [...]')
 Truncates the string <code>str</code> to at most <code>n</code> words.
 </p>
 <h3 id="upper">
-upper
+<code>upper</code>
 </h3>
 <pre>
 upper(str)
@@ -442,7 +449,7 @@ upper(str)
 Converts the string <code>str</code> to uppercase.
 </p>
 <h3 id="wrap">
-wrap
+<code>wrap</code>
 </h3>
 <pre>
 wrap(str, tag)

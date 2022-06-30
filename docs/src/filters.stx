@@ -6,67 +6,72 @@ meta_title: Ibis &mdash; Filter Reference
 
 Filters are chainable functions that modify the value of an expression. Ibis's builtin filters are listed below in function form; in each case, the first argument of the function is the expression the filter operates on.
 
+Note that the filters listed here are simply the default filters built into Ibis.
+
+You can define your own filter functions --- custom filters are both extremely powerful and extremely easy to implement.
+You can find instructions for implementing your own custom filters [here](@root/extensions//#custom-filters).
+
 
 ::: insert toc
 
 
-### default
+### `default`
 
     default(obj, fallback)
 
 Returns `obj` if `obj` is truthy, otherwise returns `fallback`.
 
 
-### dtformat
+### `dtformat`
 
     dtformat(datetime, format='%Y-%m-%d %H:%M')
 
 Formats a datetime object using the specified format string.
 
 
-### endswith
+### `endswith`
 
     endswith(str, suffix)
 
 Returns true if the string ends with the specified suffix.
 
 
-### escape
+### `escape`
 
     escape(str, quotes=True)
 
 Replaces the following HTML syntax characters with their corresponding character entities: `<`, `>`, `&`, `'`, and `"`. This filter is also available under the aliases `esc` and `e`.
 
 
-### even
+### `even`
 
     even(i)
 
 Returns true if the integer `i` is even.
 
 
-### first
+### `first`
 
     first(seq)
 
 Returns the first element in a sequence.
 
 
-### firsth
+### `firsth`
 
     firsth(str)
 
 Returns the content of the first heading element in a string of HTML.
 
 
-### firstp
+### `firstp`
 
     firstp(str)
 
 Returns the content of the first `<p>` element in a string of HTML.
 
 
-### if_undefined
+### `if_undefined`
 
     if_undefined(obj, fallback)
 
@@ -74,63 +79,63 @@ Returns `obj` if `obj` is *defined*, i.e. not an instance of the `Undefined` cla
 undefined, returns `fallback`.
 
 
-### index
+### `index`
 
     index(seq, i)
 
 Returns the ith element in a sequence.
 
 
-### is_defined
+### `is_defined`
 
     is_defined(obj)
 
 Returns true if `obj` is *defined*, i.e. not an instance of the `Undefined` class, otherwise returns false.
 
 
-### join
+### `join`
 
     join(seq, sep='')
 
 Joins elements of a sequence with the specified separator string.
 
 
-### last
+### `last`
 
     last(seq)
 
 Returns the last element in a sequence.
 
 
-### len
+### `len`
 
     len(seq)
 
 Returns the length of a sequence.
 
 
-### lower
+### `lower`
 
     lower(str)
 
 Converts the string `str` to lowercase.
 
 
-### odd
+### `odd`
 
     odd(i)
 
 Returns true if the integer `i` is odd.
 
 
-### pprint
+### `pprint`
 
     pprint(obj)
 
 Pretty prints an object.
 
 
-### pygmentize
+### `pygmentize`
 
     pygmentize(text, lang=None)
 
@@ -139,42 +144,42 @@ Applies syntax-highlighting to a string using [Pygments](http://pygments.org). I
 If Pygments is not installed or if an appropriate lexer cannot be found this filter will return the input text with any HTML special characters escaped.
 
 
-### random
+### `random`
 
     random(seq)
 
 Returns a random element from a sequence.
 
 
-### repr
+### `repr`
 
     repr(obj)
 
 Returns the result of calling `repr()` on an object.
 
 
-### reversed
+### `reversed`
 
     reversed(seq)
 
 Returns a reverse iterator over a sequence.
 
 
-### slice
+### `slice`
 
     slice(seq, start, stop=None, step=None)
 
 Returns the `[start:stop:step]` slice of a sequence.
 
 
-### spaceless
+### `spaceless`
 
     spaceless(str)
 
 Strips all whitespace between HTML/XML tags in a string.
 
 
-### startswith
+### `startswith`
 
 
     startswith(str, prefix)
@@ -182,49 +187,49 @@ Strips all whitespace between HTML/XML tags in a string.
 Returns true if the string starts with the specified prefix.
 
 
-### str
+### `str`
 
     str(obj)
 
 Returns the result of calling `str()` on an object.
 
 
-### striptags
+### `striptags`
 
     striptags(str)
 
 Strips all HTML/XML tags from a string.
 
 
-### titlecase
+### `titlecase`
 
     titlecase(str)
 
 Converts the string `str` to titlecase.
 
 
-### truncatechars
+### `truncatechars`
 
     truncatechars(str, n, ellipsis='...')
 
 Truncates the string `str` to at most `n` chars.
 
 
-### truncatewords
+### `truncatewords`
 
     truncatewords(str, n, ellipsis=' [...]')
 
 Truncates the string `str` to at most `n` words.
 
 
-### upper
+### `upper`
 
     upper(str)
 
 Converts the string `str` to uppercase.
 
 
-### wrap
+### `wrap`
 
     wrap(str, tag)
 
