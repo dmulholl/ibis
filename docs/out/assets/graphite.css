@@ -50,21 +50,33 @@ body {
     line-height: 1.75;
 }
 
-h1, h2 {
+h1 {
     padding: 0;
     margin: 80px 0 30px;
     line-height: 1.25;
     text-align: center;
-}
-
-h1 {
     font-size: 32px;
     font-weight: normal;
 }
 
 h2 {
+    padding: 0;
+    margin: 80px 0 30px;
+    line-height: 1.25;
+    text-align: center;
     font-size: 22px;
     font-weight: bold;
+}
+
+h2.underline {
+    padding: 0;
+    margin: 80px 0 35px;
+    line-height: 1.25;
+    text-align: left;
+    font-size: 22px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
 }
 
 h3, h4, h5, h6 {
@@ -143,6 +155,20 @@ pre {
     line-height: 1.4;
 }
 
+/* Markdown renderers tend to wrap code blocks in <pre><code> ... </code></pre> blocks. */
+pre code {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    border: none;
+    border-radius: 0;
+    background-color: #f8f8f8;
+}
+
+h1 code {
+    font-size: 26px;
+}
+
 /**
  * Lists
  */
@@ -192,6 +218,11 @@ a {
 sup a {
     border-bottom: none;
 }
+
+dt a {
+    padding-bottom: 0;
+}
+
 
 /**
  * Miscellanea
@@ -411,9 +442,11 @@ body {
  */
 
 table {
+    font-size: 16px;
     border-collapse: collapse;
     border-spacing: 0;
-    margin: 40px 0px;
+    margin: 50px 0px;
+    width: 100%;
 }
 
 thead, tfoot {
@@ -468,6 +501,14 @@ th, td {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+/**
+ * Custom Classes
+ */
+
+body.extra-deflist-vspace dt {
+    margin-top: 80px;
 }
 
 /**
@@ -579,7 +620,7 @@ th, td {
         display: inline-block;
         padding: 0 20px;
         height: 50px;
-        border: 1px solid;
+        border: 1px solid #ddd;
         cursor: pointer;
         line-height: 50px;
         color: #333;
@@ -647,6 +688,10 @@ th, td {
 
     h3, h4, h5, h6 {
         font-size: 16px;
+    }
+
+    h1 code {
+        font-size: 24px;
     }
 
     pre, code {

@@ -9,23 +9,47 @@ meta_title: Ibis &mdash; Extensions
 
 ### Custom Filters
 
-A filter is a function that accepts at least one argument --- the value to be filtered --- and returns the filtered result. It can optionally accept any number of additional arguments.
+A filter is simply a function that transforms and returns its first argument.
 
-Filters are registered using the `@filters.register` decorator:
+Custom filters are both extremely powerful and extremely easy to implement.
+They're registered using the `@ibis.filters.register` decorator.
+
+Let's start with a simple example.
+Imagine we want a filter to round a floating-point number to 2 decimal places:
 
 ::: code python
-    @ibis.filters.register('filter_name')
+    @ibis.filters.register("fmt_float")
+    def format_float(value):
+        return "{:.2f}".format(value)
 
+We can use our custom filter like this:
+
+::: code python
+    template = ibis.Template("{{ value|fmt_float }}")
+    assert template.render(value=123.456789) == "123.46"
+
+More generally, our custom filter can take a `format_string` argument to format any kind of value:
+
+::: code python
+    @ibis.filters.register("fmt_value")
+    def format_value(value, format_string):
+        return format_string.format(value)
+
+We can use this custom filter like this:
+
+::: code python
+    template = ibis.Template("{{ value|fmt_value('{.2f}') }}")
+    assert template.render(value=123.456789) == "123.46"
+
+Filter functions can take multiple arguments and support arguments with default values.
 As an example, we can register a filter to convert datetime objects into formatted strings:
 
 ::: code python
-    import ibis
-
     @ibis.filters.register('dtformat')
-    def datetime_formatter(dt, format_str='%Y-%m-%d'):
-        return dt.strftime(format_str)
+    def format_datetime(dt, format_string='%Y-%m-%d'):
+        return dt.strftime(format_string)
 
-This gives us a filter with an optional format string argument that we can call on any datetime
+This gives us a `dtformat` filter with an optional `format_string` argument that we can call on any datetime
 object, including the built-in `now()` function which returns a datetime object representing the current time:
 
 ::: code django

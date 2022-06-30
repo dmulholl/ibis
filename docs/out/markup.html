@@ -120,7 +120,7 @@ Print tags can make use of two other constructs. First, print tags can contain m
 expressions separated by <code>||</code>, the logical-OR operator. The first expression to evaluate as 'truthy' will be printed:
 </p>
 <pre>
-{{ post.meta_title || post.title || &quot;Missing Title&quot; }}
+{{ post.meta_title || post.title || "Missing Title" }}
 </pre>
 <p>
 Second, print tags can make use of a C-style ternary operator:

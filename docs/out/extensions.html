@@ -87,26 +87,54 @@
 Custom Filters
 </h3>
 <p>
-A filter is a function that accepts at least one argument &mdash; the value to be filtered &mdash; and returns the filtered result. It can optionally accept any number of additional arguments.
+A filter is simply a function that transforms and returns its first argument.
 </p>
 <p>
-Filters are registered using the <code>@filters.register</code> decorator:
+Custom filters are both extremely powerful and extremely easy to implement.
+They're registered using the <code>@ibis.filters.register</code> decorator.
+</p>
+<p>
+Let's start with a simple example.
+Imagine we want a filter to round a floating-point number to 2 decimal places:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;filter_name&#39;</span><span class="p">)</span>
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;fmt_float&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">format_float</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </pre>
 <p>
+We can use our custom filter like this:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">template</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s2">&quot;{{ value|fmt_float }}&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">123.456789</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;123.46&quot;</span>
+</pre>
+<p>
+More generally, our custom filter can take a <code>format_string</code> argument to format any kind of value:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;fmt_value&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">format_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_string</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</pre>
+<p>
+We can use this custom filter like this:
+</p>
+<pre class="lang-python pygments" data-lang="python">
+<span class="n">template</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="s2">&quot;{{ value|fmt_value(&#39;{.2f}&#39;) }}&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">123.456789</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;123.46&quot;</span>
+</pre>
+<p>
+Filter functions can take multiple arguments and support arguments with default values.
 As an example, we can register a filter to convert datetime objects into formatted strings:
 </p>
 <pre class="lang-python pygments" data-lang="python">
-<span class="kn">import</span> <span class="nn">ibis</span>
-
 <span class="nd">@ibis</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;dtformat&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">datetime_formatter</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">format_str</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">format_datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">format_string</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_string</span><span class="p">)</span>
 </pre>
 <p>
-This gives us a filter with an optional format string argument that we can call on any datetime
+This gives us a <code>dtformat</code> filter with an optional <code>format_string</code> argument that we can call on any datetime
 object, including the built-in <code>now()</code> function which returns a datetime object representing the current time:
 </p>
 <pre class="lang-django pygments" data-lang="django">
