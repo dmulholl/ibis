@@ -8,41 +8,46 @@ from .errors import TemplateLoadError
 # cached in memory, so they only need to be compiled once. Templates are *not* automatically
 # recompiled if the underlying template file changes.
 #
-# A FileLoader instance should be initialized with a path to a base template directory.
+# A FileLoader instance should be initialized with a path to a base template directory:
 #
-#     loader = FileLoader('/path/to/base/directory')
+#     loader = FileLoader('/path/to/base/dir')
 #
-# The loader instance can then be called with a filename string. The loader will return the template
-# object corresponding the template file or raise a TemplateLoadError if no file can be located.
-# Note that the filename string may include subdirectory paths:
+# Multiple base directories can be specified:
+#
+#     loader = FileLoader('/path/to/base/dir1', '/path/to/base/dir2')
+#
+# The loader instance can then be called with a filename string. The loader will return the
+# template object corresponding the template file or raise a TemplateLoadError if no file can
+# be located. Note that the filename string may include subdirectory paths:
 #
 #     template = loader('foo.txt')
 #     template = loader('subdir/foo.txt')
 #
 class FileLoader:
 
-    def __init__(self, base_dir):
-        self.base_dir = base_dir
+    def __init__(self, *base_dirs):
+        self.base_dirs = base_dirs
         self.cache = {}
 
     def __call__(self, filename):
         if filename in self.cache:
             return self.cache[filename]
 
-        path = os.path.join(self.base_dir, filename)
-        if os.path.isfile(path):
-            try:
-                with open(path, encoding='utf-8') as file:
-                    template_string = file.read()
-            except OSError as err:
-                msg = f"FileLoader cannot load the template file '{filename}'."
-                raise TemplateLoadError(msg) from err
+        for base_dir in self.base_dirs:
+            path = os.path.join(base_dir, filename)
+            if os.path.isfile(path):
+                try:
+                    with open(path, encoding='utf-8') as file:
+                        template_string = file.read()
+                except OSError as err:
+                    msg = f"FileLoader cannot load the template file '{path}'."
+                    raise TemplateLoadError(msg) from err
 
-            template = Template(template_string, filename)
-            self.cache[filename] = template
-            return template
+                template = Template(template_string, filename)
+                self.cache[filename] = template
+                return template
 
-        msg = f"FileLoader with base '{self.base_dir}' cannot locate the template file '{filename}'."
+        msg = f"FileLoader cannot locate the template file '{filename}'."
         raise TemplateLoadError(msg)
 
 
@@ -50,30 +55,31 @@ class FileLoader:
 # is modified.
 class FileReloader:
 
-    def __init__(self, base_dir):
-        self.base_dir = base_dir
+    def __init__(self, *base_dirs):
+        self.base_dirs = base_dirs
         self.cache = {}
 
     def __call__(self, filename):
-        path = os.path.join(self.base_dir, filename)
-        if os.path.isfile(path):
-            mtime = os.path.getmtime(path)
-            if filename in self.cache:
-                if mtime == self.cache[filename][0]:
-                    return self.cache[filename][1]
+        for base_dir in self.base_dirs:
+            path = os.path.join(base_dir, filename)
+            if os.path.isfile(path):
+                mtime = os.path.getmtime(path)
+                if filename in self.cache:
+                    if mtime == self.cache[filename][0]:
+                        return self.cache[filename][1]
 
-            try:
-                with open(path, encoding='utf-8') as file:
-                    template_string = file.read()
-            except OSError as err:
-                msg = f"FileReloader cannot load the template file '{filename}'."
-                raise TemplateLoadError(msg) from err
+                try:
+                    with open(path, encoding='utf-8') as file:
+                        template_string = file.read()
+                except OSError as err:
+                    msg = f"FileReloader cannot load the template file '{path}'."
+                    raise TemplateLoadError(msg) from err
 
-            template = Template(template_string, filename)
-            self.cache[filename] = (mtime, template)
-            return template
+                template = Template(template_string, filename)
+                self.cache[filename] = (mtime, template)
+                return template
 
-        msg = f"FileReloader with base '{self.base_dir}' cannot locate the template file '{filename}'."
+        msg = f"FileReloader cannot locate the template file '{filename}'."
         raise TemplateLoadError(msg)
 
 

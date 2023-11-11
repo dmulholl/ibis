@@ -991,5 +991,67 @@ class ExpressionTests(unittest.TestCase):
             rendered = Template(template_string).render(func=evil_func)
 
 
+class FileLoaderTests(unittest.TestCase):
+
+    def test_single_base(self):
+        loader = ibis.loaders.FileLoader("tests/base1")
+
+        template_abc = loader("template-abc.ibis")
+        rendered = template_abc.render().strip()
+        self.assertEqual(rendered, "abc")
+
+        template_def = loader("template-def.ibis")
+        rendered = template_def.render().strip()
+        self.assertEqual(rendered, "def")
+
+        with self.assertRaises(ibis.errors.TemplateLoadError):
+            loader("file-does-not-exist")
+
+    def test_multiple_bases(self):
+        loader = ibis.loaders.FileLoader("tests/base1", "tests/base2")
+
+        template_abc = loader("template-abc.ibis")
+        rendered = template_abc.render().strip()
+        self.assertEqual(rendered, "abc")
+
+        template_ghi = loader("template-ghi.ibis")
+        rendered = template_ghi.render().strip()
+        self.assertEqual(rendered, "ghi")
+
+        with self.assertRaises(ibis.errors.TemplateLoadError):
+            loader("file-does-not-exist")
+
+
+class FileReloaderTests(unittest.TestCase):
+
+    def test_single_base(self):
+        loader = ibis.loaders.FileReloader("tests/base1")
+
+        template_abc = loader("template-abc.ibis")
+        rendered = template_abc.render().strip()
+        self.assertEqual(rendered, "abc")
+
+        template_def = loader("template-def.ibis")
+        rendered = template_def.render().strip()
+        self.assertEqual(rendered, "def")
+
+        with self.assertRaises(ibis.errors.TemplateLoadError):
+            loader("file-does-not-exist")
+
+    def test_multiple_bases(self):
+        loader = ibis.loaders.FileReloader("tests/base1", "tests/base2")
+
+        template_abc = loader("template-abc.ibis")
+        rendered = template_abc.render().strip()
+        self.assertEqual(rendered, "abc")
+
+        template_ghi = loader("template-ghi.ibis")
+        rendered = template_ghi.render().strip()
+        self.assertEqual(rendered, "ghi")
+
+        with self.assertRaises(ibis.errors.TemplateLoadError):
+            loader("file-does-not-exist")
+
+
 if __name__ == '__main__':
     unittest.main()
