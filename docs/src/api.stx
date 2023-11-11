@@ -47,9 +47,11 @@ If you've loaded the template from a file, the filename is the logical choice to
 
 ### Template Loaders
 
-If you want to use [template inheritance](@root/inheritance//) or the `{% include %}` tag you'll
+If you want to use [template inheritance](@root/inheritance//) or the `{% include %}` tag, you'll
 need to specify a *template loader* so Ibis can locate the appropriate templates to include or
-extend. A template loader is a callable that accepts a filename argument and either returns
+extend.
+
+A template loader is any callable that accepts a filename argument and either returns
 a corresponding `Template` object or raises a `TemplateLoadError` exception.
 
 You can define your own custom template loader, but in most cases an instance of the builtin `FileLoader` class will be suitable. A `FileLoader` instance is initialized with a path to a base template directory:
@@ -71,7 +73,7 @@ To specify a template loader set `ibis.loader` to an instance of your callable:
 ::: code python
     ibis.loader = ibis.loaders.FileLoader('/path/to/base/dir')
 
-Both `FileLoader` and `FileReloader` support multiple base directories:
+Note that both `FileLoader` and `FileReloader` support multiple base directories:
 
 ::: code python
     ibis.loader = ibis.loaders.FileLoader(

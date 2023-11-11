@@ -147,9 +147,12 @@ If you've loaded the template from a file, the filename is the logical choice to
 Template Loaders
 </h3>
 <p>
-If you want to use <a href="inheritance.html">template inheritance</a> or the <code>{% include %}</code> tag you'll
+If you want to use <a href="inheritance.html">template inheritance</a> or the <code>{% include %}</code> tag, you'll
 need to specify a <i>template loader</i> so Ibis can locate the appropriate templates to include or
-extend. A template loader is a callable that accepts a filename argument and either returns
+extend.
+</p>
+<p>
+A template loader is any callable that accepts a filename argument and either returns
 a corresponding <code>Template</code> object or raises a <code>TemplateLoadError</code> exception.
 </p>
 <p>
@@ -176,7 +179,7 @@ To specify a template loader set <code>ibis.loader</code> to an instance of your
 <span class="n">ibis</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/base/dir&#39;</span><span class="p">)</span>
 </pre>
 <p>
-Both <code>FileLoader</code> and <code>FileReloader</code> support multiple base directories:
+Note that both <code>FileLoader</code> and <code>FileReloader</code> support multiple base directories:
 </p>
 <pre class="lang-python pygments" data-lang="python">
 <span class="n">ibis</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ibis</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">(</span>
