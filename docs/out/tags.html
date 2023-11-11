@@ -4,10 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ibis &mdash; Instruction Tag Reference</title>
+
+        
+
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
         <link rel="stylesheet" href="assets/pygments.css">
+
         
+            <script src="assets/code.js"></script>
+        
+
         
     </head>
     <body class="node-tags node">
@@ -17,7 +24,7 @@
                 <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-                <p class="version">Version 3.2.0</p>
+                <p class="version">Version 3.3.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -63,6 +70,7 @@
 </ul>
             </nav>
         </header>
+
         <article class="main">
             <header class="title">
                 <h1>Instruction Tag Reference</h1>
@@ -102,7 +110,7 @@
 block
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">block</span> <span class="o">&lt;</span><span class="nv">title</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="o">&lt;</span><span class="nv">title</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>block</code> tag is used with the <code>extends</code> tag to implement <a href="inheritance.html">template inheritance</a>. The <code>title</code> argument is an arbitrary alphanumeric identifier for the block.
@@ -111,7 +119,7 @@ The <code>block</code> tag is used with the <code>extends</code> tag to implemen
 cycle
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">cycle</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">cycle</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>cycle</code> tag can be used within a loop to cycle over the values of an iterable expression. Each time the tag is encountered it prints the next value in the sequence.
@@ -121,16 +129,16 @@ A typical use case might be to add alternating CSS classes to elements in a list
 </p>
 <pre class="lang-django pygments" data-lang="django">
 <span class="x">&lt;ul&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">somelist</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">somelist</span> <span class="cp">%}</span>
 <span class="x">        &lt;li class=&quot;</span><span class="cp">{%</span> <span class="k">cycle</span> <span class="s1">&#39;odd&#39;</span><span class="o">,</span> <span class="s1">&#39;even&#39;</span> <span class="cp">%}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">item</span> <span class="cp">}}</span><span class="x">&lt;/li&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
 <span class="x">&lt;/ul&gt;</span>
 </pre>
 <h3 id="extends">
 extends
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">extends</span> <span class="o">&lt;</span><span class="nv">parent-template</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">extends</span> <span class="o">&lt;</span><span class="nv">parent-template</span><span class="o">&gt;</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>extends</code> tag is used with the <code>block</code> tag to implement <a href="inheritance.html">template inheritance</a>. The <code>parent-template</code> argument should be a quoted string literal specifying the name of the parent template.
@@ -139,7 +147,7 @@ The <code>extends</code> tag is used with the <code>block</code> tag to implemen
 include
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">include</span> <span class="o">&lt;</span><span class="nv">template-name</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">include</span> <span class="o">&lt;</span><span class="nv">template-name</span><span class="o">&gt;</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>include</code> tag incorporates a sub-template into the current template. The <code>template-name</code> argument should be a quoted string literal or an expression that evaluates to a string; it should specify the name of the sub-template to include. (Note that you need to configure a <a href="api.html#template-loaders">template loader</a> to use this tag.)
@@ -148,13 +156,13 @@ The <code>include</code> tag incorporates a sub-template into the current templa
 You can specify variables for the included template using the <code>with</code> keyword:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;gallery.html&quot;</span> <span class="k">with</span> <span class="nv">size</span> <span class="o">=</span> <span class="s2">&quot;large&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;gallery.html&quot;</span> <span class="k">with</span> <span class="nv">size</span> <span class="o">=</span> <span class="s2">&quot;large&quot;</span> <span class="cp">%}</span>
 </pre>
 <p>
 Use <code>&amp;</code> symbols to separate multiple variable declarations:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;gallery.html&quot;</span> <span class="k">with</span> <span class="nv">size</span> <span class="o">=</span> <span class="s2">&quot;large&quot;</span> <span class="p">&amp;</span> <span class="nv">max</span> <span class="o">=</span> <span class="m">25</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;gallery.html&quot;</span> <span class="k">with</span> <span class="nv">size</span> <span class="o">=</span> <span class="s2">&quot;large&quot;</span> <span class="p">&amp;</span> <span class="nv">max</span> <span class="o">=</span> <span class="m">25</span> <span class="cp">%}</span>
 </pre>
 <p>
 A variable's value can be any valid <a href="markup.html#expressions-and-filters">expression</a>.
@@ -163,17 +171,17 @@ A variable's value can be any valid <a href="markup.html#expressions-and-filters
 for
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">for</span> <span class="o">&lt;</span><span class="nv">varname</span><span class="o">&gt;</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... [ </span><span class="cp">{%</span> <span class="k">empty</span> <span class="cp">%}</span><span class="x"> ... ] </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="o">&lt;</span><span class="nv">varname</span><span class="o">&gt;</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... [ </span><span class="cp">{%</span> <span class="k">empty</span> <span class="cp">%}</span><span class="x"> ... ] </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>for</code> tag implements looping over an iterable expression. <code>for</code> tags support variable unpacking and an optional <code>empty</code> clause that gets rendered if the sequence is empty:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">for</span> <span class="nv">key</span><span class="o">,</span> <span class="nv">value</span> <span class="k">in</span> <span class="nv">somedict.items</span><span class="o">()</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{{</span> <span class="nv">key</span> <span class="cp">}}</span><span class="x">: </span><span class="cp">{{</span> <span class="nv">value</span> <span class="cp">}}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">empty</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">key</span><span class="o">,</span> <span class="nv">value</span> <span class="k">in</span> <span class="nv">somedict.items</span><span class="o">()</span> <span class="cp">%}</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">key</span> <span class="cp">}}</span><span class="x">: </span><span class="cp">{{</span> <span class="nv">value</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">empty</span> <span class="cp">%}</span>
 <span class="x">    The dictionary is empty.</span>
-<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
 </pre>
 <p>
 The automatic <code>loop</code> variable gives access to some useful data within the body of the loop:
@@ -234,45 +242,45 @@ For nested loops, the loop variable of the parent loop.
 if
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 
-<span class="cp">{%</span> <span class="k">if</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nv">operator</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nv">operator</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>if</code> tag implements conditional branching. You can test the 'truthiness' of an expression or use any of the standard <code>==, !=, &lt;, &gt;, &lt;=, &gt;=, in, not in</code> operators to compare pairs of expressions:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">author</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">author</span> <span class="cp">%}</span>
 <span class="x">    By </span><span class="cp">{{</span> <span class="nv">author</span> <span class="cp">}}</span><span class="x">.</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">author</span><span class="o">|</span><span class="nf">lower</span> <span class="o">==</span> <span class="s2">&quot;bob&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">author</span><span class="o">|</span><span class="nf">lower</span> <span class="o">==</span> <span class="s2">&quot;bob&quot;</span> <span class="cp">%}</span>
 <span class="x">    It&#39;s Bob again.</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>if</code> tag supports multiple <code>elif</code> clauses, along with an optional <code>else</code> clause:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">balance</span> <span class="o">&gt;</span> <span class="m">100</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">balance</span> <span class="o">&gt;</span> <span class="m">100</span> <span class="cp">%}</span>
 <span class="x">    We have lots of money.</span>
-<span class="cp">{%</span> <span class="k">elif</span> <span class="nv">balance</span> <span class="o">&gt;</span> <span class="m">50</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">elif</span> <span class="nv">balance</span> <span class="o">&gt;</span> <span class="m">50</span> <span class="cp">%}</span>
 <span class="x">    We have some money.</span>
-<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
 <span class="x">    We&#39;re a little short on money.</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>if</code> tag also supports negation with the <code>not</code> keyword and combination with the <code>and</code> and <code>or</code> keywords; <code>and</code> has higher precedence than <code>or</code> so the condition:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">a</span> <span class="k">and</span> <span class="nv">b</span> <span class="k">or</span> <span class="nv">c</span> <span class="k">and</span> <span class="nv">d</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">a</span> <span class="k">and</span> <span class="nv">b</span> <span class="k">or</span> <span class="nv">c</span> <span class="k">and</span> <span class="nv">d</span> <span class="cp">%}</span>
 </pre>
 <p>
 is evaluated as:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="o">(</span><span class="nv">a</span> <span class="k">and</span> <span class="nv">b</span><span class="o">)</span> <span class="k">or</span> <span class="o">(</span><span class="nv">c</span> <span class="k">and</span> <span class="nv">d</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="o">(</span><span class="nv">a</span> <span class="k">and</span> <span class="nv">b</span><span class="o">)</span> <span class="k">or</span> <span class="o">(</span><span class="nv">c</span> <span class="k">and</span> <span class="nv">d</span><span class="o">)</span> <span class="cp">%}</span>
 </pre>
 <p>
 Note that explicit brackets are not supported by the syntax.
@@ -281,17 +289,17 @@ Note that explicit brackets are not supported by the syntax.
 spaceless
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">spaceless</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endspaceless</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">spaceless</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endspaceless</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>spaceless</code> tag strips all whitespace from between HTML tags. For example, the HTML string:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">spaceless</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">spaceless</span> <span class="cp">%}</span>
 <span class="x">    &lt;ul&gt;</span>
 <span class="x">        &lt;li&gt;List item.&lt;/li&gt;</span>
 <span class="x">    &lt;/ul&gt;</span>
-<span class="cp">{%</span> <span class="k">endspaceless</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endspaceless</span> <span class="cp">%}</span>
 </pre>
 <p>
 would be rendered as:
@@ -306,7 +314,7 @@ Note that leading and trailing whitespace is also stripped.
 trim
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">trim</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endtrim</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">trim</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endtrim</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>trim</code> tag strips all leading and trailing whitespace from its content.
@@ -315,28 +323,29 @@ The <code>trim</code> tag strips all leading and trailing whitespace from its co
 with
 </h3>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">with</span> <span class="o">&lt;</span><span class="nv">name</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">with</span> <span class="o">&lt;</span><span class="nv">name</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nv">expr</span><span class="o">&gt;</span> <span class="cp">%}</span><span class="x"> ... </span><span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span>
 </pre>
 <p>
 The <code>with</code> tag caches a complex expression under a simpler alias. It's particularly useful for caching expensive method calls, e.g. database lookups:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">with</span> <span class="nv">foo</span> <span class="o">=</span> <span class="nv">expensive.database.lookup</span><span class="o">(</span><span class="s2">&quot;arg&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">with</span> <span class="nv">foo</span> <span class="o">=</span> <span class="nv">expensive.database.lookup</span><span class="o">(</span><span class="s2">&quot;arg&quot;</span><span class="o">)</span> <span class="cp">%}</span>
 <span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">foo</span> <span class="cp">}}</span><span class="x"> ...</span>
-<span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span>
 </pre>
 <p>
 Use <code>&amp;</code> symbols to separate multiple variable declarations:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">with</span> <span class="nv">foo</span> <span class="o">=</span> <span class="nv">get_foo</span><span class="o">()</span> <span class="p">&amp;</span> <span class="nv">bar</span> <span class="o">=</span> <span class="nv">get_bar</span><span class="o">()</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">with</span> <span class="nv">foo</span> <span class="o">=</span> <span class="nv">get_foo</span><span class="o">()</span> <span class="p">&amp;</span> <span class="nv">bar</span> <span class="o">=</span> <span class="nv">get_bar</span><span class="o">()</span> <span class="cp">%}</span>
 <span class="x">    ... do something with </span><span class="cp">{{</span> <span class="nv">foo</span> <span class="cp">}}</span><span class="x"> and </span><span class="cp">{{</span> <span class="nv">bar</span> <span class="cp">}}</span><span class="x"> ...</span>
-<span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span>
 </pre>
 <p>
 A variable's value can be any valid <a href="markup.html#expressions-and-filters">expression</a>.
 </p>
         </article>
+
         
     </body>
 </html>

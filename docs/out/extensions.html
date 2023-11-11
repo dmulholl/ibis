@@ -4,10 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ibis &mdash; Extensions</title>
+
+        
+
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
         <link rel="stylesheet" href="assets/pygments.css">
+
         
+            <script src="assets/code.js"></script>
+        
+
         
     </head>
     <body class="node-extensions node">
@@ -17,7 +24,7 @@
                 <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-                <p class="version">Version 3.2.0</p>
+                <p class="version">Version 3.3.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -63,6 +70,7 @@
 </ul>
             </nav>
         </header>
+
         <article class="main">
             <header class="title">
                 <h1>Extensions</h1>
@@ -138,9 +146,9 @@ This gives us a <code>dtformat</code> filter with an optional <code>format_strin
 object, including the built-in <code>now()</code> function which returns a datetime object representing the current time:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span> <span class="cp">}}</span>
 
-<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">now</span><span class="o">()|</span><span class="nf">dtformat</span><span class="o">(</span><span class="s1">&#39;%Y&#39;</span><span class="o">)</span> <span class="cp">}}</span>
 </pre>
 <p>
 As it happens, <code>dtformat</code> already exists as a built-in filter. Re-registering the <code>dtformat</code> name would simply override the built-in filter with our own custom version.
@@ -195,6 +203,7 @@ shown below:
 All you need to do is assign new delimiter strings to the above variables.
 </p>
         </article>
+
         
     </body>
 </html>

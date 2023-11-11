@@ -4,10 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ibis &mdash; Template Markup</title>
+
+        
+
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
         <link rel="stylesheet" href="assets/pygments.css">
+
         
+            <script src="assets/code.js"></script>
+        
+
         
     </head>
     <body class="node-markup node">
@@ -17,7 +24,7 @@
                 <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-                <p class="version">Version 3.2.0</p>
+                <p class="version">Version 3.3.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -63,6 +70,7 @@
 </ul>
             </nav>
         </header>
+
         <article class="main">
             <header class="title">
                 <h1>Template Markup</h1>
@@ -145,37 +153,37 @@ An <b>expression</b> consists of a variable name or a Python literal, optionally
 Variables use dot-syntax to drill into nested objects or dictionaries:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">post.title</span> <span class="cp">}}</span>
 </pre>
 <p>
 You can use integers to index into sequences like tuples or lists:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">posts.0.title</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">posts.0.title</span> <span class="cp">}}</span>
 </pre>
 <p>
 If the final variable in a chain evaluates to a function you can call it using brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.get_title</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">post.get_title</span><span class="o">()</span> <span class="cp">}}</span>
 </pre>
 <p>
 You can use simple Python literals like strings and integers as arguments to functions:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">call_me</span><span class="o">(</span><span class="s2">&quot;ishmael&quot;</span><span class="o">,</span> <span class="m">42</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">call_me</span><span class="o">(</span><span class="s2">&quot;ishmael&quot;</span><span class="o">,</span> <span class="m">42</span><span class="o">)</span> <span class="cp">}}</span>
 </pre>
 <p>
 <b>Filters</b> are chainable functions that modify the value of an expression. You apply them using the pipe symbol:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">post.title</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span>
 </pre>
 <p>
 Filters also accept arguments in brackets:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{{</span> <span class="nv">post.content</span><span class="o">|</span><span class="nf">striptags</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">(</span><span class="m">50</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">post.content</span><span class="o">|</span><span class="nf">striptags</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">(</span><span class="m">50</span><span class="o">)</span> <span class="cp">}}</span>
 </pre>
 <p>
 You can find a list of built-in filters <a href="filters.html">here</a>.
@@ -184,9 +192,9 @@ You can find a list of built-in filters <a href="filters.html">here</a>.
 Note that expressions can use simple Python literals in place of variables:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">day</span><span class="o">|</span><span class="nf">lower</span> <span class="k">in</span> <span class="o">(</span><span class="s2">&quot;saturday&quot;</span><span class="o">,</span> <span class="s2">&quot;sunday&quot;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">day</span><span class="o">|</span><span class="nf">lower</span> <span class="k">in</span> <span class="o">(</span><span class="s2">&quot;saturday&quot;</span><span class="o">,</span> <span class="s2">&quot;sunday&quot;</span><span class="o">)</span> <span class="cp">%}</span>
 <span class="x">    It&#39;s the weekend!</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 </pre>
 <p>
 The following literal structures can be used in expressions as arguments to callables or in place of variables: strings, bytes, numbers, tuples, lists, dicts, sets, booleans, and <code>None</code>.
@@ -229,6 +237,7 @@ Also, you should note that Ibis only supports calling functions at the end of a 
 it doesn't support chaining function calls within an expression.
 </p>
         </article>
+
         
     </body>
 </html>

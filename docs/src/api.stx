@@ -71,6 +71,14 @@ To specify a template loader set `ibis.loader` to an instance of your callable:
 ::: code python
     ibis.loader = ibis.loaders.FileLoader('/path/to/base/dir')
 
+Both `FileLoader` and `FileReloader` support multiple base directories:
+
+::: code python
+    ibis.loader = ibis.loaders.FileLoader(
+        '/path/to/base/dir1',
+        '/path/to/base/dir2',
+    )
+
 
 
 ### The Undefined Type

@@ -4,10 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ibis &mdash; Template Inheritance</title>
+
+        
+
         <link rel="stylesheet" href="assets/fonts.css">
         <link rel="stylesheet" href="assets/graphite.css">
         <link rel="stylesheet" href="assets/pygments.css">
+
         
+            <script src="assets/code.js"></script>
+        
+
         
     </head>
     <body class="node-inheritance node">
@@ -17,7 +24,7 @@
                 <p class="tagline">A template engine for people who enjoy the simpler things in life.</p>
             
             
-                <p class="version">Version 3.2.0</p>
+                <p class="version">Version 3.3.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -63,6 +70,7 @@
 </ul>
             </nav>
         </header>
+
         <article class="main">
             <header class="title">
                 <h1>Template Inheritance</h1>
@@ -80,20 +88,20 @@ Template inheritance is best explained with an example. Let's start with a skele
 <span class="x">&lt;html&gt;</span>
 <span class="x">    &lt;head&gt;</span>
 <span class="x">        &lt;title&gt;</span>
-<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Site Title</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Site Title</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 <span class="x">        &lt;/title&gt;</span>
 <span class="x">    &lt;/head&gt;</span>
 <span class="x">    &lt;body&gt;</span>
 <span class="x">        &lt;div id=&quot;sidebar&quot;&gt;</span>
-<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span>
 <span class="x">                &lt;ul&gt;</span>
 <span class="x">                    &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
 <span class="x">                    &lt;li&gt;&lt;a href=&quot;/blog/&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;</span>
 <span class="x">                &lt;/ul&gt;</span>
-<span class="x">            </span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 <span class="x">        &lt;/div&gt;</span>
 <span class="x">        &lt;div id=&quot;content&quot;&gt;</span>
-<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 <span class="x">        &lt;/div&gt;</span>
 <span class="x">    &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
@@ -102,14 +110,14 @@ Template inheritance is best explained with an example. Let's start with a skele
 This template uses <code>block</code> tags to define three blocks of content that child templates can override with specific content of their own. Child templates use the <code>extends</code> tag to declare that they inherit from a particular base template:
 </p>
 <pre class="lang-django pygments" data-lang="django">
-<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Homepage</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">My Homepage</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
 <span class="x">    &lt;h1&gt;My Homepage&lt;/h1&gt;</span>
 <span class="x">    &lt;p&gt;Here&#39;s some waffle about my wonderful site...&lt;/p&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre>
 <p>
 In this case we didn't override the <code>sidebar</code> block so the default content from the parent template will be used as a fallback.
@@ -150,6 +158,7 @@ Within a child block, the built-in <code>{{ super() }}</code> function gives you
 </li>
 </ul>
         </article>
+
         
     </body>
 </html>

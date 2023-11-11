@@ -4,6 +4,12 @@ meta_title: Ibis &mdash; Changelog
 ---
 
 
+### 3.3.0
+
+* `FileLoader` and `FileReloader` now support multiple base directories.
+
+
+
 ### 3.2.0
 
 * Add support for declaring variables to the `{% include %}` tag.
@@ -59,4 +65,3 @@ meta_title: Ibis &mdash; Changelog
 ### 1.0.0
 
 * First stable release.
-
