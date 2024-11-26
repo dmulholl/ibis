@@ -108,7 +108,7 @@ Comments can span multiple lines and can be used to comment-out sections of temp
 Print Tags
 </h3>
 <p>
-Print tags evaluate and print <a href="#expressions">expressions</a>. They look like this:
+Print tags evaluate and print <a href="#expressions-and-filters">expressions</a>. They look like this:
 </p>
 <pre>
 {{ post.title }}
@@ -226,8 +226,7 @@ You can find a list of built-in instruction tags <a href="tags.html">here</a>.
 Differences from Django
 </h3>
 <p>
-Ibis's syntax is inspired by <a href="https://docs.djangoproject.com/en/3.1/ref/templates/language/">Django's</a> but they aren't identical and templates written for Django are
-unlikely to work with Ibis.
+Ibis's syntax is inspired by <a href="https://docs.djangoproject.com/en/3.1/ref/templates/language/">Django's template syntax</a> but the syntaxes aren't identical and templates written for Django are unlikely to work with Ibis.
 </p>
 <p>
 In particular, Django's variable resolver automatically calls all variables that resolve to a

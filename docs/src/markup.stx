@@ -3,7 +3,7 @@ title: Template Markup
 meta_title: Ibis &mdash; Template Markup
 ---
 
-[django]: https://docs.djangoproject.com/en/3.1/ref/templates/language/
+[1]: https://docs.djangoproject.com/en/3.1/ref/templates/language/
 
 
 ::: insert toc
@@ -21,7 +21,7 @@ Comments can span multiple lines and can be used to comment-out sections of temp
 ### Print Tags
 
 
-Print tags evaluate and print [expressions](#expressions). They look like this:
+Print tags evaluate and print [expressions](#expressions-and-filters). They look like this:
 
     {{ post.title }}
 
@@ -114,8 +114,7 @@ You can find a list of built-in instruction tags [here](@root/tags//).
 
 ### Differences from Django
 
-Ibis's syntax is inspired by [Django's][django] but they aren't identical and templates written for Django are
-unlikely to work with Ibis.
+Ibis's syntax is inspired by [Django's template syntax][1] but the syntaxes aren't identical and templates written for Django are unlikely to work with Ibis.
 
 In particular, Django's variable resolver automatically calls all variables that resolve to a
 function. Ibis never calls functions automatically --- if you want to call a function you need to
@@ -123,4 +122,3 @@ do so explicitly using brackets.
 
 Also, you should note that Ibis only supports calling functions at the end of a variable chain ---
 it doesn't support chaining function calls within an expression.
-
